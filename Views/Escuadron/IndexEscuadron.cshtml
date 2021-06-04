@@ -1,0 +1,54 @@
+﻿@model IEnumerable<AirsoftApp.Models.ModeloSql.TB_ESCUADRON>
+
+@{
+    ViewBag.Title = "Mis Escuadrones";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            <p>Avatar</p>
+        </th>
+        <th>
+            <p>Codigo Escuadron</p>
+        </th>
+        <th>
+            <p>Nombre Escuadron</p>
+        </th>
+        <th>
+            <p>¿Requiere Vacantes?</p>
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <div id="imagePreview"><img width="50" src="@Url.Action("convertirImagen","Escuadron",new { CodEscuadron = item.CODESCUADRON})" /></div>
+            <td>
+                @Html.DisplayFor(modelItem => item.CODESCUADRON)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NOMESCUADRON)
+            </td>
+            <td>
+                @if (item.ESTESCUADRON == true)
+                {
+                    <p>Si </p>
+                }
+                else
+                { <p>No</p>}
+            </td>
+            <td>
+                <a class="btn btn-primary" href="~/Escuadron/EditarEscuadron/@item.CODESCUADRON">Editar</a>
+                <a class="btn btn-danger" href="~/Escuadron/EliminarEscuadron/@item.CODESCUADRON">Eliminar</a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<a class="btn btn-primary" href="~/Escuadron/NuevoEscuadron">Nuevo Escuadron</a>

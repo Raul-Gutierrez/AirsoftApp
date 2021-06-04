@@ -1,0 +1,154 @@
+﻿@model AirsoftApp.Models.PersonaViewModel
+@{
+    ViewBag.Title = "Datos personales";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@using (Html.BeginForm("EditarPersonaGuardar", "Persona", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+
+    <div class=panel-default>
+
+        <div class="col-md-12"></div>
+
+        @Html.HiddenFor(d => d.Run)
+
+        @Html.Label("Foto Perfil")
+        <div id="imagePreview"><img width="200" src="@Url.Action("convertirImagen","Persona",new { run = Model.Run})" /></div>
+
+        <div id="imagePreview"></div>
+        <br />
+        <input type="file" id="imagen" name="imgPerfil" accept=".jpg " class="form-control" />
+        <br />
+
+        @Html.LabelFor(d => d.Run)
+        <br />
+        @Html.DisplayFor(d => d.Run, "", new { @class = "form-control" })
+        <br />
+        @Html.LabelFor(d => d.Dv)
+        <br />
+        @Html.DisplayFor(d => d.Dv, "", new { @class = "form-control" })
+        <br />
+        @Html.LabelFor(d => d.Nick)
+        @Html.TextBoxFor(d => d.Nick, "", new { @class = "form-control" })
+
+        <fieldset class="container">
+            <legend>Posiciones</legend>
+            <table>
+                @for (int i = 0; i < Model.ListPosPer.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Html.CheckBoxFor(Model => Model.ListPosPer[i].IsChecked)
+                            <label>@Model.ListPosPer[i].DESCPOSICION</label>
+
+                            @Html.HiddenFor(model => model.ListPosPer[i].IDPOSICION)
+                            @Html.HiddenFor(model => model.ListPosPer[i].DESCPOSICION)
+                        </td>
+                    </tr>
+                }
+            </table>
+
+        </fieldset>
+        <br />
+
+        @Html.LabelFor(d => d.Nombre)
+        @Html.TextBoxFor(d => d.Nombre, "", new { @class = "form-control" })
+
+        @Html.LabelFor(d => d.Apellido_Paterno)
+        @Html.TextBoxFor(d => d.Apellido_Paterno, "", new { @class = "form-control" })
+
+        @Html.LabelFor(d => d.Apellido_Materno)
+        @Html.TextBoxFor(d => d.Apellido_Materno, "", new { @class = "form-control" })
+
+        @Html.LabelFor(d => d.Telefono)
+        @Html.TextBoxFor(d => d.Telefono, "", new { @class = "form-control" })
+
+        @Html.LabelFor(d => d.Experiencia)
+        @Html.DisplayFor(d => d.Experiencia, "", new { @class = "form-control" })
+
+        @Html.LabelFor(d => d.Rango)
+        @Html.DisplayFor(d => d.Rango, "", new { @class = "form-control" })
+
+        @Html.LabelFor(d => d.Correo)
+        @Html.TextBoxFor(d => d.Correo, "", new { @class = "form-control" })
+
+        @Html.LabelFor(d => d.Region)
+        @Html.DropDownList("idRegion", ViewData["Regioneslst"] as SelectList, "--Seleccione--", new { @class = "form-control", ID = "regiones", value = "null", onchange = "cargarProvincia(this.value)" })
+
+
+        @Html.LabelFor(d => d.Comuna)
+        @Html.DropDownList("idComuna", ViewData["comunalst"] as SelectList, "--Seleccione--", new { @class = "form-control", ID = "comuna", value = "null" })
+        <br />
+
+        <input value="Enviar" class="btn btn-primary" type="submit" />
+        <br />
+        <a class="btn btn-danger" href="~/Persona/EliminarPersona/@Model.Run">Dar de baja</a>
+
+    </div>}
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+
+</script>
+
+<script>
+
+    function cargarComuna(idregion)
+    {
+        cboComuna = document.getElementById("comuna");
+        cboComuna.innerHTML = "";
+        var optComuna = document.createElement("option");
+        optComuna.innerHTML = "--Seleccione--";
+        optComuna.value = null;
+        cboComuna.appendChild(optComuna);
+        $(cboComuna).trigger('change');
+        if (idregion != "") {
+            fetch("@Url.Content("~/Persona/Comuna")" + "?idRegion=" + idregion)
+                .then(function (result) {
+                    if (result.ok) {
+                        return result.json();
+                    }
+                })
+                .then(function (data) {
+
+                    data.forEach(function (element) {
+
+                        var opt = document.createElement("option");
+                        opt.innerHTML = element.Text;
+                        opt.value = element.Value;
+
+                        cboComuna.appendChild(opt);
+                    })
+                })
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+    (function () {
+
+        function filePreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    //imagePreview = document.getElementById("imagePreview");
+                    //imagePreview.innerHTML = "";
+                    $('#imagePreview').html("<img width='200' src='" + e.target.result + "'>");
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $('#imagen').change(function () {
+            filePreview(this);
+        });
+    })();
+
+</script>
