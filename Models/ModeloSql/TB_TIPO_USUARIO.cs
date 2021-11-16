@@ -12,27 +12,21 @@ namespace AirsoftApp.Models.ModeloSql
     using System;
     using System.Collections.Generic;
     
-    public partial class TB_ESCUADRON
+    public partial class TB_TIPO_USUARIO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TB_ESCUADRON()
+        public TB_TIPO_USUARIO()
         {
-            this.TB_INTEGRANTE = new HashSet<TB_INTEGRANTE>();
-            this.TB_JUEGO = new HashSet<TB_JUEGO>();
-            this.TB_PARTICIPA_JUEGO = new HashSet<TB_PARTICIPA_JUEGO>();
+            this.TB_PAGINA = new HashSet<TB_PAGINA>();
+            this.TB_PERSONA = new HashSet<TB_PERSONA>();
         }
     
-        public int IDESCUADRON { get; set; }
-        public string CODESCUADRON { get; set; }
-        public string NOMESCUADRON { get; set; }
-        public byte[] IMGESCUADRON { get; set; }
-        public Nullable<bool> ESTESCUADRON { get; set; }
+        public int IDUSUARIO { get; set; }
+        public string DESCUSUARIO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TB_INTEGRANTE> TB_INTEGRANTE { get; set; }
+        public virtual ICollection<TB_PAGINA> TB_PAGINA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TB_JUEGO> TB_JUEGO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TB_PARTICIPA_JUEGO> TB_PARTICIPA_JUEGO { get; set; }
+        public virtual ICollection<TB_PERSONA> TB_PERSONA { get; set; }
     }
 }

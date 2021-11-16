@@ -1,0 +1,10 @@
+﻿
+@{
+    ViewBag.Title = "Administrar";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@*@Html.LabelFor(d => d.IdEscuadronJuego)*@
+@Html.DropDownList("Roles", ViewData["Roles"] as SelectList, "--Seleccione--", new { @class = "form-control", ID = "Roles", value = "null" })
+

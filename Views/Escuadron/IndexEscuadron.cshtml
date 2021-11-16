@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AirsoftApp.Models.ModeloSql.TB_ESCUADRON>
+﻿@model IEnumerable<AirsoftApp.Models.EscuadronViewModel>
 
 @{
     ViewBag.Title = "Mis Escuadrones";
@@ -27,15 +27,15 @@
     {
         <tr>
             <td>
-                <div id="imagePreview"><img width="50" src="@Url.Action("convertirImagen","Escuadron",new { CodEscuadron = item.CODESCUADRON})" /></div>
+                <div id="imagePreview"><img width="50" src="@Url.Action("convertirImagen","Escuadron",new { CodEscuadron = item.CodEscuadron})" /></div>
             <td>
-                @Html.DisplayFor(modelItem => item.CODESCUADRON)
+                @Html.DisplayFor(modelItem => item.CodEscuadron)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NOMESCUADRON)
+                @Html.DisplayFor(modelItem => item.NomEscuadron)
             </td>
             <td>
-                @if (item.ESTESCUADRON == true)
+                @if (item.EstEscuadron == true)
                 {
                     <p>Si </p>
                 }
@@ -43,12 +43,12 @@
                 { <p>No</p>}
             </td>
             <td>
-                <a class="btn btn-primary" href="~/Escuadron/EditarEscuadron/@item.CODESCUADRON">Editar</a>
-                <a class="btn btn-danger" href="~/Escuadron/EliminarEscuadron/@item.CODESCUADRON">Eliminar</a>
+                @Html.ActionLink("Editar", "EditarEscuadron", "Escuadron", new { idEscuadron = item.IdEscuadron }, new { @class = "btn btn-primary" })
+                <a class="btn btn-danger" href="~/Escuadron/EliminarEscuadron/@item.IdEscuadron">Eliminar</a>
             </td>
         </tr>
     }
 
 </table>
 
-<a class="btn btn-primary" href="~/Escuadron/NuevoEscuadron">Nuevo Escuadron</a>
+<a class="btn btn-primary" href="~/Escuadron/NuevoEscuadron">Nuevo</a>

@@ -15,8 +15,8 @@ namespace AirsoftApp.Models.ModeloSql
     public partial class TB_INTEGRANTE
     {
         public int IDINTEGRANTES { get; set; }
-        public Nullable<long> RUTPERSONA { get; set; }
-        public string CODESCUADRON { get; set; }
+        public Nullable<int> IDPERSONA { get; set; }
+        public Nullable<int> IDESCUADRON { get; set; }
         public Nullable<bool> ESTINTEGRANTE { get; set; }
         public Nullable<bool> CAPINTEGRANTE { get; set; }
     

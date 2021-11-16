@@ -20,12 +20,13 @@ namespace AirsoftApp.Models.ModeloSql
             this.TB_PARTICIPA_JUEGO = new HashSet<TB_PARTICIPA_JUEGO>();
         }
     
+        public int IDJUEGO { get; set; }
+        public Nullable<int> IDPERSONA { get; set; }
+        public Nullable<int> IDESCUADRON { get; set; }
         public string CODJUEGO { get; set; }
         public Nullable<int> IDTIPOJUEGO { get; set; }
         public Nullable<int> IDMODOJUEGO { get; set; }
         public Nullable<int> IDCOMUNA { get; set; }
-        public Nullable<long> RUTPERSONA { get; set; }
-        public string CODESCUADRON { get; set; }
         public Nullable<int> IDTIPOPARTIDA { get; set; }
         public string NOMJUEGO { get; set; }
         public string DESCJUEGO { get; set; }

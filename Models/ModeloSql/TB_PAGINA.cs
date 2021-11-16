@@ -12,15 +12,12 @@ namespace AirsoftApp.Models.ModeloSql
     using System;
     using System.Collections.Generic;
     
-    public partial class TB_PARTICIPA_JUEGO
+    public partial class TB_PAGINA
     {
-        public int IDPARTICIPANTE { get; set; }
-        public Nullable<int> IDPERSONA { get; set; }
-        public Nullable<int> IDJUEGO { get; set; }
-        public Nullable<int> IDESCUADRON { get; set; }
+        public int IDPAGINA { get; set; }
+        public Nullable<int> IDUSUARIO { get; set; }
+        public string DESCPAGINA { get; set; }
     
-        public virtual TB_ESCUADRON TB_ESCUADRON { get; set; }
-        public virtual TB_JUEGO TB_JUEGO { get; set; }
-        public virtual TB_PERSONA TB_PERSONA { get; set; }
+        public virtual TB_TIPO_USUARIO TB_TIPO_USUARIO { get; set; }
     }
 }

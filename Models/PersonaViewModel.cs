@@ -67,6 +67,7 @@ namespace AirsoftApp.Models
 
         public List<TB_JUEGO> ListJuegos { get; set; }
 
+        public int IdUsuario { get; set; }
 
         [Display(Name = "Foto de perfil")]
 
@@ -104,24 +105,7 @@ namespace AirsoftApp.Models
         #endregion
 
         //Carga el listado de regiones
-        #region[cboRegion]
-        public List<SelectListItem> CboRegion()
-        {
 
-            List<SelectListItem> regionlst = new List<SelectListItem>();
-
-            using (airSoftAppEntities db = new airSoftAppEntities())
-            {
-                regionlst = (from e in db.TB_REGION
-                             select new SelectListItem
-                             {
-                                 Value = e.IDREGION.ToString(),
-                                 Text = e.DESCREGION.ToString()
-                             }).ToList();
-            }
-            return (regionlst);
-        }
-        #endregion
 
         #region[infoRegion]
         public string infoRegion(int idComuna)
@@ -153,24 +137,7 @@ namespace AirsoftApp.Models
         }
         #endregion
 
-        #region[cboComuna]
-        [HttpGet]
-        public List<SelectListItem> cboComuna(long idRegion)
-        {
-            List<SelectListItem> comunalst = new List<SelectListItem>();
-            using (airSoftAppEntities db = new airSoftAppEntities())
-            {
-                comunalst = (from a in db.TB_COMUNA
-                             where a.IDREGION == idRegion
-                             select new SelectListItem
-                             {
-                                 Value = a.IDCOMUNA.ToString(),
-                                 Text = a.DESCCOMUNA
-                             }).ToList();
-            }
-            return (comunalst);
-        }
-        #endregion
+
 
         public string infoRango(int experiencia)
         {

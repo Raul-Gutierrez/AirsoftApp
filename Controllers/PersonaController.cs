@@ -4,6 +4,7 @@ using AirsoftApp.Models.ModeloSql;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -74,7 +75,7 @@ namespace AirsoftApp.Controllers
                 return Redirect("~/Persona/EditarPersona");
                 }
             model.Correo = user;
-            ViewData["idRegion"] = model.CboRegion();
+            ViewData["idRegion"] = CboRegion();
 
             PosicionModel pos = new PosicionModel();
 
@@ -90,42 +91,13 @@ namespace AirsoftApp.Controllers
 
         #endregion
 
-        #region[Editar leer]
-
-        public ActionResult EditarPersona()
-        {
-            string user = User.Identity.GetUserName();
-            PersonaViewModel model = new PersonaViewModel();
-            TB_PERSONA odatos = this.ObtenerPersona(user);
-
-            model.Run = odatos.RUTPERSONA;
-            model.Dv = odatos.DVPER;
-            model.Nick = odatos.NICKPERSONA;
-            model.Nombre = odatos.NOMPERSONA;
-            model.Apellido_Paterno = odatos.APATERNOPER;
-            model.Apellido_Materno = odatos.AMATERNOPER;
-            model.Telefono = odatos.TELPERSONA;
-            model.Correo = odatos.CORREOPER;
-            model.Rango = model.infoRango(model.Experiencia);
-
-            var selectRegion = new SelectList(model.CboRegion(), "Value", "Text", (int)odatos.TB_COMUNA.IDREGION);
-            var selectComuna = new SelectList(model.cboComuna((int)odatos.TB_COMUNA.IDREGION), "Value", "Text", (int)odatos.IDCOMUNA);
-
-            ViewData["idRegion"] = selectRegion;
-            ViewData["idComuna"] = selectComuna;
-
-            model.ListPosPer = this.ObtenerPosiconesCheck(model.Run).ListPosiciones;
-
-            return View(model);
-        }
-        #endregion
-
         #region[Nuevo guardar]
 
         [HttpPost]
         public ActionResult NuevaPersonaGuardar(PersonaViewModel model, HttpPostedFileBase imgPerfil)
         {
             model.PerfilPersona = this.ObtenerByte(imgPerfil, model.Run);
+            
 
             db = new airSoftAppEntities();
             {
@@ -150,18 +122,20 @@ namespace AirsoftApp.Controllers
                             oPer.EXPERIENCIAPER = 0;
                             oPer.IDRANGO = 1;
                             oPer.IDCOMUNA = model.IdComuna;
+                            oPer.IDUSUARIO = 1;
 
                             this.ModificaCorreoLocal(model.Correo, this.ObtenerId(User.Identity.GetUserName()));
 
                             db.TB_PERSONA.Add(oPer);
                             db.SaveChanges();
 
+                            int IdPersona = this.ObtenerPersona(User.Identity.GetUserName()).IDPERSONA;
 
                             for (int i = 0; i < model.ListPosPer.Count; i++)
                             {
                                 if (model.ListPosPer[i].IsChecked == true)
                                 {
-                                    oSel.RUTPERSONA = model.Run;
+                                    oSel.IDPERSONA = IdPersona;
                                     oSel.IDPOSICION = model.ListPosPer[i].IDPOSICION;
                                     oSel.VALSELECCION = model.ListPosPer[i].IsChecked;
 
@@ -186,9 +160,119 @@ namespace AirsoftApp.Controllers
         }
         #endregion
 
+        #region[Editar leer]
+
+        public ActionResult EditarPersona()
+        {
+            string user = User.Identity.GetUserName();
+            PersonaViewModel model = new PersonaViewModel();
+            TB_PERSONA odatos = this.ObtenerPersona(user);
+
+            model.Run = (long)odatos.RUTPERSONA;
+            model.Dv = odatos.DVPER;
+            model.Nick = odatos.NICKPERSONA;
+            model.Nombre = odatos.NOMPERSONA;
+            model.Apellido_Paterno = odatos.APATERNOPER;
+            model.Apellido_Materno = odatos.AMATERNOPER;
+            model.Telefono = odatos.TELPERSONA;
+            model.Correo = odatos.CORREOPER;
+            model.Rango = model.infoRango(model.Experiencia);
+
+            var selectRegion = new SelectList(CboRegion(), "Value", "Text", (int)odatos.TB_COMUNA.IDREGION);
+            var selectComuna = new SelectList(cboComuna((int)odatos.TB_COMUNA.IDREGION), "Value", "Text", (int)odatos.IDCOMUNA);
+
+            ViewData["idRegion"] = selectRegion;
+            ViewData["idComuna"] = selectComuna;
+
+            model.ListPosPer = this.ObtenerPosiconesCheck(model.Run).ListPosiciones;
+
+            return View(model);
+        }
+        #endregion
+
+        #region[Editar Guardar]
+
+        [HttpPost]
+        public ActionResult EditarPersona(PersonaViewModel model, HttpPostedFileBase imgPerfil)
+        {
+
+            model.PerfilPersona = ObtenerByte(imgPerfil, model.Run);
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+
+                    db = new airSoftAppEntities();
+                    {
+
+                        int IdPersona = this.ObtenerPersona(User.Identity.GetUserName()).IDPERSONA;
+
+
+                        int h = 0;
+                        var ObtenerSeleccion = new TB_SELECCION();
+
+                        var del = db.TB_SELECCION.Where(d => d.IDPERSONA == IdPersona).ToList();
+
+                        while (del != null && h < del.Count)
+                        {
+                            db.TB_SELECCION.Remove(del[h]);
+                            db.SaveChanges();
+                            h++;
+                        }
+
+                        for (int i = 0; i < model.ListPosPer.Count; i++)
+                        {
+                            if (model.ListPosPer[i].IsChecked == true)
+                            {
+                                ObtenerSeleccion.IDPERSONA = IdPersona;
+                                ObtenerSeleccion.IDPOSICION = model.ListPosPer[i].IDPOSICION;
+                                ObtenerSeleccion.VALSELECCION = model.ListPosPer[i].IsChecked;
+
+                                db.TB_SELECCION.Add(ObtenerSeleccion);
+                                db.SaveChanges();
+                            }
+                        }
+
+                        TB_SELECCION ObtPersona = db.TB_SELECCION.Where(x => x.IDPERSONA == IdPersona).FirstOrDefault();
+
+                        ObtPersona.TB_PERSONA.NICKPERSONA = model.Nick;
+                        ObtPersona.TB_PERSONA.NOMPERSONA = model.Nombre;
+                        ObtPersona.TB_PERSONA.APATERNOPER = model.Apellido_Paterno;
+                        ObtPersona.TB_PERSONA.AMATERNOPER = model.Apellido_Materno;
+                        ObtPersona.TB_PERSONA.TELPERSONA = model.Telefono;
+                        ObtPersona.TB_PERSONA.PERFILPERSONA = model.PerfilPersona;
+                        ObtPersona.TB_PERSONA.CORREOPER = model.Correo;
+                        ObtPersona.TB_PERSONA.IDCOMUNA = model.IdComuna;
+
+                        db.Entry(ObtPersona).State = EntityState.Modified;
+
+                        db.SaveChanges();
+
+                        UpdateCorreo(model.Correo, GetId(User.Identity.GetUserName()));
+
+                    }
+
+                    return Redirect("~/Persona/EditarPersona");
+                }
+                else
+                {
+                    return View(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        #endregion
+
         #region[Eliminar]
         public ActionResult EliminarPersona(long id)
         {
+      
+
             using (EntitiesLocal dbl = new EntitiesLocal())
             {
                 string user = User.Identity.GetUserName();
@@ -201,10 +285,12 @@ namespace AirsoftApp.Controllers
                 //db.TB_INTEGRANTE.Remove(db.TB_INTEGRANTE.Where(x => x.RUTPERSONA == id).FirstOrDefault());
                 //db.ESCUADRON.Remove(db.ESCUADRON.Where(x => x.RUTPERSONA == id).FirstOrDefault());
 
-                db.TB_SELECCION.RemoveRange(db.TB_SELECCION.Where(a => a.RUTPERSONA == id));
-                //db.SaveChanges();
+                int IdPersona = ObtenerPersona(User.Identity.GetUserName()).IDPERSONA;
+
+                db.TB_SELECCION.RemoveRange(db.TB_SELECCION.Where(a => a.IDPERSONA == IdPersona));
+                db.SaveChanges();
                 
-                db.TB_PERSONA.Remove(db.TB_PERSONA.Find(id));
+                db.TB_PERSONA.Remove(db.TB_PERSONA.Find(IdPersona));
                 db.SaveChanges();
 
             }
@@ -217,8 +303,7 @@ namespace AirsoftApp.Controllers
         }
         #endregion
 
-
-
+       
         #region[FuncionesPersona]
 
         public TB_PERSONA ObtenerPersona(string correo)
@@ -235,9 +320,11 @@ namespace AirsoftApp.Controllers
             PosicionModel pos = new PosicionModel();
             db = new airSoftAppEntities();
             {
+                int IdPersona = ObtenerPersona(User.Identity.GetUserName()).IDPERSONA;
+
                 int j = 0;
                 pos.ListPosiciones = db.TB_POSICION.ToList<TB_POSICION>();
-                var oSel = db.TB_SELECCION.Where(d => d.RUTPERSONA == Run).ToList();
+                var oSel = db.TB_SELECCION.Where(d => d.IDPERSONA == IdPersona).ToList();
 
                 for (int i = 0; i < pos.ListPosiciones.Count; i++)
                 {
@@ -265,7 +352,7 @@ namespace AirsoftApp.Controllers
                 return File(imagen, "imagenes/jpg");
             }
 
-        } //Decodifica los bytes de LA IMAGEN
+        } //Decodifica los bytes de la imagen
 
         public byte[] ObtenerByte(HttpPostedFileBase imgPerfil, long run) // Obtiene los bytes de las imagenes 
         {
@@ -282,11 +369,11 @@ namespace AirsoftApp.Controllers
 
                 return imagenData;
             }
-            else
+            else // Si ya existe, busca la imagen guardada
             {
                 db = new airSoftAppEntities();
 
-                var Oper = db.TB_PERSONA.Find(run);
+                var Oper = db.TB_PERSONA.Where(d => d.RUTPERSONA == run).FirstOrDefault();
 
                 imagenData = Oper.PERFILPERSONA;
 
@@ -294,7 +381,7 @@ namespace AirsoftApp.Controllers
 
             }
 
-        }
+        } 
 
         public void ModificaCorreoLocal(string correo, string id)
         {
@@ -314,6 +401,33 @@ namespace AirsoftApp.Controllers
         {
             db1 = new EntitiesLocal();
             {
+                AspNetUsers Email = new AspNetUsers();
+
+                var id = db1.AspNetUsers.Where(d => d.Email.Contains(correo)).FirstOrDefault();
+                string ID = id.Id;
+
+                return ID;
+            }
+        }
+
+        public void UpdateCorreo(string correo, string id)
+        {
+            db1 = new EntitiesLocal();
+            {
+                var oNet = db1.AspNetUsers.Find(id);
+
+                oNet.Email = correo;
+                oNet.UserName = correo;
+
+                db1.Entry(oNet).State = System.Data.Entity.EntityState.Modified;
+                db1.SaveChanges();
+            }
+        }
+
+        public string GetId(string correo)
+        {
+            db1 = new EntitiesLocal();
+            {
                 AspNetUsers cor = new AspNetUsers();
 
                 var id = db1.AspNetUsers.Where(d => d.Email.Contains(correo)).FirstOrDefault();
@@ -323,7 +437,48 @@ namespace AirsoftApp.Controllers
             }
         }
 
+        #region[cboComuna]
+        [HttpGet]
+        public List<SelectListItem> cboComuna(long idRegion)
+        {
+            List<SelectListItem> comunalst = new List<SelectListItem>();
+            using (airSoftAppEntities db = new airSoftAppEntities())
+            {
+                comunalst = (from a in db.TB_COMUNA
+                             where a.IDREGION == idRegion
+                             select new SelectListItem
+                             {
+                                 Value = a.IDCOMUNA.ToString(),
+                                 Text = a.DESCCOMUNA
+                             }).ToList();
+            }
+            return (comunalst);
+        }
         #endregion
+
+
+        #region[cboRegion]
+        public List<SelectListItem> CboRegion()
+        {
+
+            List<SelectListItem> regionlst = new List<SelectListItem>();
+
+            using (airSoftAppEntities db = new airSoftAppEntities())
+            {
+                regionlst = (from e in db.TB_REGION
+                             select new SelectListItem
+                             {
+                                 Value = e.IDREGION.ToString(),
+                                 Text = e.DESCREGION.ToString()
+                             }).ToList();
+            }
+            return (regionlst);
+        }
+        #endregion
+
+        #endregion
+
+       
 
     }
 }

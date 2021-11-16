@@ -8,6 +8,7 @@ namespace AirsoftApp.Models
 {
     public class EscuadronViewModel
     {
+        public int IdEscuadron { get; set; }
 
         [Display(Name = "Nombre del Escuadron")]
         public string NomEscuadron { get; set; }
@@ -22,30 +23,6 @@ namespace AirsoftApp.Models
 
         [Display(Name = "¿Aceptar vacantes?")]
         public bool EstEscuadron { get; set; }
-
-
-
-        #region[CBOESTADO]
-        //public List<SelectListItem> cboEstado()
-        //{
-        //    List<SelectListItem> estadoList = new List<SelectListItem>();
-
-        //    using (airSoftAppEntities db = new airSoftAppEntities())
-        //    {
-        //        estadoList = (from a in db.ESTADOESCUADRON
-        //                      select new SelectListItem
-        //                      {
-        //                          Value = a.IDESTESC.ToString(),
-        //                          Text = a.DESCESTESC
-        //                      }).ToList();
-        //    }
-        //    return (estadoList);
-        //}
-        #endregion
-
-
-
-
 
 
 

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="airSoftAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="airSoftAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="TB_COMUNA">
           <Key>
             <PropertyRef Name="IDCOMUNA" />
@@ -15,9 +15,10 @@
         </EntityType>
         <EntityType Name="TB_ESCUADRON">
           <Key>
-            <PropertyRef Name="CODESCUADRON" />
+            <PropertyRef Name="IDESCUADRON" />
           </Key>
-          <Property Name="CODESCUADRON" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="IDESCUADRON" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CODESCUADRON" Type="varchar" MaxLength="10" />
           <Property Name="NOMESCUADRON" Type="varchar" MaxLength="25" />
           <Property Name="IMGESCUADRON" Type="image" />
           <Property Name="ESTESCUADRON" Type="bit" />
@@ -27,21 +28,22 @@
             <PropertyRef Name="IDINTEGRANTES" />
           </Key>
           <Property Name="IDINTEGRANTES" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RUTPERSONA" Type="bigint" />
-          <Property Name="CODESCUADRON" Type="varchar" MaxLength="10" />
+          <Property Name="IDPERSONA" Type="int" />
+          <Property Name="IDESCUADRON" Type="int" />
           <Property Name="ESTINTEGRANTE" Type="bit" />
           <Property Name="CAPINTEGRANTE" Type="bit" />
         </EntityType>
         <EntityType Name="TB_JUEGO">
           <Key>
-            <PropertyRef Name="CODJUEGO" />
+            <PropertyRef Name="IDJUEGO" />
           </Key>
-          <Property Name="CODJUEGO" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="IDJUEGO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDPERSONA" Type="int" />
+          <Property Name="IDESCUADRON" Type="int" />
+          <Property Name="CODJUEGO" Type="varchar" MaxLength="10" />
           <Property Name="IDTIPOJUEGO" Type="int" />
           <Property Name="IDMODOJUEGO" Type="int" />
           <Property Name="IDCOMUNA" Type="int" />
-          <Property Name="RUTPERSONA" Type="bigint" />
-          <Property Name="CODESCUADRON" Type="varchar" MaxLength="10" />
           <Property Name="IDTIPOPARTIDA" Type="int" />
           <Property Name="NOMJUEGO" Type="varchar" MaxLength="50" />
           <Property Name="DESCJUEGO" Type="varchar" MaxLength="250" />
@@ -56,22 +58,30 @@
           <Property Name="IDMODOJUEGO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DESCMODOJUEGO" Type="varchar" MaxLength="60" />
         </EntityType>
+        <EntityType Name="TB_PAGINA">
+          <Key>
+            <PropertyRef Name="IDPAGINA" />
+          </Key>
+          <Property Name="IDPAGINA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDUSUARIO" Type="int" />
+          <Property Name="DESCPAGINA" Type="varchar" MaxLength="250" />
+        </EntityType>
         <EntityType Name="TB_PARTICIPA_JUEGO">
           <Key>
             <PropertyRef Name="IDPARTICIPANTE" />
           </Key>
           <Property Name="IDPARTICIPANTE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RUTPERSONA" Type="bigint" />
-          <Property Name="CODJUEGO" Type="varchar" MaxLength="10" />
-          <Property Name="CODESCUADRON" Type="varchar" MaxLength="10" />
-          <Property Name="CODPARJUEGO" Type="varchar" MaxLength="10" />
-          <Property Name="ESTPARTJUEGO" Type="bit" />
+          <Property Name="IDPERSONA" Type="int" />
+          <Property Name="IDJUEGO" Type="int" />
+          <Property Name="IDESCUADRON" Type="int" />
         </EntityType>
         <EntityType Name="TB_PERSONA">
           <Key>
-            <PropertyRef Name="RUTPERSONA" />
+            <PropertyRef Name="IDPERSONA" />
           </Key>
-          <Property Name="RUTPERSONA" Type="bigint" Nullable="false" />
+          <Property Name="IDPERSONA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RUTPERSONA" Type="bigint" />
+          <Property Name="IDUSUARIO" Type="int" />
           <Property Name="DVPER" Type="varchar" MaxLength="1" />
           <Property Name="IDCOMUNA" Type="int" />
           <Property Name="IDRANGO" Type="int" />
@@ -114,7 +124,7 @@
           </Key>
           <Property Name="IDSELECCION" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDPOSICION" Type="int" />
-          <Property Name="RUTPERSONA" Type="bigint" />
+          <Property Name="IDPERSONA" Type="int" />
           <Property Name="VALSELECCION" Type="bit" />
         </EntityType>
         <EntityType Name="TB_TIPO_JUEGO">
@@ -130,6 +140,13 @@
           </Key>
           <Property Name="IDTIPOPARTIDA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DESCTIPOPARTIDA" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="TB_TIPO_USUARIO">
+          <Key>
+            <PropertyRef Name="IDUSUARIO" />
+          </Key>
+          <Property Name="IDUSUARIO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCUSUARIO" Type="varchar" MaxLength="20" />
         </EntityType>
         <Association Name="FK_TB_COMUN_REGION_CO_TB_REGIO">
           <End Role="TB_REGION" Type="Self.TB_REGION" Multiplicity="0..1" />
@@ -148,10 +165,10 @@
           <End Role="TB_INTEGRANTE" Type="Self.TB_INTEGRANTE" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TB_ESCUADRON">
-              <PropertyRef Name="CODESCUADRON" />
+              <PropertyRef Name="IDESCUADRON" />
             </Principal>
             <Dependent Role="TB_INTEGRANTE">
-              <PropertyRef Name="CODESCUADRON" />
+              <PropertyRef Name="IDESCUADRON" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -160,10 +177,10 @@
           <End Role="TB_INTEGRANTE" Type="Self.TB_INTEGRANTE" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TB_PERSONA">
-              <PropertyRef Name="RUTPERSONA" />
+              <PropertyRef Name="IDPERSONA" />
             </Principal>
             <Dependent Role="TB_INTEGRANTE">
-              <PropertyRef Name="RUTPERSONA" />
+              <PropertyRef Name="IDPERSONA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -184,10 +201,10 @@
           <End Role="TB_JUEGO" Type="Self.TB_JUEGO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TB_ESCUADRON">
-              <PropertyRef Name="CODESCUADRON" />
+              <PropertyRef Name="IDESCUADRON" />
             </Principal>
             <Dependent Role="TB_JUEGO">
-              <PropertyRef Name="CODESCUADRON" />
+              <PropertyRef Name="IDESCUADRON" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -208,10 +225,10 @@
           <End Role="TB_JUEGO" Type="Self.TB_JUEGO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TB_PERSONA">
-              <PropertyRef Name="RUTPERSONA" />
+              <PropertyRef Name="IDPERSONA" />
             </Principal>
             <Dependent Role="TB_JUEGO">
-              <PropertyRef Name="RUTPERSONA" />
+              <PropertyRef Name="IDPERSONA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -239,15 +256,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TB_PAGIN_TIPOUSUAR_TB_TIPO_">
+          <End Role="TB_TIPO_USUARIO" Type="Self.TB_TIPO_USUARIO" Multiplicity="0..1" />
+          <End Role="TB_PAGINA" Type="Self.TB_PAGINA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_TIPO_USUARIO">
+              <PropertyRef Name="IDUSUARIO" />
+            </Principal>
+            <Dependent Role="TB_PAGINA">
+              <PropertyRef Name="IDUSUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TB_PARTI_ESC_PARTJ_TB_ESCUA">
           <End Role="TB_ESCUADRON" Type="Self.TB_ESCUADRON" Multiplicity="0..1" />
           <End Role="TB_PARTICIPA_JUEGO" Type="Self.TB_PARTICIPA_JUEGO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TB_ESCUADRON">
-              <PropertyRef Name="CODESCUADRON" />
+              <PropertyRef Name="IDESCUADRON" />
             </Principal>
             <Dependent Role="TB_PARTICIPA_JUEGO">
-              <PropertyRef Name="CODESCUADRON" />
+              <PropertyRef Name="IDESCUADRON" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -256,10 +285,10 @@
           <End Role="TB_PARTICIPA_JUEGO" Type="Self.TB_PARTICIPA_JUEGO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TB_JUEGO">
-              <PropertyRef Name="CODJUEGO" />
+              <PropertyRef Name="IDJUEGO" />
             </Principal>
             <Dependent Role="TB_PARTICIPA_JUEGO">
-              <PropertyRef Name="CODJUEGO" />
+              <PropertyRef Name="IDJUEGO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -268,10 +297,10 @@
           <End Role="TB_PARTICIPA_JUEGO" Type="Self.TB_PARTICIPA_JUEGO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TB_PERSONA">
-              <PropertyRef Name="RUTPERSONA" />
+              <PropertyRef Name="IDPERSONA" />
             </Principal>
             <Dependent Role="TB_PARTICIPA_JUEGO">
-              <PropertyRef Name="RUTPERSONA" />
+              <PropertyRef Name="IDPERSONA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -299,15 +328,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TB_PERSO_TIPOUSUAR_TB_TIPO_">
+          <End Role="TB_TIPO_USUARIO" Type="Self.TB_TIPO_USUARIO" Multiplicity="0..1" />
+          <End Role="TB_PERSONA" Type="Self.TB_PERSONA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_TIPO_USUARIO">
+              <PropertyRef Name="IDUSUARIO" />
+            </Principal>
+            <Dependent Role="TB_PERSONA">
+              <PropertyRef Name="IDUSUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TB_SELEC_PERSONA_S_TB_PERSO">
           <End Role="TB_PERSONA" Type="Self.TB_PERSONA" Multiplicity="0..1" />
           <End Role="TB_SELECCION" Type="Self.TB_SELECCION" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TB_PERSONA">
-              <PropertyRef Name="RUTPERSONA" />
+              <PropertyRef Name="IDPERSONA" />
             </Principal>
             <Dependent Role="TB_SELECCION">
-              <PropertyRef Name="RUTPERSONA" />
+              <PropertyRef Name="IDPERSONA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -329,6 +370,7 @@
           <EntitySet Name="TB_INTEGRANTE" EntityType="Self.TB_INTEGRANTE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_JUEGO" EntityType="Self.TB_JUEGO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_MODO_JUEGO" EntityType="Self.TB_MODO_JUEGO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_PAGINA" EntityType="Self.TB_PAGINA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_PARTICIPA_JUEGO" EntityType="Self.TB_PARTICIPA_JUEGO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_PERSONA" EntityType="Self.TB_PERSONA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_POSICION" EntityType="Self.TB_POSICION" Schema="dbo" store:Type="Tables" />
@@ -337,6 +379,7 @@
           <EntitySet Name="TB_SELECCION" EntityType="Self.TB_SELECCION" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_TIPO_JUEGO" EntityType="Self.TB_TIPO_JUEGO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_TIPO_PARTIDA" EntityType="Self.TB_TIPO_PARTIDA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_TIPO_USUARIO" EntityType="Self.TB_TIPO_USUARIO" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_TB_COMUN_REGION_CO_TB_REGIO" Association="Self.FK_TB_COMUN_REGION_CO_TB_REGIO">
             <End Role="TB_REGION" EntitySet="TB_REGION" />
             <End Role="TB_COMUNA" EntitySet="TB_COMUNA" />
@@ -373,6 +416,10 @@
             <End Role="TB_TIPO_PARTIDA" EntitySet="TB_TIPO_PARTIDA" />
             <End Role="TB_JUEGO" EntitySet="TB_JUEGO" />
           </AssociationSet>
+          <AssociationSet Name="FK_TB_PAGIN_TIPOUSUAR_TB_TIPO_" Association="Self.FK_TB_PAGIN_TIPOUSUAR_TB_TIPO_">
+            <End Role="TB_TIPO_USUARIO" EntitySet="TB_TIPO_USUARIO" />
+            <End Role="TB_PAGINA" EntitySet="TB_PAGINA" />
+          </AssociationSet>
           <AssociationSet Name="FK_TB_PARTI_ESC_PARTJ_TB_ESCUA" Association="Self.FK_TB_PARTI_ESC_PARTJ_TB_ESCUA">
             <End Role="TB_ESCUADRON" EntitySet="TB_ESCUADRON" />
             <End Role="TB_PARTICIPA_JUEGO" EntitySet="TB_PARTICIPA_JUEGO" />
@@ -393,6 +440,10 @@
             <End Role="TB_RANGO" EntitySet="TB_RANGO" />
             <End Role="TB_PERSONA" EntitySet="TB_PERSONA" />
           </AssociationSet>
+          <AssociationSet Name="FK_TB_PERSO_TIPOUSUAR_TB_TIPO_" Association="Self.FK_TB_PERSO_TIPOUSUAR_TB_TIPO_">
+            <End Role="TB_TIPO_USUARIO" EntitySet="TB_TIPO_USUARIO" />
+            <End Role="TB_PERSONA" EntitySet="TB_PERSONA" />
+          </AssociationSet>
           <AssociationSet Name="FK_TB_SELEC_PERSONA_S_TB_PERSO" Association="Self.FK_TB_SELEC_PERSONA_S_TB_PERSO">
             <End Role="TB_PERSONA" EntitySet="TB_PERSONA" />
             <End Role="TB_SELECCION" EntitySet="TB_SELECCION" />
@@ -402,8 +453,7 @@
             <End Role="TB_SELECCION" EntitySet="TB_SELECCION" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="airSoftAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -420,9 +470,10 @@
         </EntityType>
         <EntityType Name="TB_ESCUADRON">
           <Key>
-            <PropertyRef Name="CODESCUADRON" />
+            <PropertyRef Name="IDESCUADRON" />
           </Key>
-          <Property Name="CODESCUADRON" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IDESCUADRON" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CODESCUADRON" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="NOMESCUADRON" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="IMGESCUADRON" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="ESTESCUADRON" Type="Boolean" />
@@ -435,8 +486,8 @@
             <PropertyRef Name="IDINTEGRANTES" />
           </Key>
           <Property Name="IDINTEGRANTES" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RUTPERSONA" Type="Int64" />
-          <Property Name="CODESCUADRON" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="IDPERSONA" Type="Int32" />
+          <Property Name="IDESCUADRON" Type="Int32" />
           <Property Name="ESTINTEGRANTE" Type="Boolean" />
           <Property Name="CAPINTEGRANTE" Type="Boolean" />
           <NavigationProperty Name="TB_ESCUADRON" Relationship="Self.FK_TB_INTEG_ESCUADRON_TB_ESCUA" FromRole="TB_INTEGRANTE" ToRole="TB_ESCUADRON" />
@@ -444,14 +495,15 @@
         </EntityType>
         <EntityType Name="TB_JUEGO">
           <Key>
-            <PropertyRef Name="CODJUEGO" />
+            <PropertyRef Name="IDJUEGO" />
           </Key>
-          <Property Name="CODJUEGO" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IDJUEGO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDPERSONA" Type="Int32" />
+          <Property Name="IDESCUADRON" Type="Int32" />
+          <Property Name="CODJUEGO" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="IDTIPOJUEGO" Type="Int32" />
           <Property Name="IDMODOJUEGO" Type="Int32" />
           <Property Name="IDCOMUNA" Type="Int32" />
-          <Property Name="RUTPERSONA" Type="Int64" />
-          <Property Name="CODESCUADRON" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="IDTIPOPARTIDA" Type="Int32" />
           <Property Name="NOMJUEGO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="DESCJUEGO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
@@ -474,25 +526,34 @@
           <Property Name="DESCMODOJUEGO" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="TB_JUEGO" Relationship="Self.FK_TB_JUEGO_MODOJUEGO_TB_MODO_" FromRole="TB_MODO_JUEGO" ToRole="TB_JUEGO" />
         </EntityType>
+        <EntityType Name="TB_PAGINA">
+          <Key>
+            <PropertyRef Name="IDPAGINA" />
+          </Key>
+          <Property Name="IDPAGINA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDUSUARIO" Type="Int32" />
+          <Property Name="DESCPAGINA" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TB_TIPO_USUARIO" Relationship="Self.FK_TB_PAGIN_TIPOUSUAR_TB_TIPO_" FromRole="TB_PAGINA" ToRole="TB_TIPO_USUARIO" />
+        </EntityType>
         <EntityType Name="TB_PARTICIPA_JUEGO">
           <Key>
             <PropertyRef Name="IDPARTICIPANTE" />
           </Key>
           <Property Name="IDPARTICIPANTE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RUTPERSONA" Type="Int64" />
-          <Property Name="CODJUEGO" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="CODESCUADRON" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="CODPARJUEGO" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="ESTPARTJUEGO" Type="Boolean" />
+          <Property Name="IDPERSONA" Type="Int32" />
+          <Property Name="IDJUEGO" Type="Int32" />
+          <Property Name="IDESCUADRON" Type="Int32" />
           <NavigationProperty Name="TB_ESCUADRON" Relationship="Self.FK_TB_PARTI_ESC_PARTJ_TB_ESCUA" FromRole="TB_PARTICIPA_JUEGO" ToRole="TB_ESCUADRON" />
           <NavigationProperty Name="TB_JUEGO" Relationship="Self.FK_TB_PARTI_JUEGO_PAR_TB_JUEGO" FromRole="TB_PARTICIPA_JUEGO" ToRole="TB_JUEGO" />
           <NavigationProperty Name="TB_PERSONA" Relationship="Self.FK_TB_PARTI_PERSONA_P_TB_PERSO" FromRole="TB_PARTICIPA_JUEGO" ToRole="TB_PERSONA" />
         </EntityType>
         <EntityType Name="TB_PERSONA">
           <Key>
-            <PropertyRef Name="RUTPERSONA" />
+            <PropertyRef Name="IDPERSONA" />
           </Key>
-          <Property Name="RUTPERSONA" Type="Int64" Nullable="false" />
+          <Property Name="IDPERSONA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RUTPERSONA" Type="Int64" />
+          <Property Name="IDUSUARIO" Type="Int32" />
           <Property Name="DVPER" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="IDCOMUNA" Type="Int32" />
           <Property Name="IDRANGO" Type="Int32" />
@@ -509,6 +570,7 @@
           <NavigationProperty Name="TB_JUEGO" Relationship="Self.FK_TB_JUEGO_PERSONA_J_TB_PERSO" FromRole="TB_PERSONA" ToRole="TB_JUEGO" />
           <NavigationProperty Name="TB_PARTICIPA_JUEGO" Relationship="Self.FK_TB_PARTI_PERSONA_P_TB_PERSO" FromRole="TB_PERSONA" ToRole="TB_PARTICIPA_JUEGO" />
           <NavigationProperty Name="TB_RANGO" Relationship="Self.FK_TB_PERSO_RANGO_PER_TB_RANGO" FromRole="TB_PERSONA" ToRole="TB_RANGO" />
+          <NavigationProperty Name="TB_TIPO_USUARIO" Relationship="Self.FK_TB_PERSO_TIPOUSUAR_TB_TIPO_" FromRole="TB_PERSONA" ToRole="TB_TIPO_USUARIO" />
           <NavigationProperty Name="TB_SELECCION" Relationship="Self.FK_TB_SELEC_PERSONA_S_TB_PERSO" FromRole="TB_PERSONA" ToRole="TB_SELECCION" />
         </EntityType>
         <EntityType Name="TB_POSICION">
@@ -544,7 +606,7 @@
           </Key>
           <Property Name="IDSELECCION" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDPOSICION" Type="Int32" />
-          <Property Name="RUTPERSONA" Type="Int64" />
+          <Property Name="IDPERSONA" Type="Int32" />
           <Property Name="VALSELECCION" Type="Boolean" />
           <NavigationProperty Name="TB_PERSONA" Relationship="Self.FK_TB_SELEC_PERSONA_S_TB_PERSO" FromRole="TB_SELECCION" ToRole="TB_PERSONA" />
           <NavigationProperty Name="TB_POSICION" Relationship="Self.FK_TB_SELEC_POSICION__TB_POSIC" FromRole="TB_SELECCION" ToRole="TB_POSICION" />
@@ -564,6 +626,15 @@
           <Property Name="IDTIPOPARTIDA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCTIPOPARTIDA" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="TB_JUEGO" Relationship="Self.FK_TB_JUEGO_TIPOPARTI_TB_TIPO_" FromRole="TB_TIPO_PARTIDA" ToRole="TB_JUEGO" />
+        </EntityType>
+        <EntityType Name="TB_TIPO_USUARIO">
+          <Key>
+            <PropertyRef Name="IDUSUARIO" />
+          </Key>
+          <Property Name="IDUSUARIO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCUSUARIO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TB_PAGINA" Relationship="Self.FK_TB_PAGIN_TIPOUSUAR_TB_TIPO_" FromRole="TB_TIPO_USUARIO" ToRole="TB_PAGINA" />
+          <NavigationProperty Name="TB_PERSONA" Relationship="Self.FK_TB_PERSO_TIPOUSUAR_TB_TIPO_" FromRole="TB_TIPO_USUARIO" ToRole="TB_PERSONA" />
         </EntityType>
         <Association Name="FK_TB_COMUN_REGION_CO_TB_REGIO">
           <End Role="TB_REGION" Type="Self.TB_REGION" Multiplicity="0..1" />
@@ -606,10 +677,10 @@
           <End Role="TB_INTEGRANTE" Type="Self.TB_INTEGRANTE" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TB_ESCUADRON">
-              <PropertyRef Name="CODESCUADRON" />
+              <PropertyRef Name="IDESCUADRON" />
             </Principal>
             <Dependent Role="TB_INTEGRANTE">
-              <PropertyRef Name="CODESCUADRON" />
+              <PropertyRef Name="IDESCUADRON" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -618,10 +689,10 @@
           <End Role="TB_JUEGO" Type="Self.TB_JUEGO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TB_ESCUADRON">
-              <PropertyRef Name="CODESCUADRON" />
+              <PropertyRef Name="IDESCUADRON" />
             </Principal>
             <Dependent Role="TB_JUEGO">
-              <PropertyRef Name="CODESCUADRON" />
+              <PropertyRef Name="IDESCUADRON" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -630,10 +701,10 @@
           <End Role="TB_PARTICIPA_JUEGO" Type="Self.TB_PARTICIPA_JUEGO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TB_ESCUADRON">
-              <PropertyRef Name="CODESCUADRON" />
+              <PropertyRef Name="IDESCUADRON" />
             </Principal>
             <Dependent Role="TB_PARTICIPA_JUEGO">
-              <PropertyRef Name="CODESCUADRON" />
+              <PropertyRef Name="IDESCUADRON" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -642,10 +713,10 @@
           <End Role="TB_INTEGRANTE" Type="Self.TB_INTEGRANTE" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TB_PERSONA">
-              <PropertyRef Name="RUTPERSONA" />
+              <PropertyRef Name="IDPERSONA" />
             </Principal>
             <Dependent Role="TB_INTEGRANTE">
-              <PropertyRef Name="RUTPERSONA" />
+              <PropertyRef Name="IDPERSONA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -666,10 +737,10 @@
           <End Role="TB_JUEGO" Type="Self.TB_JUEGO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TB_PERSONA">
-              <PropertyRef Name="RUTPERSONA" />
+              <PropertyRef Name="IDPERSONA" />
             </Principal>
             <Dependent Role="TB_JUEGO">
-              <PropertyRef Name="RUTPERSONA" />
+              <PropertyRef Name="IDPERSONA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -702,10 +773,22 @@
           <End Role="TB_PARTICIPA_JUEGO" Type="Self.TB_PARTICIPA_JUEGO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TB_JUEGO">
-              <PropertyRef Name="CODJUEGO" />
+              <PropertyRef Name="IDJUEGO" />
             </Principal>
             <Dependent Role="TB_PARTICIPA_JUEGO">
-              <PropertyRef Name="CODJUEGO" />
+              <PropertyRef Name="IDJUEGO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_PAGIN_TIPOUSUAR_TB_TIPO_">
+          <End Role="TB_TIPO_USUARIO" Type="Self.TB_TIPO_USUARIO" Multiplicity="0..1" />
+          <End Role="TB_PAGINA" Type="Self.TB_PAGINA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_TIPO_USUARIO">
+              <PropertyRef Name="IDUSUARIO" />
+            </Principal>
+            <Dependent Role="TB_PAGINA">
+              <PropertyRef Name="IDUSUARIO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -714,10 +797,10 @@
           <End Role="TB_PARTICIPA_JUEGO" Type="Self.TB_PARTICIPA_JUEGO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TB_PERSONA">
-              <PropertyRef Name="RUTPERSONA" />
+              <PropertyRef Name="IDPERSONA" />
             </Principal>
             <Dependent Role="TB_PARTICIPA_JUEGO">
-              <PropertyRef Name="RUTPERSONA" />
+              <PropertyRef Name="IDPERSONA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -733,15 +816,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TB_PERSO_TIPOUSUAR_TB_TIPO_">
+          <End Role="TB_TIPO_USUARIO" Type="Self.TB_TIPO_USUARIO" Multiplicity="0..1" />
+          <End Role="TB_PERSONA" Type="Self.TB_PERSONA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_TIPO_USUARIO">
+              <PropertyRef Name="IDUSUARIO" />
+            </Principal>
+            <Dependent Role="TB_PERSONA">
+              <PropertyRef Name="IDUSUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TB_SELEC_PERSONA_S_TB_PERSO">
           <End Role="TB_PERSONA" Type="Self.TB_PERSONA" Multiplicity="0..1" />
           <End Role="TB_SELECCION" Type="Self.TB_SELECCION" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TB_PERSONA">
-              <PropertyRef Name="RUTPERSONA" />
+              <PropertyRef Name="IDPERSONA" />
             </Principal>
             <Dependent Role="TB_SELECCION">
-              <PropertyRef Name="RUTPERSONA" />
+              <PropertyRef Name="IDPERSONA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -763,6 +858,7 @@
           <EntitySet Name="TB_INTEGRANTE" EntityType="Self.TB_INTEGRANTE" />
           <EntitySet Name="TB_JUEGO" EntityType="Self.TB_JUEGO" />
           <EntitySet Name="TB_MODO_JUEGO" EntityType="Self.TB_MODO_JUEGO" />
+          <EntitySet Name="TB_PAGINA" EntityType="Self.TB_PAGINA" />
           <EntitySet Name="TB_PARTICIPA_JUEGO" EntityType="Self.TB_PARTICIPA_JUEGO" />
           <EntitySet Name="TB_PERSONA" EntityType="Self.TB_PERSONA" />
           <EntitySet Name="TB_POSICION" EntityType="Self.TB_POSICION" />
@@ -771,6 +867,7 @@
           <EntitySet Name="TB_SELECCION" EntityType="Self.TB_SELECCION" />
           <EntitySet Name="TB_TIPO_JUEGO" EntityType="Self.TB_TIPO_JUEGO" />
           <EntitySet Name="TB_TIPO_PARTIDA" EntityType="Self.TB_TIPO_PARTIDA" />
+          <EntitySet Name="TB_TIPO_USUARIO" EntityType="Self.TB_TIPO_USUARIO" />
           <AssociationSet Name="FK_TB_COMUN_REGION_CO_TB_REGIO" Association="Self.FK_TB_COMUN_REGION_CO_TB_REGIO">
             <End Role="TB_REGION" EntitySet="TB_REGION" />
             <End Role="TB_COMUNA" EntitySet="TB_COMUNA" />
@@ -819,12 +916,20 @@
             <End Role="TB_JUEGO" EntitySet="TB_JUEGO" />
             <End Role="TB_PARTICIPA_JUEGO" EntitySet="TB_PARTICIPA_JUEGO" />
           </AssociationSet>
+          <AssociationSet Name="FK_TB_PAGIN_TIPOUSUAR_TB_TIPO_" Association="Self.FK_TB_PAGIN_TIPOUSUAR_TB_TIPO_">
+            <End Role="TB_TIPO_USUARIO" EntitySet="TB_TIPO_USUARIO" />
+            <End Role="TB_PAGINA" EntitySet="TB_PAGINA" />
+          </AssociationSet>
           <AssociationSet Name="FK_TB_PARTI_PERSONA_P_TB_PERSO" Association="Self.FK_TB_PARTI_PERSONA_P_TB_PERSO">
             <End Role="TB_PERSONA" EntitySet="TB_PERSONA" />
             <End Role="TB_PARTICIPA_JUEGO" EntitySet="TB_PARTICIPA_JUEGO" />
           </AssociationSet>
           <AssociationSet Name="FK_TB_PERSO_RANGO_PER_TB_RANGO" Association="Self.FK_TB_PERSO_RANGO_PER_TB_RANGO">
             <End Role="TB_RANGO" EntitySet="TB_RANGO" />
+            <End Role="TB_PERSONA" EntitySet="TB_PERSONA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_PERSO_TIPOUSUAR_TB_TIPO_" Association="Self.FK_TB_PERSO_TIPOUSUAR_TB_TIPO_">
+            <End Role="TB_TIPO_USUARIO" EntitySet="TB_TIPO_USUARIO" />
             <End Role="TB_PERSONA" EntitySet="TB_PERSONA" />
           </AssociationSet>
           <AssociationSet Name="FK_TB_SELEC_PERSONA_S_TB_PERSO" Association="Self.FK_TB_SELEC_PERSONA_S_TB_PERSO">
@@ -854,6 +959,7 @@
           <EntitySetMapping Name="TB_ESCUADRON">
             <EntityTypeMapping TypeName="airSoftAppModel.TB_ESCUADRON">
               <MappingFragment StoreEntitySet="TB_ESCUADRON">
+                <ScalarProperty Name="IDESCUADRON" ColumnName="IDESCUADRON" />
                 <ScalarProperty Name="CODESCUADRON" ColumnName="CODESCUADRON" />
                 <ScalarProperty Name="NOMESCUADRON" ColumnName="NOMESCUADRON" />
                 <ScalarProperty Name="IMGESCUADRON" ColumnName="IMGESCUADRON" />
@@ -865,8 +971,8 @@
             <EntityTypeMapping TypeName="airSoftAppModel.TB_INTEGRANTE">
               <MappingFragment StoreEntitySet="TB_INTEGRANTE">
                 <ScalarProperty Name="IDINTEGRANTES" ColumnName="IDINTEGRANTES" />
-                <ScalarProperty Name="RUTPERSONA" ColumnName="RUTPERSONA" />
-                <ScalarProperty Name="CODESCUADRON" ColumnName="CODESCUADRON" />
+                <ScalarProperty Name="IDPERSONA" ColumnName="IDPERSONA" />
+                <ScalarProperty Name="IDESCUADRON" ColumnName="IDESCUADRON" />
                 <ScalarProperty Name="ESTINTEGRANTE" ColumnName="ESTINTEGRANTE" />
                 <ScalarProperty Name="CAPINTEGRANTE" ColumnName="CAPINTEGRANTE" />
               </MappingFragment>
@@ -875,12 +981,13 @@
           <EntitySetMapping Name="TB_JUEGO">
             <EntityTypeMapping TypeName="airSoftAppModel.TB_JUEGO">
               <MappingFragment StoreEntitySet="TB_JUEGO">
+                <ScalarProperty Name="IDJUEGO" ColumnName="IDJUEGO" />
+                <ScalarProperty Name="IDPERSONA" ColumnName="IDPERSONA" />
+                <ScalarProperty Name="IDESCUADRON" ColumnName="IDESCUADRON" />
                 <ScalarProperty Name="CODJUEGO" ColumnName="CODJUEGO" />
                 <ScalarProperty Name="IDTIPOJUEGO" ColumnName="IDTIPOJUEGO" />
                 <ScalarProperty Name="IDMODOJUEGO" ColumnName="IDMODOJUEGO" />
                 <ScalarProperty Name="IDCOMUNA" ColumnName="IDCOMUNA" />
-                <ScalarProperty Name="RUTPERSONA" ColumnName="RUTPERSONA" />
-                <ScalarProperty Name="CODESCUADRON" ColumnName="CODESCUADRON" />
                 <ScalarProperty Name="IDTIPOPARTIDA" ColumnName="IDTIPOPARTIDA" />
                 <ScalarProperty Name="NOMJUEGO" ColumnName="NOMJUEGO" />
                 <ScalarProperty Name="DESCJUEGO" ColumnName="DESCJUEGO" />
@@ -898,22 +1005,31 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="TB_PAGINA">
+            <EntityTypeMapping TypeName="airSoftAppModel.TB_PAGINA">
+              <MappingFragment StoreEntitySet="TB_PAGINA">
+                <ScalarProperty Name="IDPAGINA" ColumnName="IDPAGINA" />
+                <ScalarProperty Name="IDUSUARIO" ColumnName="IDUSUARIO" />
+                <ScalarProperty Name="DESCPAGINA" ColumnName="DESCPAGINA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TB_PARTICIPA_JUEGO">
             <EntityTypeMapping TypeName="airSoftAppModel.TB_PARTICIPA_JUEGO">
               <MappingFragment StoreEntitySet="TB_PARTICIPA_JUEGO">
                 <ScalarProperty Name="IDPARTICIPANTE" ColumnName="IDPARTICIPANTE" />
-                <ScalarProperty Name="RUTPERSONA" ColumnName="RUTPERSONA" />
-                <ScalarProperty Name="CODJUEGO" ColumnName="CODJUEGO" />
-                <ScalarProperty Name="CODESCUADRON" ColumnName="CODESCUADRON" />
-                <ScalarProperty Name="CODPARJUEGO" ColumnName="CODPARJUEGO" />
-                <ScalarProperty Name="ESTPARTJUEGO" ColumnName="ESTPARTJUEGO" />
-              </MappingFragment>
+                <ScalarProperty Name="IDPERSONA" ColumnName="IDPERSONA" />
+                <ScalarProperty Name="IDJUEGO" ColumnName="IDJUEGO" />
+                <ScalarProperty Name="IDESCUADRON" ColumnName="IDESCUADRON" />
+                </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TB_PERSONA">
             <EntityTypeMapping TypeName="airSoftAppModel.TB_PERSONA">
               <MappingFragment StoreEntitySet="TB_PERSONA">
+                <ScalarProperty Name="IDPERSONA" ColumnName="IDPERSONA" />
                 <ScalarProperty Name="RUTPERSONA" ColumnName="RUTPERSONA" />
+                <ScalarProperty Name="IDUSUARIO" ColumnName="IDUSUARIO" />
                 <ScalarProperty Name="DVPER" ColumnName="DVPER" />
                 <ScalarProperty Name="IDCOMUNA" ColumnName="IDCOMUNA" />
                 <ScalarProperty Name="IDRANGO" ColumnName="IDRANGO" />
@@ -960,7 +1076,7 @@
               <MappingFragment StoreEntitySet="TB_SELECCION">
                 <ScalarProperty Name="IDSELECCION" ColumnName="IDSELECCION" />
                 <ScalarProperty Name="IDPOSICION" ColumnName="IDPOSICION" />
-                <ScalarProperty Name="RUTPERSONA" ColumnName="RUTPERSONA" />
+                <ScalarProperty Name="IDPERSONA" ColumnName="IDPERSONA" />
                 <ScalarProperty Name="VALSELECCION" ColumnName="VALSELECCION" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -978,6 +1094,14 @@
               <MappingFragment StoreEntitySet="TB_TIPO_PARTIDA">
                 <ScalarProperty Name="IDTIPOPARTIDA" ColumnName="IDTIPOPARTIDA" />
                 <ScalarProperty Name="DESCTIPOPARTIDA" ColumnName="DESCTIPOPARTIDA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_TIPO_USUARIO">
+            <EntityTypeMapping TypeName="airSoftAppModel.TB_TIPO_USUARIO">
+              <MappingFragment StoreEntitySet="TB_TIPO_USUARIO">
+                <ScalarProperty Name="IDUSUARIO" ColumnName="IDUSUARIO" />
+                <ScalarProperty Name="DESCUSUARIO" ColumnName="DESCUSUARIO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

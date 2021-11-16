@@ -16,7 +16,7 @@ namespace AirsoftApp.Models.ModeloSql
     {
         public int IDSELECCION { get; set; }
         public Nullable<int> IDPOSICION { get; set; }
-        public Nullable<long> RUTPERSONA { get; set; }
+        public Nullable<int> IDPERSONA { get; set; }
         public Nullable<bool> VALSELECCION { get; set; }
     
         public virtual TB_PERSONA TB_PERSONA { get; set; }

@@ -31,5 +31,5 @@ namespace AirsoftApp.Models.ModeloSql
     {
         public List<TB_POSICION> ListPosiciones { get; set; }
     }
-    
 }
+

@@ -170,8 +170,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdministrarController.cs" />
     <Compile Include="Controllers\EscuadronController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JuegoController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
     <Compile Include="Global.asax.cs">
@@ -179,7 +181,9 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\EscuadronViewModel.cs" />
+    <Compile Include="Models\HomeViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\JuegoViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ModeloLocal\AspNetRoles.cs">
       <DependentUpon>ModeloLocal.tt</DependentUpon>
@@ -211,59 +215,65 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModeloLocal.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\ModeloSql\ModeloSql.Context.cs">
+    <Compile Include="Models\ModeloSql\Model.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ModeloSql.Context.tt</DependentUpon>
+      <DependentUpon>Model.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ModeloSql\ModeloSql.cs">
+    <Compile Include="Models\ModeloSql\Model.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ModeloSql.tt</DependentUpon>
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ModeloSql\ModeloSql.Designer.cs">
+    <Compile Include="Models\ModeloSql\Model.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ModeloSql.edmx</DependentUpon>
+      <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ModeloSql\TB_COMUNA.cs">
-      <DependentUpon>ModeloSql.tt</DependentUpon>
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ModeloSql\TB_ESCUADRON.cs">
-      <DependentUpon>ModeloSql.tt</DependentUpon>
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ModeloSql\TB_INTEGRANTE.cs">
-      <DependentUpon>ModeloSql.tt</DependentUpon>
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ModeloSql\TB_JUEGO.cs">
-      <DependentUpon>ModeloSql.tt</DependentUpon>
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ModeloSql\TB_MODO_JUEGO.cs">
-      <DependentUpon>ModeloSql.tt</DependentUpon>
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModeloSql\TB_PAGINA.cs">
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ModeloSql\TB_PARTICIPA_JUEGO.cs">
-      <DependentUpon>ModeloSql.tt</DependentUpon>
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ModeloSql\TB_PERSONA.cs">
-      <DependentUpon>ModeloSql.tt</DependentUpon>
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ModeloSql\TB_POSICION.cs">
-      <DependentUpon>ModeloSql.tt</DependentUpon>
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ModeloSql\TB_RANGO.cs">
-      <DependentUpon>ModeloSql.tt</DependentUpon>
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ModeloSql\TB_REGION.cs">
-      <DependentUpon>ModeloSql.tt</DependentUpon>
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ModeloSql\TB_SELECCION.cs">
-      <DependentUpon>ModeloSql.tt</DependentUpon>
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ModeloSql\TB_TIPO_JUEGO.cs">
-      <DependentUpon>ModeloSql.tt</DependentUpon>
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ModeloSql\TB_TIPO_PARTIDA.cs">
-      <DependentUpon>ModeloSql.tt</DependentUpon>
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModeloSql\TB_TIPO_USUARIO.cs">
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PersonaViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -288,31 +298,31 @@
       <DependentUpon>ModeloLocal.edmx</DependentUpon>
       <LastGenOutput>ModeloLocal.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\ModeloSql\ModeloSql.Context.tt">
+    <Content Include="Models\ModeloSql\Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ModeloSql.edmx</DependentUpon>
-      <LastGenOutput>ModeloSql.Context.cs</LastGenOutput>
+      <DependentUpon>Model.edmx</DependentUpon>
+      <LastGenOutput>Model.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\ModeloSql\ModeloSql.tt">
+    <Content Include="Models\ModeloSql\Model.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ModeloSql.edmx</DependentUpon>
-      <LastGenOutput>ModeloSql.cs</LastGenOutput>
+      <DependentUpon>Model.edmx</DependentUpon>
+      <LastGenOutput>Model.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\ModeloSql\ModeloSql.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ModeloSql.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\ModeloSql\ModeloSql.edmx.diagram">
-      <DependentUpon>ModeloSql.edmx</DependentUpon>
-    </Content>
     <EntityDeploy Include="Models\ModeloLocal\ModeloLocal.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ModeloLocal.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <Content Include="Models\ModeloLocal\ModeloLocal.edmx.diagram">
       <DependentUpon>ModeloLocal.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\ModeloSql\Model.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ModeloSql\Model.edmx.diagram">
+      <DependentUpon>Model.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -336,8 +346,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -360,9 +368,17 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Persona\IndexPersona.cshtml" />
-    <Content Include="Views\Persona\EditarPersona.cshtml" />
     <Content Include="Views\Persona\NuevaPersona.cshtml" />
     <Content Include="Views\Escuadron\IndexEscuadron.cshtml" />
+    <Content Include="Views\Escuadron\NuevoEscuadron.cshtml" />
+    <Content Include="Views\Escuadron\EditarEscuadron.cshtml" />
+    <Content Include="Views\Juego\IndexJuego.cshtml" />
+    <Content Include="Views\Juego\NuevoJuego.cshtml" />
+    <Content Include="Views\Persona\EditarPersona.cshtml" />
+    <Content Include="Views\Home\Inicio.cshtml" />
+    <Content Include="Views\Administrar\Enrolar.cshtml" />
+    <Content Include="Views\Administrar\IndexAdministrar.cshtml" />
+    <Content Include="Views\Juego\EditarJuego.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,67 @@
+﻿@model AirsoftApp.Models.EscuadronViewModel
+
+@{
+    ViewBag.Title = "Editar Escuadron";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("GuardarEscuadron", "Escuadron", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+<div class="row">
+
+    <div id="imagePreview"></div>
+    <br />
+    <input type="file" id="imagen" name="ImgPerfil" accept=".jpg " class="form-control" />
+    <br />
+    @Html.LabelFor(d => d.CodEscuadron)
+
+    @Html.TextBoxFor(d => d.CodEscuadron, "", new { @class = "form-control" })
+
+    @Html.LabelFor(d => d.NomEscuadron)
+
+    @Html.TextBoxFor(d => d.NomEscuadron, "", new { @class = "form-control" })
+    <br />
+
+    @Html.LabelFor(d => d.EstEscuadron)
+    <br />
+
+    <label>@Html.RadioButtonFor(d => d.EstEscuadron, true) SI</label>
+    <br />
+    <label>@Html.RadioButtonFor(d => d.EstEscuadron, false) NO</label>
+
+
+    <br />
+    <input value="Guardar" class="btn btn-primary" type="submit" />
+
+
+
+</div>
+}
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+
+</script>
+
+<script type="text/javascript">
+    (function () {
+        function filePreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imagePreview').html("<img width='200' src='" + e.target.result + "'>");
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $('#imagen').change(function () {
+            filePreview(this);
+        });
+    })();
+
+</script>
