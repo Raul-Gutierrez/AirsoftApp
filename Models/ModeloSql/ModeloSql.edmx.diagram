@@ -4,22 +4,20 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="658d6e523cb947648523b5c16bb8ac82" Name="Diagram1">
-        <EntityTypeShape EntityType="airSoftAppModel.TB_COMUNA" Width="1.5" PointX="3.75" PointY="4" IsExpanded="true" />
-        <EntityTypeShape EntityType="airSoftAppModel.TB_ESCUADRON" Width="1.5" PointX="6" PointY="12" IsExpanded="true" />
-        <EntityTypeShape EntityType="airSoftAppModel.TB_INTEGRANTE" Width="1.5" PointX="8.25" PointY="7.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="airSoftAppModel.TB_JUEGO" Width="1.5" PointX="11.25" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="airSoftAppModel.TB_MODO_JUEGO" Width="1.5" PointX="9" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="airSoftAppModel.TB_PAGINA" Width="1.5" PointX="3" PointY="7.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="airSoftAppModel.TB_PARTICIPA_JUEGO" Width="1.5" PointX="13.5" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="airSoftAppModel.TB_PERSONA" Width="1.5" PointX="6" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="airSoftAppModel.TB_POSICION" Width="1.5" PointX="6" PointY="2.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="airSoftAppModel.TB_RANGO" Width="1.5" PointX="3.75" PointY="10.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="airSoftAppModel.TB_REGION" Width="1.5" PointX="1.5" PointY="4.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="airSoftAppModel.TB_SELECCION" Width="1.5" PointX="8.25" PointY="4.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="airSoftAppModel.TB_TIPO_JUEGO" Width="1.5" PointX="9" PointY="10.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="airSoftAppModel.TB_TIPO_PARTIDA" Width="1.5" PointX="9" PointY="12.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="airSoftAppModel.TB_TIPO_USUARIO" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
+      <Diagram DiagramId="fb427cbe3a8741249fd5d83d9dd3c16c" Name="Diagram1">
+        <EntityTypeShape EntityType="airSoftAppModel.TB_COMUNA" Width="1.5" PointX="1.5" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="airSoftAppModel.TB_ESCUADRON" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="airSoftAppModel.TB_INTEGRANTE" Width="1.5" PointX="3" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="airSoftAppModel.TB_JUEGO" Width="1.5" PointX="6" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="airSoftAppModel.TB_MODO_JUEGO" Width="1.5" PointX="3.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="airSoftAppModel.TB_PARTICIPA_JUEGO" Width="1.5" PointX="8.25" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="airSoftAppModel.TB_PERSONA" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="airSoftAppModel.TB_POSICION" Width="1.5" PointX="0.75" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="airSoftAppModel.TB_RANGO" Width="1.5" PointX="1.5" PointY="17.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="airSoftAppModel.TB_REGION" Width="1.5" PointX="1.5" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="airSoftAppModel.TB_SELECCION" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="airSoftAppModel.TB_TIPO_JUEGO" Width="1.5" PointX="3.75" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="airSoftAppModel.TB_TIPO_PARTIDA" Width="1.5" PointX="3.75" PointY="12.625" IsExpanded="true" />
         <AssociationConnector Association="airSoftAppModel.FK_TB_COMUN_REGION_CO_TB_REGIO" ManuallyRouted="false" />
         <AssociationConnector Association="airSoftAppModel.FK_TB_JUEGO_COMUNA_JU_TB_COMUN" ManuallyRouted="false" />
         <AssociationConnector Association="airSoftAppModel.FK_TB_PERSO_COMUNA_PE_TB_COMUN" ManuallyRouted="false" />
@@ -32,10 +30,8 @@
         <AssociationConnector Association="airSoftAppModel.FK_TB_JUEGO_TIPOJUEGO_TB_TIPO_" ManuallyRouted="false" />
         <AssociationConnector Association="airSoftAppModel.FK_TB_JUEGO_TIPOPARTI_TB_TIPO_" ManuallyRouted="false" />
         <AssociationConnector Association="airSoftAppModel.FK_TB_PARTI_JUEGO_PAR_TB_JUEGO" ManuallyRouted="false" />
-        <AssociationConnector Association="airSoftAppModel.FK_TB_PAGIN_TIPOUSUAR_TB_TIPO_" ManuallyRouted="false" />
         <AssociationConnector Association="airSoftAppModel.FK_TB_PARTI_PERSONA_P_TB_PERSO" ManuallyRouted="false" />
         <AssociationConnector Association="airSoftAppModel.FK_TB_PERSO_RANGO_PER_TB_RANGO" ManuallyRouted="false" />
-        <AssociationConnector Association="airSoftAppModel.FK_TB_PERSO_TIPOUSUAR_TB_TIPO_" ManuallyRouted="false" />
         <AssociationConnector Association="airSoftAppModel.FK_TB_SELEC_PERSONA_S_TB_PERSO" ManuallyRouted="false" />
         <AssociationConnector Association="airSoftAppModel.FK_TB_SELEC_POSICION__TB_POSIC" ManuallyRouted="false" />
       </Diagram>

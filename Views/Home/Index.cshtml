@@ -5,7 +5,7 @@
 }
 
 <h2>@ViewBag.Title</h2>
-
+<h1>Juegos disponibles</h1>
 <table class="table">
     <tr>
         <th>
@@ -23,11 +23,39 @@
             <td>
                 <div id="imagePreview"><img width="50" src="@Url.Action("ConvertirImagenHome","Home",new { IdJuego = item.IdJuego})" /></div>
             <td>
-                @Html.DisplayFor(modelItem => item.DescJuego)
+                @Html.DisplayFor(Item => item.DescJuego)
             </td>
             <td>
-                <a class="btn btn-danger" href="~/Escuadron/EliminarEscuadron/@item.IdJuego">Compartir</a>
-                <a class="btn btn-danger" href="~/Escuadron/EliminarEscuadron/@item.IdJuego">Ver</a>
+                @Html.ActionLink("Ver", "VerJuego", "Home", new { idJuego = item.IdJuego }, new { @class = "btn btn-primary" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<h1>Escuadrones vacantes</h1>
+
+<table class="table">
+    <tr>
+        <th>
+            <p>Avatar</p>
+        </th>
+        <th>
+            <p>Nombre de escuadron</p>
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item1 in ViewBag.escuadrones)
+    {
+        <tr>
+            <td>
+                <div id="imagePreview"><img width="50" src="@Url.Action("ConvertirImagen","Escuadron",new { CodEscuadron = item1.CodEscuadron})" /></div>
+            <td>
+                @item1.NomEscuadron
+            </td>
+            <td>
+                @Html.ActionLink("Ver", "VerEscuadron", "Home", new { codEscuadron = item1.CodEscuadron }, new { @class = "btn btn-primary" })
             </td>
         </tr>
     }

@@ -51,4 +51,31 @@
 
 </table>
 
+<h1>Escuadrones a los que pertenezco</h1>
+
+<table class="table">
+    <tr>
+        <th>
+            <p>Avatar</p>
+        </th>
+        <th>
+            <p>Nombre Escuadron</p>
+        </th>
+        <th></th>
+    </tr>
+
+    
+    @foreach (var item in ViewBag.Pertenencia)
+    {
+        <tr>
+            <td>
+                <div id="imagePreview"><img width="50" src="@Url.Action("convertirImagen","Escuadron",new { CodEscuadron = item.CodEscuadron})" /></div>
+            <td>
+               @item.NomEscuadron
+            </td>
+        </tr>
+    }
+
+</table>
+
 <a class="btn btn-primary" href="~/Escuadron/NuevoEscuadron">Nuevo</a>

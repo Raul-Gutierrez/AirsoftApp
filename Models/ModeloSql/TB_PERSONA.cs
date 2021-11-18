@@ -25,7 +25,6 @@ namespace AirsoftApp.Models.ModeloSql
     
         public int IDPERSONA { get; set; }
         public Nullable<long> RUTPERSONA { get; set; }
-        public Nullable<int> IDUSUARIO { get; set; }
         public string DVPER { get; set; }
         public Nullable<int> IDCOMUNA { get; set; }
         public Nullable<int> IDRANGO { get; set; }
@@ -46,7 +45,6 @@ namespace AirsoftApp.Models.ModeloSql
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TB_PARTICIPA_JUEGO> TB_PARTICIPA_JUEGO { get; set; }
         public virtual TB_RANGO TB_RANGO { get; set; }
-        public virtual TB_TIPO_USUARIO TB_TIPO_USUARIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TB_SELECCION> TB_SELECCION { get; set; }
     }

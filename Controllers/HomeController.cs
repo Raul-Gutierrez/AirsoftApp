@@ -1,7 +1,6 @@
 ﻿using AirsoftApp.Models;
 using AirsoftApp.Models.ModeloSql;
 using Microsoft.AspNet.Identity;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -12,8 +11,8 @@ namespace AirsoftApp.Controllers
         airSoftAppEntities db = null;
         public ActionResult Index()
         {
-            string Usuario = User.Identity.GetUserName();
-            if (Usuario != "")
+            string usuario = User.Identity.GetUserName();
+            if (usuario != "")
             {
                 db = new airSoftAppEntities();
                 {
@@ -25,8 +24,24 @@ namespace AirsoftApp.Controllers
                                      ImgJuego = a.IMGJUEGO
                                  });
 
+                    int idPersona = IdPersona(usuario);
+                
+
+                    ViewBag.escuadrones = (from b in db.TB_ESCUADRON 
+                                           join c in db.TB_INTEGRANTE on b.IDESCUADRON equals c.IDESCUADRON 
+                                           join d in db.TB_PERSONA on c.IDPERSONA equals d.IDPERSONA 
+                                           where b.ESTESCUADRON == true && c.IDPERSONA != idPersona && c.CAPINTEGRANTE == true
+                                           select new EscuadronViewModel
+                                           {
+                                               IdEscuadron = b.IDESCUADRON,
+                                               ImgEscuadron = b.IMGESCUADRON,
+                                               NomEscuadron = b.NOMESCUADRON,
+                                               CodEscuadron = b.CODESCUADRON
+                                           }
+                                       ).ToList();
                     return View(model);
                 }
+                
             }
             else
             {
@@ -39,8 +54,74 @@ namespace AirsoftApp.Controllers
             return View();
         }
 
-      
-        
+        public ActionResult VerEscuadron(string codEscuadron)
+        {
+            db = new airSoftAppEntities();
+            {
+               var model = db.TB_ESCUADRON.Where(a => a.CODESCUADRON == codEscuadron).FirstOrDefault();
+
+                ViewBag.lista = (from a in db.TB_INTEGRANTE
+                                 where a.TB_ESCUADRON.CODESCUADRON == codEscuadron
+                                 select new PersonaViewModel{
+                                     
+                                     Nick = a.TB_PERSONA.NICKPERSONA
+                }).ToList();
+
+               
+                return View(model);
+            }
+        }
+
+        public ActionResult UnirEscuadron(int idEscuadron)
+        {
+            PersonaController persona = new PersonaController();
+            int IdPersona = persona.ObtenerPersona(User.Identity.GetUserName()).IDPERSONA;
+
+            db = new airSoftAppEntities();
+            {
+
+                var integrante = new TB_INTEGRANTE();
+
+                var valida = (from a in db.TB_INTEGRANTE
+                              where a.IDPERSONA == IdPersona && a.IDESCUADRON == idEscuadron
+                              select new
+                              {
+                                  idIntegrante = a.IDINTEGRANTES
+                              }).ToList();
+                if (valida.Count() == 0)
+                {
+                    integrante.IDESCUADRON = idEscuadron;
+                    integrante.IDPERSONA = IdPersona;
+                    integrante.ESTINTEGRANTE = true;
+                    integrante.CAPINTEGRANTE = false;
+
+                    db.TB_INTEGRANTE.Add(integrante);
+                    db.SaveChanges();
+                    return Redirect("~/Home/index");
+
+                }
+                else
+                {
+                   
+                    return Redirect("~/Home/index");
+                }
+
+
+            }
+
+        }
+
+        public ActionResult VerJuego(int idJuego)
+        {  
+            db = new airSoftAppEntities();
+            {
+                
+                var model = db.TB_JUEGO.Where(a=> a.IDJUEGO == idJuego).FirstOrDefault();
+
+                return View(model);
+            };
+           
+        }
 
 
         public ActionResult ConvertirImagenHome(int IdJuego)
@@ -56,27 +137,16 @@ namespace AirsoftApp.Controllers
 
         }
 
-        //#region[Menu]
-        //[HttpGet]
-        //public JsonResult MenuHome()
-        //{
-        //    List<ElementJsonIntKey> lst;
-        //    db = new airSoftAppEntities();
-        //    {
-        //        lst = (from a in db.TB_PAGINA
-        //               select new ElementJsonIntKey
-        //               {
-        //                   Text = HtmlHelper.GenerateLink(a.DESCPAGINA.ToString())
-        //               }).ToList();
-        //    }
-        //    return Json(lst, JsonRequestBehavior.AllowGet);
-        //}
-        //#endregion
-        //#region[class elemntJsonIntKey]
-        //public class ElementJsonIntKey
-        //{
-        //    public HtmlHelper Text { get; set; }
-        //}
-        //#endregion
+        public int IdPersona(string usuario)
+        {
+            
+            db = new airSoftAppEntities();
+            {
+                var user = db.TB_PERSONA.Where(a => a.CORREOPER == usuario).FirstOrDefault().IDPERSONA;
+                return user;
+            };        
+        }
+
+
     }
 }

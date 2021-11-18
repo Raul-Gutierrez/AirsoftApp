@@ -39,9 +39,7 @@
             </td>
             <td>
                 @Html.ActionLink("Editar", "EditarJuego", "Juego", new { idJuego = item.idJuego }, new { @class = "btn btn-primary" })
-                @*<a class="btn btn-primary" href="~/Juego/EditarJuego/@item.idJuego">Editar</a>*@
                 @Html.ActionLink("Eliminar", "EliminarJuego", "Juego", new { idJuego = item.idJuego }, new { @class = "btn btn-danger" })
-                @*<a class="btn btn-danger" href="~/Juego/EliminarJuego/@item.idJuego">Eliminar</a>*@
             </td>
         </tr>
     }

@@ -30,7 +30,7 @@ namespace AirsoftApp.Controllers
                 var model = (from a in db.TB_INTEGRANTE
                              join b in db.TB_ESCUADRON on a.IDESCUADRON equals b.IDESCUADRON
                              join c in db.TB_PERSONA on a.IDPERSONA equals c.IDPERSONA
-                             where c.IDPERSONA == IdPersona
+                             where c.IDPERSONA == IdPersona && a.CAPINTEGRANTE == true 
                              select new EscuadronViewModel
                              {
                                  IdEscuadron = b.IDESCUADRON,
@@ -39,6 +39,16 @@ namespace AirsoftApp.Controllers
                                  ImgEscuadron = b.IMGESCUADRON,
                                  EstEscuadron = (bool)b.ESTESCUADRON
                              });
+                HomeController Home = new HomeController();
+                int idPersona = Home.IdPersona(User.Identity.GetUserName());
+
+                ViewBag.Pertenencia = (from d in db.TB_INTEGRANTE join e in db.TB_ESCUADRON on d.IDESCUADRON equals e.IDESCUADRON
+                                      where d.CAPINTEGRANTE != true && d.IDPERSONA == idPersona
+                                      select new EscuadronViewModel
+                                      {
+                                        NomEscuadron = e.NOMESCUADRON,
+                                        CodEscuadron = e.CODESCUADRON
+                                      }).ToList();
 
                 return View(model);
             }
@@ -47,14 +57,13 @@ namespace AirsoftApp.Controllers
 
         public ActionResult NuevoEscuadron()
         {
-            EscuadronViewModel model = new EscuadronViewModel();
-
-
-            model.CapEscuadron = "";
-            model.CodEscuadron = this.Token().ToUpper();
-            model.ImgEscuadron = null;
-            model.NomEscuadron = "";
-
+            EscuadronViewModel model = new EscuadronViewModel
+            {
+                CapEscuadron = "",
+                CodEscuadron = this.Token().ToUpper(),
+                ImgEscuadron = null,
+                NomEscuadron = ""
+            };
             return View(model);
         }
 
@@ -66,32 +75,33 @@ namespace AirsoftApp.Controllers
             {
                 try
                 {
-                    model.ImgEscuadron = obtByteEscuadron(imgPerfil, model.CodEscuadron);
+                    model.ImgEscuadron = ObtByteEscuadron(imgPerfil, model.CodEscuadron);
 
                     if (ModelState.IsValid)
                     {
                         db = new airSoftAppEntities();
                         {
-                            TB_ESCUADRON oEsc = new TB_ESCUADRON();
-
-                            oEsc.NOMESCUADRON = model.NomEscuadron.ToUpper();
-                            oEsc.IMGESCUADRON = model.ImgEscuadron;
-                            oEsc.CODESCUADRON = model.CodEscuadron;
-                            oEsc.ESTESCUADRON = model.EstEscuadron;
-
+                            TB_ESCUADRON oEsc = new TB_ESCUADRON
+                            { 
+                                NOMESCUADRON = model.NomEscuadron.ToUpper(),
+                                IMGESCUADRON = model.ImgEscuadron,
+                                CODESCUADRON = model.CodEscuadron,
+                                ESTESCUADRON = model.EstEscuadron,
+                            };
 
                             db.TB_ESCUADRON.Add(oEsc);
-                            db.SaveChanges();
-
-                            TB_INTEGRANTE oInt = new TB_INTEGRANTE();
+                            db.SaveChanges(); 
 
                             int IdEscuadron = this.ObtIdEscuadron(model.CodEscuadron);
                             int IdPersona = this.ObtenerPersona(User.Identity.GetUserName()).IDPERSONA;
 
-                            oInt.IDPERSONA = IdPersona;
-                            oInt.IDESCUADRON = IdEscuadron;
-                            oInt.ESTINTEGRANTE = model.EstEscuadron;
-                            oInt.CAPINTEGRANTE = true;
+                            TB_INTEGRANTE oInt = new TB_INTEGRANTE
+                            {
+                                IDPERSONA = IdPersona,
+                                IDESCUADRON = IdEscuadron,
+                                ESTINTEGRANTE = true,
+                                CAPINTEGRANTE = true
+                            };
 
                             db.TB_INTEGRANTE.Add(oInt);
                             db.SaveChanges();
@@ -122,12 +132,14 @@ namespace AirsoftApp.Controllers
             { 
                 db = new airSoftAppEntities();
                 {
-                    
+
                     var escuadron = db.TB_ESCUADRON.Where(e => e.IDESCUADRON == IdEscuadron).FirstOrDefault();
-                    EscuadronViewModel model = new EscuadronViewModel();
-                    model.NomEscuadron = escuadron.NOMESCUADRON;
-                    model.EstEscuadron = (bool)escuadron.ESTESCUADRON;
-                    model.CodEscuadron = escuadron.CODESCUADRON;
+                    EscuadronViewModel model = new EscuadronViewModel 
+                    {
+                        NomEscuadron = escuadron.NOMESCUADRON,
+                        EstEscuadron = (bool)escuadron.ESTESCUADRON,
+                        CodEscuadron = escuadron.CODESCUADRON
+                    };
                     return View(model);
                 }
             }
@@ -147,7 +159,7 @@ namespace AirsoftApp.Controllers
             {
                 try
                 {
-                    model.ImgEscuadron = obtByteEscuadron(imgPerfil, model.CodEscuadron);
+                    model.ImgEscuadron = ObtByteEscuadron(imgPerfil, model.CodEscuadron);
 
                     if (ModelState.IsValid)
                     {
@@ -228,7 +240,7 @@ namespace AirsoftApp.Controllers
             }
         }
 
-        public byte[] obtByteEscuadron(HttpPostedFileBase imgPerfil, string CodEscuadron) // Obtiene los bytes de las imagenes 
+        public byte[] ObtByteEscuadron(HttpPostedFileBase imgPerfil, string CodEscuadron) // Obtiene los bytes de las imagenes 
         {
 
             byte[] imagenData = null;

@@ -122,7 +122,7 @@ namespace AirsoftApp.Controllers
                             oPer.EXPERIENCIAPER = 0;
                             oPer.IDRANGO = 1;
                             oPer.IDCOMUNA = model.IdComuna;
-                            oPer.IDUSUARIO = 1;
+                            
 
                             this.ModificaCorreoLocal(model.Correo, this.ObtenerId(User.Identity.GetUserName()));
 
@@ -179,7 +179,7 @@ namespace AirsoftApp.Controllers
             model.Rango = model.infoRango(model.Experiencia);
 
             var selectRegion = new SelectList(CboRegion(), "Value", "Text", (int)odatos.TB_COMUNA.IDREGION);
-            var selectComuna = new SelectList(cboComuna((int)odatos.TB_COMUNA.IDREGION), "Value", "Text", (int)odatos.IDCOMUNA);
+            var selectComuna = new SelectList(CboComuna((int)odatos.TB_COMUNA.IDREGION), "Value", "Text", (int)odatos.IDCOMUNA);
 
             ViewData["idRegion"] = selectRegion;
             ViewData["idComuna"] = selectComuna;
@@ -439,7 +439,7 @@ namespace AirsoftApp.Controllers
 
         #region[cboComuna]
         [HttpGet]
-        public List<SelectListItem> cboComuna(long idRegion)
+        public List<SelectListItem> CboComuna(long idRegion)
         {
             List<SelectListItem> comunalst = new List<SelectListItem>();
             using (airSoftAppEntities db = new airSoftAppEntities())

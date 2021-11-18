@@ -82,21 +82,21 @@ namespace AirsoftApp.Controllers
                 {
                     db = new airSoftAppEntities();
                     {
-                        TB_JUEGO ObjJuego = new TB_JUEGO();
-
-                        ObjJuego.CODJUEGO = Model.CodJuego;
-                        ObjJuego.NOMJUEGO = Model.NomJuego;
-                        ObjJuego.DESCJUEGO = Model.DescJuego;
-                        ObjJuego.FECHJUEGO = Model.FechJuego;
-                        ObjJuego.IMGJUEGO = Model.AvatarJuego;
-                        ObjJuego.ESTJUEGO = true;
-                        ObjJuego.IDESCUADRON = Model.IdEscuadronJuego;
-                        ObjJuego.IDMODOJUEGO = Model.IdModoJuego;
-                        ObjJuego.IDTIPOJUEGO = Model.IdTipoJuego;
-                        ObjJuego.IDTIPOPARTIDA = Model.IdTipoPartida;
-                        ObjJuego.IDCOMUNA = Model.IdComuna;
-                        ObjJuego.IDPERSONA = Model.idPersonaJuego;
-
+                        TB_JUEGO ObjJuego = new TB_JUEGO 
+                        {
+                            CODJUEGO = Model.CodJuego,
+                            NOMJUEGO = Model.NomJuego,
+                            DESCJUEGO = Model.DescJuego,
+                            FECHJUEGO = Model.FechJuego,
+                            IMGJUEGO = Model.AvatarJuego,
+                            ESTJUEGO = true,
+                            IDESCUADRON = Model.IdEscuadronJuego,
+                            IDMODOJUEGO = Model.IdModoJuego,
+                            IDTIPOJUEGO = Model.IdTipoJuego,
+                            IDTIPOPARTIDA = Model.IdTipoPartida,
+                            IDCOMUNA = Model.IdComuna,
+                            IDPERSONA = Model.idPersonaJuego
+                        };
 
                         db.TB_JUEGO.Add(ObjJuego);
                         db.SaveChanges();
@@ -176,7 +176,7 @@ namespace AirsoftApp.Controllers
                 ViewData["idTipoPartida"] = new SelectList(selectTipoPartida, "Value", "Text", (int)juego.IDTIPOPARTIDA);
 
                 ViewData["idRegion"] = new SelectList(persona.CboRegion(), "Value", "Text",(int)juego.TB_COMUNA.IDREGION);
-                ViewData["idComuna"] = new SelectList(persona.cboComuna((int)juego.TB_COMUNA.IDREGION), "Value", "Text", (int)juego.IDCOMUNA);
+                ViewData["idComuna"] = new SelectList(persona.CboComuna((int)juego.TB_COMUNA.IDREGION), "Value", "Text", (int)juego.IDCOMUNA);
 
 
                 //ObjJuego.IDPERSONA = Model.idPersonaJuego;
@@ -391,7 +391,7 @@ namespace AirsoftApp.Controllers
             {
                 EscuadronesList = (from e in db.TB_ESCUADRON
                                join a in db.TB_INTEGRANTE on  e.IDESCUADRON equals a.IDESCUADRON
-                               where a.IDPERSONA == IdPersona
+                               where a.CAPINTEGRANTE == true && a.IDPERSONA == IdPersona
                                    select new SelectListItem
                                    {
                                        Value = e.IDESCUADRON.ToString(),

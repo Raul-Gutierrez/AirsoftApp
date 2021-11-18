@@ -30,7 +30,6 @@ namespace AirsoftApp.Models.ModeloSql
         public virtual DbSet<TB_INTEGRANTE> TB_INTEGRANTE { get; set; }
         public virtual DbSet<TB_JUEGO> TB_JUEGO { get; set; }
         public virtual DbSet<TB_MODO_JUEGO> TB_MODO_JUEGO { get; set; }
-        public virtual DbSet<TB_PAGINA> TB_PAGINA { get; set; }
         public virtual DbSet<TB_PARTICIPA_JUEGO> TB_PARTICIPA_JUEGO { get; set; }
         public virtual DbSet<TB_PERSONA> TB_PERSONA { get; set; }
         public virtual DbSet<TB_POSICION> TB_POSICION { get; set; }
@@ -39,6 +38,5 @@ namespace AirsoftApp.Models.ModeloSql
         public virtual DbSet<TB_SELECCION> TB_SELECCION { get; set; }
         public virtual DbSet<TB_TIPO_JUEGO> TB_TIPO_JUEGO { get; set; }
         public virtual DbSet<TB_TIPO_PARTIDA> TB_TIPO_PARTIDA { get; set; }
-        public virtual DbSet<TB_TIPO_USUARIO> TB_TIPO_USUARIO { get; set; }
     }
 }

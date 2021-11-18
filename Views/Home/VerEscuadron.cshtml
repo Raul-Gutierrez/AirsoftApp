@@ -1,0 +1,47 @@
+﻿@model AirsoftApp.Models.ModeloSql.TB_ESCUADRON
+
+@{
+    ViewBag.Title = "Ver Escuadron";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            Avatar:
+        </dt>
+
+        <dd>
+            <div id="imagePreview"><img width="50" src="@Url.Action("ConvertirImagen","Escuadron",new { CodEscuadron = Model.CODESCUADRON})" /></div>
+        </dd>
+
+        <dt>
+            Nombre escuadron:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NOMESCUADRON)
+        </dd>
+
+        <dt>
+            Integrantes:
+        </dt>
+
+        <dd>
+            @foreach (var item1 in ViewBag.lista)
+            {
+
+                @item1.Nick
+                <br />
+
+            }
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Unirme", "UnirEscuadron", "Home", new { idEscuadron = Model.IDESCUADRON }, new { @class = "btn btn-primary" }) 
+</p>

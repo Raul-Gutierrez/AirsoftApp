@@ -1,0 +1,114 @@
+﻿@model AirsoftApp.Models.ModeloSql.TB_JUEGO
+
+@{
+    ViewBag.Title = "VerJuego";
+}
+
+<h2>VerJuego</h2>
+
+<div>
+    <h4>TB_JUEGO</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IDJUEGO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDJUEGO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IDPERSONA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDPERSONA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IDESCUADRON)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDESCUADRON)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CODJUEGO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CODJUEGO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IDTIPOJUEGO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDTIPOJUEGO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IDMODOJUEGO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDMODOJUEGO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IDCOMUNA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDCOMUNA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IDTIPOPARTIDA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDTIPOPARTIDA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NOMJUEGO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NOMJUEGO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DESCJUEGO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DESCJUEGO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHJUEGO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHJUEGO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ESTJUEGO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ESTJUEGO)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
