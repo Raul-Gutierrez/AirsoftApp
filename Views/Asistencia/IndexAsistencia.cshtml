@@ -1,0 +1,41 @@
+﻿@model IEnumerable<AirsoftApp.Models.AsistenciaViewModel>
+@{
+    ViewBag.Title = "Asistencia";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            <p>Avatar</p>
+        </th>
+        <th>
+            <p>Nombre juego</p>
+        </th>
+        <th>
+            <p>Fecha</p>
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <div id="imagePreview"><img width="50" src="@Url.Action("convertirImagenJuego","Juego",new { CodJuego = item.CodJuego})" /></div>
+            <td>
+                @item.nomJuego
+            </td>
+            <td>
+                @item.FechJuego.ToString("dd/MM/yyyy")
+            </td>
+            <td>
+                @Html.ActionLink("Ver", "EditarJuego", "Juego", new { idJuego = item.idJuego }, new { @class = "btn btn-primary" })
+                
+            </td>
+        </tr>
+    }
+
+</table>
+

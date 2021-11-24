@@ -16,7 +16,9 @@ namespace AirsoftApp.Controllers
             {
                 db = new airSoftAppEntities();
                 {
+                    
                     var model = (from a in db.TB_JUEGO
+                                 where a.TB_PERSONA.CORREOPER != usuario && a.ESTJUEGO != false
                                  select new HomeViewModels
                                  {
                                      IdJuego = a.IDJUEGO,
@@ -115,8 +117,8 @@ namespace AirsoftApp.Controllers
         {  
             db = new airSoftAppEntities();
             {
-                
-                var model = db.TB_JUEGO.Where(a=> a.IDJUEGO == idJuego).FirstOrDefault();
+
+                var model = db.TB_JUEGO.Where(a => a.IDJUEGO == idJuego).FirstOrDefault();
 
                 return View(model);
             };
