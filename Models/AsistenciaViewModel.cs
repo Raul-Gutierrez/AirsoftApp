@@ -28,5 +28,7 @@ namespace AirsoftApp.Models
 
         public string CodJuego { get; set; }
 
+        public int EstPArtJuego { get; set; }
+
     }
 }

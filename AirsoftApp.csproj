@@ -322,6 +322,7 @@
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\canvas2image.js" />
+    <Content Include="Scripts\dom-to-image.min.js" />
     <Content Include="Scripts\html2canvas.js" />
     <Content Include="Scripts\html2canvas.min.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -381,6 +382,7 @@
     <Content Include="Views\Home\VerEscuadron.cshtml" />
     <Content Include="Views\Home\VerJuego.cshtml" />
     <Content Include="Views\Asistencia\IndexAsistencia.cshtml" />
+    <Content Include="Views\Asistencia\VerJuegoAsistido.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

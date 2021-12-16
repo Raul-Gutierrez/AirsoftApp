@@ -103,10 +103,11 @@ namespace AirsoftApp.Controllers
 
                         TB_PARTICIPA_JUEGO ObjAsistencia = new TB_PARTICIPA_JUEGO
                         {
+                            ESTPARTJUEGO = 0,
                             IDPERSONA = Model.idPersonaJuego,
                             IDESCUADRON = Model.IdEscuadronJuego,
                             IDJUEGO = db.TB_JUEGO.Where(a => a.CODJUEGO == Model.CodJuego).FirstOrDefault().IDPERSONA
-                            
+                                                       
                         };
 
                         db.TB_PARTICIPA_JUEGO.Add(ObjAsistencia);

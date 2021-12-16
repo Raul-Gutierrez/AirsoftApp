@@ -1,22 +1,27 @@
 ﻿using AirsoftApp.Models;
 using AirsoftApp.Models.ModeloSql;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace AirsoftApp.Controllers
 {
+
+    [Authorize]
     public class HomeController : Controller
     {
         airSoftAppEntities db = null;
         public ActionResult Index()
         {
+
             string usuario = User.Identity.GetUserName();
-            if (usuario != "")
+            int idPersona = IdPersona(usuario);
+            if (usuario != "" && idPersona != 0)
             {
                 db = new airSoftAppEntities();
                 {
-                    
+
                     var model = (from a in db.TB_JUEGO
                                  where a.TB_PERSONA.CORREOPER != usuario && a.ESTJUEGO != false
                                  select new HomeViewModels
@@ -26,12 +31,12 @@ namespace AirsoftApp.Controllers
                                      ImgJuego = a.IMGJUEGO
                                  });
 
-                    int idPersona = IdPersona(usuario);
-                
+                    //int idPersona = IdPersona(usuario);
 
-                    ViewBag.escuadrones = (from b in db.TB_ESCUADRON 
-                                           join c in db.TB_INTEGRANTE on b.IDESCUADRON equals c.IDESCUADRON 
-                                           join d in db.TB_PERSONA on c.IDPERSONA equals d.IDPERSONA 
+
+                    ViewBag.escuadrones = (from b in db.TB_ESCUADRON
+                                           join c in db.TB_INTEGRANTE on b.IDESCUADRON equals c.IDESCUADRON
+                                           join d in db.TB_PERSONA on c.IDPERSONA equals d.IDPERSONA
                                            where b.ESTESCUADRON == true && c.IDPERSONA != idPersona && c.CAPINTEGRANTE == true
                                            select new EscuadronViewModel
                                            {
@@ -43,14 +48,36 @@ namespace AirsoftApp.Controllers
                                        ).ToList();
                     return View(model);
                 }
-                
+
             }
             else
             {
-                return Redirect("~/Home/Inicio");
-            }  
-        }
 
+                using (ApplicationDbContext db = new ApplicationDbContext())
+                {
+
+
+                    var idUsarioActual = User.Identity.GetUserId();
+                    var userManager = new UserManager<ApplicationUser>
+                        (new UserStore<ApplicationUser>(db));
+
+                    //var roleManager = new RoleManager<IdentityRole>
+                    //    (new RoleStore<IdentityRole>(db));
+                    ////Crear Rol
+                    //var resultado = roleManager.Create(new IdentityRole("UNREGISTERED"));
+
+                    //Agregar usuario a rol
+
+                    if (userManager.IsInRole(idUsarioActual, "UNREGISTERED") == false)
+                    { 
+                    var resultado = userManager.AddToRole(idUsarioActual, "UNREGISTERED");
+                    }
+                };
+
+                return Redirect("~/Home/Inicio");
+            }
+        }
+        [AllowAnonymous]
         public ActionResult Inicio()
         {
             return View();
@@ -144,9 +171,19 @@ namespace AirsoftApp.Controllers
             
             db = new airSoftAppEntities();
             {
-                var user = db.TB_PERSONA.Where(a => a.CORREOPER == usuario).FirstOrDefault().IDPERSONA;
-                return user;
-            };        
+                var user = (from a in db.TB_PERSONA
+                            where a.CORREOPER == usuario
+                            select a.IDPERSONA ).FirstOrDefault();
+                if (user == 0)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return user;
+                }
+                
+            }      
         }
 
 

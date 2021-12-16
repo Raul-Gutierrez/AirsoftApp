@@ -22,7 +22,6 @@ namespace AirsoftApp.Models.ModeloSql
     
         public int IDPOSICION { get; set; }
         public string DESCPOSICION { get; set; }
-
         public bool IsChecked { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -33,3 +32,4 @@ namespace AirsoftApp.Models.ModeloSql
         public List<TB_POSICION> ListPosiciones { get; set; }
     }
 }
+

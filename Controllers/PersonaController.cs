@@ -177,6 +177,7 @@ namespace AirsoftApp.Controllers
             model.Telefono = odatos.TELPERSONA;
             model.Correo = odatos.CORREOPER;
             model.Rango = model.infoRango(model.Experiencia);
+            model.Experiencia = (int)odatos.EXPERIENCIAPER;
 
             var selectRegion = new SelectList(CboRegion(), "Value", "Text", (int)odatos.TB_COMUNA.IDREGION);
             var selectComuna = new SelectList(CboComuna((int)odatos.TB_COMUNA.IDREGION), "Value", "Text", (int)odatos.IDCOMUNA);

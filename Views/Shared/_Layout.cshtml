@@ -20,21 +20,40 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("BLACKHORSE CHILE", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("UNREGISTERED"))
+                    {
+                        @Html.ActionLink("BLACKHORSE CHILE", "Inicio", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("BLACKHORSE CHILE", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                    }
+                }
+
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @if(User.Identity.IsAuthenticated)
+                    @if (User.Identity.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Mis Datos", "IndexPersona", "Persona")</li>
-                        <li>@Html.ActionLink("Escuadron", "IndexEscuadron", "Escuadron")</li>
-                        <li>@Html.ActionLink("Juegos", "IndexJuego", "Juego")</li>
-                        <li>@Html.ActionLink("Asistencia", "IndexAsistencia", "Asistencia")</li>
+                        if (User.IsInRole("UNREGISTERED"))
+                        {
+                            <li>@Html.ActionLink("Mis Datos", "IndexPersona", "Persona")</li>
+                        }
+
+                        if (User.IsInRole("USER") || User.IsInRole("ADMIN"))
+                        {
+                            <li>@Html.ActionLink("Mis Datos", "IndexPersona", "Persona")</li>
+                            <li>@Html.ActionLink("Escuadron", "IndexEscuadron", "Escuadron")</li>
+                            <li>@Html.ActionLink("Juegos", "IndexJuego", "Juego")</li>
+                            <li>@Html.ActionLink("Asistencia", "IndexAsistencia", "Asistencia")</li>
+                        }
                         if (User.IsInRole("ADMIN"))
                         {
                             <li>@Html.ActionLink("Admin", "IndexAdministrar", "Administrar")</li>
                         }
-                        
+
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

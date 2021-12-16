@@ -24,13 +24,9 @@
     <input type="file" id="imagen" name="imgPerfil" accept=".jpg " class="form-control" />
     <br />
 
-    @Html.LabelFor(d => d.Run)
-    <br />
-    @Html.DisplayFor(d => d.Run, "", new { @class = "form-control" })
-    <br />
-    @Html.LabelFor(d => d.Dv)
-    <br />
-    @Html.DisplayFor(d => d.Dv, "", new { @class = "form-control" })
+    @Html.LabelFor(d => d.Run) @Html.DisplayFor(d => d.Run, "", new { @class = "form-control" })
+
+    @Html.LabelFor(d => d.Dv) @Html.DisplayFor(d => d.Dv, "", new { @class = "form-control" })
     <br />
     @Html.LabelFor(d => d.Nick)
     @Html.TextBoxFor(d => d.Nick, "", new { @class = "form-control" })
@@ -67,12 +63,10 @@
     @Html.LabelFor(d => d.Telefono)
     @Html.TextBoxFor(d => d.Telefono, "", new { @class = "form-control" })
 
-    @Html.LabelFor(d => d.Experiencia)
-    @Html.DisplayFor(d => d.Experiencia, "", new { @class = "form-control" })
-
-    @Html.LabelFor(d => d.Rango)
-    @Html.DisplayFor(d => d.Rango, "", new { @class = "form-control" })
-
+    @Html.LabelFor(d => d.Experiencia) @Html.DisplayFor(d => d.Experiencia, "", new { @class = "form-control" })
+    <br />
+    @Html.LabelFor(d => d.Rango) @Html.DisplayFor(d => d.Rango, "", new { @class = "form-control" })
+    <br />
     @Html.LabelFor(d => d.Correo)
     @Html.TextBoxFor(d => d.Correo, "", new { @class = "form-control" })
 

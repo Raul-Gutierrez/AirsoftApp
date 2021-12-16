@@ -7,7 +7,7 @@
 <h2>VerJuego</h2>
 
 
-<div id="capture">
+<div id="Capture">
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -110,18 +110,31 @@
 </div>
 
 <p>
-    @Html.ActionLink("Asistir", "AceptarJuego", "Asistencia", new {IdEscuadron = Model.IDPERSONA, IdJuego =Model.IDJUEGO }, new { @class = "btn btn-primary" }) |
-    <button id="Guardar" type="button">Descargar</button>
+    @Html.ActionLink("Asistir", "AceptarJuego", "Asistencia", new { IdEscuadron = Model.IDPERSONA, IdJuego = Model.IDJUEGO }, new { @class = "btn btn-primary" }) |
+    <button id="Guardar" class="btn btn-primary">Descargar</button>
 </p>
-<div id="capture" style="padding: 10px; background: #f5da55">
-    <h4 style="color: #000; ">Hello world!</h4>
-</div>
+<div id="captures" ></div>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script type="text/javascript"src="~/Scripts/html2canvas.min.js"></script>
+<script type="text/javascript" src="~/Scripts/html2canvas.min.js"></script>
+<script type="text/javascript" src="~/Scripts/canvas2image.js"></script>
+<script type="text/javascript" src="~/Scripts/dom-to-image.min.js"></script>
 
-<script>
-    html2canvas(document.querySelector("#capture")).then(canvas => {
-        document.body.appendChild(canvas)
+
+
+
+    <script>
+
+        $("#Guardar").click(function () {
+
+            domtoimage.toJpeg(document.getElementById('Capture'), { quality: 1.0 })
+                .then(function (dataUrl) {
+                    var link = document.createElement('a');
+                    link.download = 'captura.jpeg';
+                    link.href = dataUrl;
+                    link.click();
+                });
+
     });
-</script>
+
+</script>                

@@ -1,0 +1,54 @@
+﻿@model AirsoftApp.Models.ModeloSql.TB_JUEGO
+
+@{
+    ViewBag.Title = "juego";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NOMJUEGO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NOMJUEGO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DESCJUEGO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DESCJUEGO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHJUEGO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHJUEGO)
+        </dd>
+
+    </dl>
+</div>
+@using (Html.BeginForm("IniciarJuego", "Asistencia", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="row">
+
+        
+        @Html.TextBoxFor(d => d.CODJUEGO, "", new { @class = "form-control" })
+        @Html.HiddenFor(d => d.IDJUEGO)
+
+        <input value="Iniciar" class="btn btn-primary" type="submit" />
+
+
+
+    </div>
+}

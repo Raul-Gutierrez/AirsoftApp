@@ -20,10 +20,10 @@ namespace AirsoftApp.Models
         [Display(Name = "Nombre completo")]
         public string Nombre { get; set; }
 
-        [Display(Name = "R.U.N")]
+        [Display(Name = "R.U.N:")]
         public long Run { get; set; }
 
-        [Display(Name = "Digito verificador")]
+        [Display(Name = "DV:")]
         public string Dv { get; set; }
 
         //[Required]
@@ -55,10 +55,10 @@ namespace AirsoftApp.Models
         public long IdRegion { get; set; }
 
 
-        [Display(Name = "Experiencia")]
+        [Display(Name = "Experiencia:")]
         public int Experiencia { get; set; }
 
-        [Display(Name = "Rango")]
+        [Display(Name = "Rango:")]
         public string Rango { get; set; }
 
         public int IdRango { get; set; }
