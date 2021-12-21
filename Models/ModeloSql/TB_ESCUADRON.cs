@@ -27,6 +27,7 @@ namespace AirsoftApp.Models.ModeloSql
         public string NOMESCUADRON { get; set; }
         public byte[] IMGESCUADRON { get; set; }
         public Nullable<bool> ESTESCUADRON { get; set; }
+        public Nullable<System.DateTime> FECHACREACION { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TB_INTEGRANTE> TB_INTEGRANTE { get; set; }

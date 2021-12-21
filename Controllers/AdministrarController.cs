@@ -1,5 +1,6 @@
 ﻿using AirsoftApp.Models;
 using AirsoftApp.Models.ModeloLocal;
+using AirsoftApp.Models.ModeloSql;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -14,33 +15,62 @@ namespace AirsoftApp.Controllers
 [Authorize(Roles = "ADMIN")]
     public class AdministrarController : Controller
     {
+        airSoftAppEntities db = null;
+        EntitiesLocal db1 = null;
         // GET: Administrar
         public ActionResult IndexAdministrar()
         {
-            ViewData["Roles"] = Roles();
+            ViewData["IdRol"] = Roles();
 
 
             return View();
         }
 
         // GET: Administrar/Details/5
-        public ActionResult Enrolar()
+        public ActionResult Enrolar(AdministrarViewModels model)
         {
+            string Usuario = ObtenerUsuario(model.Run);
+            string Rol = ObtenerRol(model.IdRol);
+
             if (User.Identity.IsAuthenticated)
             {
+
                 using (ApplicationDbContext db = new ApplicationDbContext())
                 {
-                    var idUsarioActual = User.Identity.GetUserId();
+                    //Obtener usuario actual
+                    //var idUsarioActual = User.Identity.GetUserId();
 
                     var roleManager = new RoleManager<IdentityRole>
                         (new RoleStore<IdentityRole>(db));
                     //Crear Rol
-                    var resultado = roleManager.Create(new IdentityRole("ADMIN"));
+                    //var resultado = roleManager.Create(new IdentityRole("ADMIN"));
 
                     var userManager = new UserManager<ApplicationUser>
                         (new UserStore<ApplicationUser>(db));
+
+                    //Rol Actual 
+
+                    var roles = userManager.GetRoles(Usuario);
+
+                    //Remover Rol
+                    for (int i = 0;i < roles.Count; i++ ) 
+                    {
+                        var resultado = userManager.RemoveFromRole(Usuario, roles[i]);
+                    }
+                    
+
                     //Agregar usuario a rol
-                    resultado = userManager.AddToRole(idUsarioActual, "ADMIN");
+
+                    if (userManager.AddToRole(Usuario, "" + Rol + "").Succeeded)
+                    {
+                        ViewBag.Mensaje = "Se ingreso correctamente el usuario " + model.Run + "";
+                        return View();
+                    }
+                    else
+                    {
+                        ViewBag.Mensaje = "Hubo un problema con el usuario " + model.Run + ",el usuario no es valido";
+                        return View();
+                    }
                 };
 
             }
@@ -121,7 +151,7 @@ namespace AirsoftApp.Controllers
                 roles = (from a in db.AspNetRoles
                              select new SelectListItem
                              {
-                                 Value = a.Id,
+                                 Value = a.Id.ToString(),
                                  Text = a.Name
                                         
                              }).ToList();
@@ -129,7 +159,34 @@ namespace AirsoftApp.Controllers
               return (roles);
         }
 
+        public string ObtenerUsuario(string Run)
+        {
 
+            long run = long.Parse(Run);
 
+            db = new airSoftAppEntities();
+            {
+                var Persona = db.TB_PERSONA.Where(a => a.RUTPERSONA == run).FirstOrDefault();
+
+                db1 = new EntitiesLocal();
+                {
+                    string IdUser = db1.AspNetUsers.Where(a => a.Email == Persona.CORREOPER).FirstOrDefault().Id;
+                 
+                    return IdUser;
+                }
+            }
+        }
+
+        public string ObtenerRol(string IdRol)
+        {
+            db1 = new EntitiesLocal();
+            {
+                string Rol = db1.AspNetRoles.Find(IdRol).Name;
+
+                return Rol;
+            
+            }
+ 
+        }
     }
 }

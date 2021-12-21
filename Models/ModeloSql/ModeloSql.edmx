@@ -22,6 +22,7 @@
           <Property Name="NOMESCUADRON" Type="varchar" MaxLength="25" />
           <Property Name="IMGESCUADRON" Type="image" />
           <Property Name="ESTESCUADRON" Type="bit" />
+          <Property Name="FECHACREACION" Type="datetime" />
         </EntityType>
         <EntityType Name="TB_INTEGRANTE">
           <Key>
@@ -85,6 +86,7 @@
           <Property Name="CORREOPER" Type="varchar" MaxLength="60" />
           <Property Name="PERFILPERSONA" Type="image" />
           <Property Name="EXPERIENCIAPER" Type="int" />
+          <Property Name="FECHAINSCRIPCION" Type="datetime" />
         </EntityType>
         <EntityType Name="TB_POSICION">
           <Key>
@@ -431,6 +433,7 @@
           <NavigationProperty Name="TB_INTEGRANTE" Relationship="Self.FK_TB_INTEG_ESCUADRON_TB_ESCUA" FromRole="TB_ESCUADRON" ToRole="TB_INTEGRANTE" />
           <NavigationProperty Name="TB_JUEGO" Relationship="Self.FK_TB_JUEGO_ESCUADRON_TB_ESCUA" FromRole="TB_ESCUADRON" ToRole="TB_JUEGO" />
           <NavigationProperty Name="TB_PARTICIPA_JUEGO" Relationship="Self.FK_TB_PARTI_ESC_PARTJ_TB_ESCUA" FromRole="TB_ESCUADRON" ToRole="TB_PARTICIPA_JUEGO" />
+          <Property Name="FECHACREACION" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="TB_INTEGRANTE">
           <Key>
@@ -513,6 +516,7 @@
           <NavigationProperty Name="TB_PARTICIPA_JUEGO" Relationship="Self.FK_TB_PARTI_PERSONA_P_TB_PERSO" FromRole="TB_PERSONA" ToRole="TB_PARTICIPA_JUEGO" />
           <NavigationProperty Name="TB_RANGO" Relationship="Self.FK_TB_PERSO_RANGO_PER_TB_RANGO" FromRole="TB_PERSONA" ToRole="TB_RANGO" />
           <NavigationProperty Name="TB_SELECCION" Relationship="Self.FK_TB_SELEC_PERSONA_S_TB_PERSO" FromRole="TB_PERSONA" ToRole="TB_SELECCION" />
+          <Property Name="FECHAINSCRIPCION" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="TB_POSICION">
           <Key>
@@ -857,6 +861,7 @@
           <EntitySetMapping Name="TB_ESCUADRON">
             <EntityTypeMapping TypeName="airSoftAppModel.TB_ESCUADRON">
               <MappingFragment StoreEntitySet="TB_ESCUADRON">
+                <ScalarProperty Name="FECHACREACION" ColumnName="FECHACREACION" />
                 <ScalarProperty Name="IDESCUADRON" ColumnName="IDESCUADRON" />
                 <ScalarProperty Name="CODESCUADRON" ColumnName="CODESCUADRON" />
                 <ScalarProperty Name="NOMESCUADRON" ColumnName="NOMESCUADRON" />
@@ -917,6 +922,7 @@
           <EntitySetMapping Name="TB_PERSONA">
             <EntityTypeMapping TypeName="airSoftAppModel.TB_PERSONA">
               <MappingFragment StoreEntitySet="TB_PERSONA">
+                <ScalarProperty Name="FECHAINSCRIPCION" ColumnName="FECHAINSCRIPCION" />
                 <ScalarProperty Name="IDPERSONA" ColumnName="IDPERSONA" />
                 <ScalarProperty Name="RUTPERSONA" ColumnName="RUTPERSONA" />
                 <ScalarProperty Name="DVPER" ColumnName="DVPER" />

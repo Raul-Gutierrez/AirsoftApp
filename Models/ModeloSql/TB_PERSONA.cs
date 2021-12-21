@@ -36,6 +36,7 @@ namespace AirsoftApp.Models.ModeloSql
         public string CORREOPER { get; set; }
         public byte[] PERFILPERSONA { get; set; }
         public Nullable<int> EXPERIENCIAPER { get; set; }
+        public Nullable<System.DateTime> FECHAINSCRIPCION { get; set; }
     
         public virtual TB_COMUNA TB_COMUNA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

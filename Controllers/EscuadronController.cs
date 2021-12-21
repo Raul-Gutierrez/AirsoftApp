@@ -82,11 +82,12 @@ namespace AirsoftApp.Controllers
                         db = new airSoftAppEntities();
                         {
                             TB_ESCUADRON oEsc = new TB_ESCUADRON
-                            { 
+                            {
                                 NOMESCUADRON = model.NomEscuadron.ToUpper(),
                                 IMGESCUADRON = model.ImgEscuadron,
                                 CODESCUADRON = model.CodEscuadron,
                                 ESTESCUADRON = model.EstEscuadron,
+                                FECHACREACION = DateTime.Now
                             };
 
                             db.TB_ESCUADRON.Add(oEsc);

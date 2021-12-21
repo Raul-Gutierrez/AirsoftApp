@@ -1,10 +1,51 @@
-﻿
+﻿@model AirsoftApp.Models.AdministrarViewModels
 @{
     ViewBag.Title = "Administrar";
 }
 
 <h2>@ViewBag.Title</h2>
 
-@*@Html.LabelFor(d => d.IdEscuadronJuego)*@
-@Html.DropDownList("Roles", ViewData["Roles"] as SelectList, "--Seleccione--", new { @class = "form-control", ID = "Roles", value = "null" })
+@using (Html.BeginForm("Enrolar", "Administrar", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="row">
+
+
+
+        @Html.LabelFor(d => d.Run)
+        @Html.TextBoxFor(d => d.Run, "", new { @class = "form-control" })
+        <br />
+        <br />
+        @Html.LabelFor(d => d.IdRol)
+
+        @Html.DropDownList("IdRol", ViewData["Roles"] as SelectList, "--Seleccione--", new { @class = "form-control", ID = "Roles", value = "null" })
+
+        <br />
+        <input value="Enrolar" class="btn btn-primary" type="submit" />
+
+
+
+    </div>
+}
+
+<canvas id="myChart"></canvas>
+
+<script type="text/javascript" src="~/Scripts/chart.js"></script>
+
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+    type: 'bar',
+    data:{
+	datasets: [{
+		data: [60, 18,10, 8, 4, 5 ,8, 9,9 , 3, 1, 4],
+        backgroundColor: ['#42a5f5', 'red', 'green', 'blue', 'violet', 'yellow','black','pink','gold','silver','orange','brown'],
+		label: 'Comparacion de navegadores'}],
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']},
+    options: {responsive: true}
+});
+</script>
+
+
+
 

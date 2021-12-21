@@ -2,6 +2,7 @@
 using AirsoftApp.Models.ModeloLocal;
 using AirsoftApp.Models.ModeloSql;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -122,6 +123,7 @@ namespace AirsoftApp.Controllers
                             oPer.EXPERIENCIAPER = 0;
                             oPer.IDRANGO = 1;
                             oPer.IDCOMUNA = model.IdComuna;
+                            oPer.FECHAINSCRIPCION = DateTime.Now;
                             
 
                             this.ModificaCorreoLocal(model.Correo, this.ObtenerId(User.Identity.GetUserName()));
@@ -143,6 +145,32 @@ namespace AirsoftApp.Controllers
                                     db.SaveChanges();
                                 }
                             }
+
+                            using (ApplicationDbContext db = new ApplicationDbContext())
+                            {
+                                //Obtener usuario actual
+                                var idUsarioActual = User.Identity.GetUserId();
+
+                                var roleManager = new RoleManager<IdentityRole>
+                                    (new RoleStore<IdentityRole>(db));
+
+                                var userManager = new UserManager<ApplicationUser>
+                                    (new UserStore<ApplicationUser>(db));
+
+                                //Rol Actual 
+
+                                var roles = userManager.GetRoles(idUsarioActual);
+
+                                //Remover Rol
+                                for (int i = 0; i < roles.Count; i++)
+                                {
+                                    var resultado = userManager.RemoveFromRole(idUsarioActual, roles[i]);
+                                }
+
+                                //Agregar usuario a rol
+                                userManager.AddToRole(idUsarioActual, "USER");
+                                
+                            };
 
                             return Redirect("~/Persona/EditarPersona");
                         }

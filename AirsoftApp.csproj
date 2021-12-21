@@ -181,6 +181,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AdministrarViewModels.cs" />
     <Compile Include="Models\AsistenciaViewModel.cs" />
     <Compile Include="Models\EscuadronViewModel.cs" />
     <Compile Include="Models\HomeViewModels.cs" />
@@ -322,6 +323,7 @@
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\canvas2image.js" />
+    <Content Include="Scripts\chart.js" />
     <Content Include="Scripts\dom-to-image.min.js" />
     <Content Include="Scripts\html2canvas.js" />
     <Content Include="Scripts\html2canvas.min.js" />
