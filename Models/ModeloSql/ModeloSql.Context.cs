@@ -38,5 +38,6 @@ namespace AirsoftApp.Models.ModeloSql
         public virtual DbSet<TB_SELECCION> TB_SELECCION { get; set; }
         public virtual DbSet<TB_TIPO_JUEGO> TB_TIPO_JUEGO { get; set; }
         public virtual DbSet<TB_TIPO_PARTIDA> TB_TIPO_PARTIDA { get; set; }
+        public virtual DbSet<TB_ESTADISTICA> TB_ESTADISTICA { get; set; }
     }
 }

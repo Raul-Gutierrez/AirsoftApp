@@ -87,7 +87,8 @@ namespace AirsoftApp.Controllers
                                 IMGESCUADRON = model.ImgEscuadron,
                                 CODESCUADRON = model.CodEscuadron,
                                 ESTESCUADRON = model.EstEscuadron,
-                                FECHACREACION = DateTime.Now
+                                FECHACREACION = Convert.ToDateTime(DateTime.Now.Date.ToString("dd-MM-yyyy"))
+
                             };
 
                             db.TB_ESCUADRON.Add(oEsc);

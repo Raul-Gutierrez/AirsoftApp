@@ -123,8 +123,9 @@ namespace AirsoftApp.Controllers
                             oPer.EXPERIENCIAPER = 0;
                             oPer.IDRANGO = 1;
                             oPer.IDCOMUNA = model.IdComuna;
-                            oPer.FECHAINSCRIPCION = DateTime.Now;
-                            
+                            oPer.FECHAINSCRIPCION = Convert.ToDateTime(DateTime.Now.Date.ToString("dd-MM-yyyy"));
+
+
 
                             this.ModificaCorreoLocal(model.Correo, this.ObtenerId(User.Identity.GetUserName()));
 

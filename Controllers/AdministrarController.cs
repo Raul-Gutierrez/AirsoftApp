@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -20,15 +21,16 @@ namespace AirsoftApp.Controllers
         // GET: Administrar
         public ActionResult IndexAdministrar()
         {
-            ViewData["IdRol"] = Roles();
-
-
             return View();
         }
 
         // GET: Administrar/Details/5
         public ActionResult Enrolar(AdministrarViewModels model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View("IndexAdministrar",model);
+            }
             string Usuario = ObtenerUsuario(model.Run);
             string Rol = ObtenerRol(model.IdRol);
 
@@ -187,6 +189,42 @@ namespace AirsoftApp.Controllers
             
             }
  
+        }
+
+        public JsonResult Estadistica01()
+        {
+            List<ElementJsonIntKey> list = new List<ElementJsonIntKey>();
+            db = new airSoftAppEntities();
+            {
+
+                list = (from a in db.TB_ESTADISTICA
+                        select new ElementJsonIntKey
+                        {
+                            Value = a.PERPORMES.ToString()
+                        }).ToList();
+            }
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult Estadistica02()
+        {
+            List<ElementJsonIntKey> list = new List<ElementJsonIntKey>();
+            db = new airSoftAppEntities();
+            {
+
+                list = (from a in db.TB_ESTADISTICA
+                        select new ElementJsonIntKey
+                        {
+                            Value = a.ESCUADRONPORMES.ToString()
+                        }).ToList();
+            }
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+        public class ElementJsonIntKey
+        {
+            public string Value { get; set; }
+           
+
         }
     }
 }

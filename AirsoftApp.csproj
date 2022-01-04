@@ -239,6 +239,9 @@
     <Compile Include="Models\ModeloSql\TB_ESCUADRON.cs">
       <DependentUpon>ModeloSql.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ModeloSql\TB_ESTADISTICA.cs">
+      <DependentUpon>ModeloSql.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ModeloSql\TB_INTEGRANTE.cs">
       <DependentUpon>ModeloSql.tt</DependentUpon>
     </Compile>

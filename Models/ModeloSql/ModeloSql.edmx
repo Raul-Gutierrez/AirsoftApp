@@ -24,6 +24,15 @@
           <Property Name="ESTESCUADRON" Type="bit" />
           <Property Name="FECHACREACION" Type="datetime" />
         </EntityType>
+        <EntityType Name="TB_ESTADISTICA">
+          <Key>
+            <PropertyRef Name="IDMES" />
+          </Key>
+          <Property Name="IDMES" Type="int" Nullable="false" />
+          <Property Name="DESCMES" Type="varchar" MaxLength="15" />
+          <Property Name="PERPORMES" Type="int" />
+          <Property Name="ESCUADRONPORMES" Type="int" />
+        </EntityType>
         <EntityType Name="TB_INTEGRANTE">
           <Key>
             <PropertyRef Name="IDINTEGRANTES" />
@@ -330,6 +339,7 @@
         <EntityContainer Name="airSoftAppModelStoreContainer">
           <EntitySet Name="TB_COMUNA" EntityType="Self.TB_COMUNA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_ESCUADRON" EntityType="Self.TB_ESCUADRON" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_ESTADISTICA" EntityType="Self.TB_ESTADISTICA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_INTEGRANTE" EntityType="Self.TB_INTEGRANTE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_JUEGO" EntityType="Self.TB_JUEGO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_MODO_JUEGO" EntityType="Self.TB_MODO_JUEGO" Schema="dbo" store:Type="Tables" />
@@ -430,10 +440,10 @@
           <Property Name="NOMESCUADRON" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="IMGESCUADRON" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="ESTESCUADRON" Type="Boolean" />
+          <Property Name="FECHACREACION" Type="DateTime" Precision="3" />
           <NavigationProperty Name="TB_INTEGRANTE" Relationship="Self.FK_TB_INTEG_ESCUADRON_TB_ESCUA" FromRole="TB_ESCUADRON" ToRole="TB_INTEGRANTE" />
           <NavigationProperty Name="TB_JUEGO" Relationship="Self.FK_TB_JUEGO_ESCUADRON_TB_ESCUA" FromRole="TB_ESCUADRON" ToRole="TB_JUEGO" />
           <NavigationProperty Name="TB_PARTICIPA_JUEGO" Relationship="Self.FK_TB_PARTI_ESC_PARTJ_TB_ESCUA" FromRole="TB_ESCUADRON" ToRole="TB_PARTICIPA_JUEGO" />
-          <Property Name="FECHACREACION" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="TB_INTEGRANTE">
           <Key>
@@ -488,10 +498,10 @@
           <Property Name="IDPERSONA" Type="Int32" />
           <Property Name="IDJUEGO" Type="Int32" />
           <Property Name="IDESCUADRON" Type="Int32" />
+          <Property Name="ESTPARTJUEGO" Type="Int32" />
           <NavigationProperty Name="TB_ESCUADRON" Relationship="Self.FK_TB_PARTI_ESC_PARTJ_TB_ESCUA" FromRole="TB_PARTICIPA_JUEGO" ToRole="TB_ESCUADRON" />
           <NavigationProperty Name="TB_JUEGO" Relationship="Self.FK_TB_PARTI_JUEGO_PAR_TB_JUEGO" FromRole="TB_PARTICIPA_JUEGO" ToRole="TB_JUEGO" />
           <NavigationProperty Name="TB_PERSONA" Relationship="Self.FK_TB_PARTI_PERSONA_P_TB_PERSO" FromRole="TB_PARTICIPA_JUEGO" ToRole="TB_PERSONA" />
-          <Property Name="ESTPARTJUEGO" Type="Int32" />
         </EntityType>
         <EntityType Name="TB_PERSONA">
           <Key>
@@ -510,13 +520,13 @@
           <Property Name="CORREOPER" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="PERFILPERSONA" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="EXPERIENCIAPER" Type="Int32" />
+          <Property Name="FECHAINSCRIPCION" Type="DateTime" Precision="3" />
           <NavigationProperty Name="TB_COMUNA" Relationship="Self.FK_TB_PERSO_COMUNA_PE_TB_COMUN" FromRole="TB_PERSONA" ToRole="TB_COMUNA" />
           <NavigationProperty Name="TB_INTEGRANTE" Relationship="Self.FK_TB_INTEG_PERSONA_I_TB_PERSO" FromRole="TB_PERSONA" ToRole="TB_INTEGRANTE" />
           <NavigationProperty Name="TB_JUEGO" Relationship="Self.FK_TB_JUEGO_PERSONA_J_TB_PERSO" FromRole="TB_PERSONA" ToRole="TB_JUEGO" />
           <NavigationProperty Name="TB_PARTICIPA_JUEGO" Relationship="Self.FK_TB_PARTI_PERSONA_P_TB_PERSO" FromRole="TB_PERSONA" ToRole="TB_PARTICIPA_JUEGO" />
           <NavigationProperty Name="TB_RANGO" Relationship="Self.FK_TB_PERSO_RANGO_PER_TB_RANGO" FromRole="TB_PERSONA" ToRole="TB_RANGO" />
           <NavigationProperty Name="TB_SELECCION" Relationship="Self.FK_TB_SELEC_PERSONA_S_TB_PERSO" FromRole="TB_PERSONA" ToRole="TB_SELECCION" />
-          <Property Name="FECHAINSCRIPCION" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="TB_POSICION">
           <Key>
@@ -842,7 +852,17 @@
             <End Role="TB_POSICION" EntitySet="TB_POSICION" />
             <End Role="TB_SELECCION" EntitySet="TB_SELECCION" />
           </AssociationSet>
+          <EntitySet Name="TB_ESTADISTICA" EntityType="airSoftAppModel.TB_ESTADISTICA" />
         </EntityContainer>
+        <EntityType Name="TB_ESTADISTICA">
+          <Key>
+            <PropertyRef Name="IDMES" />
+          </Key>
+          <Property Name="IDMES" Type="Int32" Nullable="false" />
+          <Property Name="DESCMES" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="PERPORMES" Type="Int32" />
+          <Property Name="ESCUADRONPORMES" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -861,12 +881,12 @@
           <EntitySetMapping Name="TB_ESCUADRON">
             <EntityTypeMapping TypeName="airSoftAppModel.TB_ESCUADRON">
               <MappingFragment StoreEntitySet="TB_ESCUADRON">
-                <ScalarProperty Name="FECHACREACION" ColumnName="FECHACREACION" />
                 <ScalarProperty Name="IDESCUADRON" ColumnName="IDESCUADRON" />
                 <ScalarProperty Name="CODESCUADRON" ColumnName="CODESCUADRON" />
                 <ScalarProperty Name="NOMESCUADRON" ColumnName="NOMESCUADRON" />
                 <ScalarProperty Name="IMGESCUADRON" ColumnName="IMGESCUADRON" />
                 <ScalarProperty Name="ESTESCUADRON" ColumnName="ESTESCUADRON" />
+                <ScalarProperty Name="FECHACREACION" ColumnName="FECHACREACION" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -911,18 +931,17 @@
           <EntitySetMapping Name="TB_PARTICIPA_JUEGO">
             <EntityTypeMapping TypeName="airSoftAppModel.TB_PARTICIPA_JUEGO">
               <MappingFragment StoreEntitySet="TB_PARTICIPA_JUEGO">
-                <ScalarProperty Name="ESTPARTJUEGO" ColumnName="ESTPARTJUEGO" />
                 <ScalarProperty Name="IDPARTICIPANTE" ColumnName="IDPARTICIPANTE" />
                 <ScalarProperty Name="IDPERSONA" ColumnName="IDPERSONA" />
                 <ScalarProperty Name="IDJUEGO" ColumnName="IDJUEGO" />
                 <ScalarProperty Name="IDESCUADRON" ColumnName="IDESCUADRON" />
+                <ScalarProperty Name="ESTPARTJUEGO" ColumnName="ESTPARTJUEGO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TB_PERSONA">
             <EntityTypeMapping TypeName="airSoftAppModel.TB_PERSONA">
               <MappingFragment StoreEntitySet="TB_PERSONA">
-                <ScalarProperty Name="FECHAINSCRIPCION" ColumnName="FECHAINSCRIPCION" />
                 <ScalarProperty Name="IDPERSONA" ColumnName="IDPERSONA" />
                 <ScalarProperty Name="RUTPERSONA" ColumnName="RUTPERSONA" />
                 <ScalarProperty Name="DVPER" ColumnName="DVPER" />
@@ -936,6 +955,7 @@
                 <ScalarProperty Name="CORREOPER" ColumnName="CORREOPER" />
                 <ScalarProperty Name="PERFILPERSONA" ColumnName="PERFILPERSONA" />
                 <ScalarProperty Name="EXPERIENCIAPER" ColumnName="EXPERIENCIAPER" />
+                <ScalarProperty Name="FECHAINSCRIPCION" ColumnName="FECHAINSCRIPCION" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -989,6 +1009,16 @@
               <MappingFragment StoreEntitySet="TB_TIPO_PARTIDA">
                 <ScalarProperty Name="IDTIPOPARTIDA" ColumnName="IDTIPOPARTIDA" />
                 <ScalarProperty Name="DESCTIPOPARTIDA" ColumnName="DESCTIPOPARTIDA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_ESTADISTICA">
+            <EntityTypeMapping TypeName="airSoftAppModel.TB_ESTADISTICA">
+              <MappingFragment StoreEntitySet="TB_ESTADISTICA">
+                <ScalarProperty Name="ESCUADRONPORMES" ColumnName="ESCUADRONPORMES" />
+                <ScalarProperty Name="PERPORMES" ColumnName="PERPORMES" />
+                <ScalarProperty Name="DESCMES" ColumnName="DESCMES" />
+                <ScalarProperty Name="IDMES" ColumnName="IDMES" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

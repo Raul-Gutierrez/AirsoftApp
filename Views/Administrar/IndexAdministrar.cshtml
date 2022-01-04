@@ -8,42 +8,94 @@
 @using (Html.BeginForm("Enrolar", "Administrar", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.ValidationSummary(true)
-    <div class="row">
+<div class="row">
 
 
 
-        @Html.LabelFor(d => d.Run)
-        @Html.TextBoxFor(d => d.Run, "", new { @class = "form-control" })
-        <br />
-        <br />
-        @Html.LabelFor(d => d.IdRol)
+    @Html.LabelFor(d => d.Run)
+    @Html.TextBoxFor(d => d.Run, "", new { @class = "form-control" })
+    @Html.ValidationMessageFor(d => d.Run, "", new { @class = "text-danger" })<br />
+    <br />
+    @Html.LabelFor(d => d.IdRol)
+    <br />
+    <label>@Html.RadioButtonFor(d => d.IdRol, "c8c3119d-de32-4e81-884f-fe1045fda393") Enrolar</label>
+    <br />
+    <label>@Html.RadioButtonFor(d => d.IdRol, "d6585171-7f60-4721-9426-f3dd61e9f6fc") Desenrolar</label><br />
+    @Html.ValidationMessageFor(d => d.IdRol, "", new { @class = "text-danger" })<br />
 
-        @Html.DropDownList("IdRol", ViewData["Roles"] as SelectList, "--Seleccione--", new { @class = "form-control", ID = "Roles", value = "null" })
+    @*@Html.DropDownList("IdRol", ViewData["Roles"] as SelectList, "--Seleccione--", new { @class = "form-control", ID = "Roles", value = "null" })*@
 
-        <br />
-        <input value="Enrolar" class="btn btn-primary" type="submit" />
+    <br />
+    <input value="Enviar" class="btn btn-primary" type="submit" />
+    <br />
 
 
-
-    </div>
+</div>
 }
 
-<canvas id="myChart"></canvas>
+<h1>Estadísticas</h1>
+<div id="GraficoDiv"><canvas id="Grafico"></canvas></div>
+
+
 
 <script type="text/javascript" src="~/Scripts/chart.js"></script>
 
 <script>
-var ctx = document.getElementById('myChart').getContext('2d');
-var chart = new Chart(ctx, {
-    type: 'bar',
-    data:{
-	datasets: [{
-		data: [60, 18,10, 8, 4, 5 ,8, 9,9 , 3, 1, 4],
-        backgroundColor: ['#42a5f5', 'red', 'green', 'blue', 'violet', 'yellow','black','pink','gold','silver','orange','brown'],
-		label: 'Comparacion de navegadores'}],
-        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']},
-    options: {responsive: true}
-});
+
+        var Dato1 = []
+        var Dato2 = []
+        fetch("@Url.Content("~/Administrar/Estadistica01")")
+        .then(function (res1)
+            {
+            return res1.json();
+            })
+        .then(function (miJson1) {
+            for (let i = 0; i < miJson1.length; i++)
+            {
+                Dato1.push(miJson1[i].Value);
+            }
+        })
+        fetch("@Url.Content("~/Administrar/Estadistica02")")
+        .then(function (res2)
+            {
+            return res2.json();
+            })
+        .then(function (miJson2) {
+            for (let i = 0; i < miJson2.length; i++)
+            {
+                Dato2.push(miJson2[i].Value);
+            }
+            mifuncion(Dato1, Dato2)
+        })
+        
+        
+
+    function mifuncion(Dato1,Dato2)
+    {
+        var ctx = document.getElementById('Grafico').getContext('2d');
+        var chart = new Chart(ctx,
+            {
+                type: 'bar',
+                data: {
+                    datasets: [
+                        {
+                            data: Dato1,
+                            backgroundColor: ['red', 'red', 'red', 'red', 'red', 'red', 'red', 'red', 'red', 'red', 'red','red'],
+                            label: 'Personas por mes'
+                        }, {
+                            data: Dato2,
+                            backgroundColor: ['blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue'],
+                            label: 'Escuadrones por mes'
+                        }
+                              ],
+                        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+                },
+                options:
+                {
+                responsive: true
+                }
+            });
+    }
 </script>
 
 
