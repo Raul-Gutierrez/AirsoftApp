@@ -50,6 +50,9 @@
     }
 
 </table>
+<br />
+
+<a class="btn btn-primary" href="~/Escuadron/NuevoEscuadron">Nuevo</a>
 
 <h1>Escuadrones a los que pertenezco</h1>
 
@@ -61,21 +64,67 @@
         <th>
             <p>Nombre Escuadron</p>
         </th>
+        <th>
+            <p>Abandonar</p>
+        </th>
         <th></th>
     </tr>
 
-    
+
     @foreach (var item in ViewBag.Pertenencia)
     {
+<tr>
+    <td>
+        <div id="imagePreview"><img width="50" src="@Url.Action("convertirImagen","Escuadron",new { CodEscuadron = item.CodEscuadron})" /></div>
+    <td>
+        @item.NomEscuadron
+    </td>
+    <td>
+        @Html.ActionLink("Retirarse", "RetiraEscuadron", "Home", new { escuadron = item.NomEscuadron }, new { @class = "btn btn-danger" })
+        
+    </td>
+</tr>
+    }
+
+</table>
+
+<h1>Solicitudes a mis escuadrones</h1>
+
+<table class="table">
+    <tr>
+        <th>
+            <p>RUN</p>
+        </th>
+        <th>
+            <p>Nombre</p>
+        </th>
+        <th>
+            <p>Escuadron</p>
+        </th>
+        <th>
+            <p>Responder</p>
+        </th>
+        <th></th>
+    </tr>
+
+
+    @foreach (var item in ViewBag.Solicitud)
+    {
+        
         <tr>
             <td>
-                <div id="imagePreview"><img width="50" src="@Url.Action("convertirImagen","Escuadron",new { CodEscuadron = item.CodEscuadron})" /></div>
+                @item.Run
             <td>
-               @item.NomEscuadron
+                @item.Nombre
+            </td>
+            <td>
+                @item.Escuadron
+            </td>
+            <td>
+                @Html.ActionLink("Aceptar", "UnirEscuadron", "Home", new { idInt = item.idInt }, new { @class = "btn btn-primary" }) | <a class="btn btn-danger" href="~/Escuadron/NuevoEscuadron">Rechazar</a>
             </td>
         </tr>
     }
 
 </table>
 
-<a class="btn btn-primary" href="~/Escuadron/NuevoEscuadron">Nuevo</a>

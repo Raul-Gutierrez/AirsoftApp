@@ -11,16 +11,12 @@ namespace AirsoftApp.Models
         
         [Required(ErrorMessage = "Debe ingresar un RUN valido")]
         [Display(Name = "RUN")]
-        [StringLength(7)]
+        [StringLength(8)]
         public string Run { get; set; }
 
-        [Required(ErrorMessage = "Debe seleecionar una opción")]
+        [Required(ErrorMessage = "Debe selecionar una opción")]
         [Display(Name = "Asignar rol")]
         public string IdRol { get; set; }
-
-
-
-
 
     }
 }

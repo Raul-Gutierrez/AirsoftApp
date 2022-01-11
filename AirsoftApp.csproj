@@ -284,10 +284,14 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Images\black_horse_big.png" />
+    <Content Include="Images\black_horse_big_black.png" />
+    <Content Include="Images\favicon.png" />
+    <Content Include="Images\Fondo_Inicio.jpg" />
     <Content Include="Models\ModeloLocal\ModeloLocal.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ModeloLocal.edmx</DependentUpon>

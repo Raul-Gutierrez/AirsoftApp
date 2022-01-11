@@ -42,6 +42,7 @@
           <Property Name="IDESCUADRON" Type="int" />
           <Property Name="ESTINTEGRANTE" Type="bit" />
           <Property Name="CAPINTEGRANTE" Type="bit" />
+          <Property Name="IDCREADOR" Type="int" />
         </EntityType>
         <EntityType Name="TB_JUEGO">
           <Key>
@@ -456,6 +457,7 @@
           <Property Name="CAPINTEGRANTE" Type="Boolean" />
           <NavigationProperty Name="TB_ESCUADRON" Relationship="Self.FK_TB_INTEG_ESCUADRON_TB_ESCUA" FromRole="TB_INTEGRANTE" ToRole="TB_ESCUADRON" />
           <NavigationProperty Name="TB_PERSONA" Relationship="Self.FK_TB_INTEG_PERSONA_I_TB_PERSO" FromRole="TB_INTEGRANTE" ToRole="TB_PERSONA" />
+          <Property Name="IDCREADOR" Type="Int32" />
         </EntityType>
         <EntityType Name="TB_JUEGO">
           <Key>
@@ -893,6 +895,7 @@
           <EntitySetMapping Name="TB_INTEGRANTE">
             <EntityTypeMapping TypeName="airSoftAppModel.TB_INTEGRANTE">
               <MappingFragment StoreEntitySet="TB_INTEGRANTE">
+                <ScalarProperty Name="IDCREADOR" ColumnName="IDCREADOR" />
                 <ScalarProperty Name="IDINTEGRANTES" ColumnName="IDINTEGRANTES" />
                 <ScalarProperty Name="IDPERSONA" ColumnName="IDPERSONA" />
                 <ScalarProperty Name="IDESCUADRON" ColumnName="IDESCUADRON" />

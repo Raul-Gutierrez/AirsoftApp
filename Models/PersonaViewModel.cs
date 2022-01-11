@@ -11,48 +11,60 @@ namespace AirsoftApp.Models
     public class PersonaViewModel
     {
 
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Debe ingresar un Nick")]
+        [Required(ErrorMessage = "Debe ingresar un Nick, máximo 10 caracteres")]
         [Display(Name = "Nick")]
         [StringLength(10)]
         public string Nick { get; set; }
 
-        //[Required]
+        [Required(ErrorMessage = "Debe ingresar al menos un nombre")]
         [Display(Name = "Nombre completo")]
         public string Nombre { get; set; }
 
+        [Required(ErrorMessage = "Debe ingresar un RUN")]
         [Display(Name = "R.U.N:")]
         public long Run { get; set; }
 
+        [Required(ErrorMessage = "Debe ingresar un digito verificador")]
         [Display(Name = "DV:")]
+        [StringLength(1)]
         public string Dv { get; set; }
 
-        //[Required]
+
+        [Required(ErrorMessage = "Debe ingresar un apellido")]
         [Display(Name = "Apellido paterno")]
         public string Apellido_Paterno { get; set; }
 
-        //[Required]
+        [Required(ErrorMessage = "Debe ingresar un apellido")]
         [Display(Name = "Apellido materno")]
         public string Apellido_Materno { get; set; }
 
-        //[Required]
+        [Required(ErrorMessage = "Debe ingresar un número")]
         [Display(Name = "Telefono 912345678")]
+        [StringLength(10)]
         [Phone]
         public string Telefono { get; set; }
 
         //[Required]
-
+        
         [Display(Name = "Correo")]
+        [Required(ErrorMessage = "Debe ingresar un correo")]
         [EmailAddress]
         public string Correo { get; set; }
 
+        [Required(ErrorMessage = "Debe sellecionar una comuna")]
         [Display(Name = "Comuna")]
         public int IdComuna { get; set; }
-        public string Comuna { get; set; }
 
-        //[Required]
+        //public string Comuna { get; set; }
+
+
+
+        [Required(ErrorMessage = "Debe seleccionar una región")]
         [Display(Name = "Region")]
-        public string Region { get; set; }
         public long IdRegion { get; set; }
+
+        //public string Region { get; set; }
+       
 
 
         [Display(Name = "Experiencia:")]
@@ -61,16 +73,16 @@ namespace AirsoftApp.Models
         [Display(Name = "Rango:")]
         public string Rango { get; set; }
 
-        public int IdRango { get; set; }
+        //public int IdRango { get; set; }
 
         public List<TB_POSICION> ListPosPer { get; set; }
 
-        public List<TB_JUEGO> ListJuegos { get; set; }
+        //public List<TB_JUEGO> ListJuegos { get; set; }
 
-        public int IdUsuario { get; set; }
+        //public int IdUsuario { get; set; }
 
         [Display(Name = "Foto de perfil")]
-
+        //[Required(ErrorMessage = "Debe ingresar una foto de perfil")]
         public byte[] PerfilPersona { get; set; }
 
         #region[cboEstado]
@@ -135,29 +147,7 @@ namespace AirsoftApp.Models
             return (comuna);
 
         }
-        #endregion
-
-
-
-        public string infoRango(int experiencia)
-        {
-            airSoftAppEntities db = new airSoftAppEntities();
-            {
-                var valRango1 = (from a in db.TB_RANGO
-                                 where a.VALORRANGO > experiencia
-                                 select a.DESCRANGO
-                                 ).FirstOrDefault();
-                if (valRango1 == null)
-                {
-                    valRango1 = (from a in db.TB_RANGO
-                                 orderby a.VALORRANGO descending
-                                 select a.DESCRANGO
-                                     ).FirstOrDefault();
-                    return valRango1;
-                }
-                return valRango1;
-            }
-        }
+        #endregion  
 
     }
 }

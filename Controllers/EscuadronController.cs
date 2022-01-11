@@ -30,7 +30,7 @@ namespace AirsoftApp.Controllers
                 var model = (from a in db.TB_INTEGRANTE
                              join b in db.TB_ESCUADRON on a.IDESCUADRON equals b.IDESCUADRON
                              join c in db.TB_PERSONA on a.IDPERSONA equals c.IDPERSONA
-                             where c.IDPERSONA == IdPersona && a.CAPINTEGRANTE == true 
+                             where c.IDPERSONA == IdPersona && a.CAPINTEGRANTE == true
                              select new EscuadronViewModel
                              {
                                  IdEscuadron = b.IDESCUADRON,
@@ -43,15 +43,39 @@ namespace AirsoftApp.Controllers
                 int idPersona = Home.IdPersona(User.Identity.GetUserName());
 
                 ViewBag.Pertenencia = (from d in db.TB_INTEGRANTE join e in db.TB_ESCUADRON on d.IDESCUADRON equals e.IDESCUADRON
-                                      where d.CAPINTEGRANTE != true && d.IDPERSONA == idPersona
-                                      select new EscuadronViewModel
-                                      {
-                                        NomEscuadron = e.NOMESCUADRON,
-                                        CodEscuadron = e.CODESCUADRON
-                                      }).ToList();
+                                       where d.ESTINTEGRANTE == true && d.IDPERSONA == idPersona && d.CAPINTEGRANTE == false 
+                                       select new EscuadronViewModel
+                                       {
+                                           NomEscuadron = e.NOMESCUADRON,
+                                           CodEscuadron = e.CODESCUADRON
+                                       }).ToList();
+
+
+
+
+                ViewBag.Solicitud = (from d in db.TB_INTEGRANTE
+                                     join e in db.TB_PERSONA on d.IDPERSONA equals e.IDPERSONA
+                                     join f in db.TB_ESCUADRON on d.IDESCUADRON equals f.IDESCUADRON
+                                     where d.ESTINTEGRANTE == false && d.IDCREADOR == idPersona && d.CAPINTEGRANTE == false
+                                     select new Solicitud
+                                     {
+                                         Run = (long)e.RUTPERSONA,
+                                         Nombre = e.NOMPERSONA,
+                                         Escuadron = f.NOMESCUADRON,
+                                         idInt = d.IDINTEGRANTES
+                                     }).ToList();
 
                 return View(model);
             }
+
+        }
+
+        public class Solicitud
+        {
+            public long Run { get; set; }
+            public string Nombre { get; set; }
+            public string Escuadron { get; set; }
+            public int idInt { get; set; }
 
         }
 
@@ -92,7 +116,7 @@ namespace AirsoftApp.Controllers
                             };
 
                             db.TB_ESCUADRON.Add(oEsc);
-                            db.SaveChanges(); 
+                            db.SaveChanges();
 
                             int IdEscuadron = this.ObtIdEscuadron(model.CodEscuadron);
                             int IdPersona = this.ObtenerPersona(User.Identity.GetUserName()).IDPERSONA;
@@ -123,7 +147,7 @@ namespace AirsoftApp.Controllers
             }
 
         }
-        
+
         public ActionResult EditarEscuadron(int IdEscuadron)
         {
             if (IdEscuadron == 0)
@@ -131,12 +155,12 @@ namespace AirsoftApp.Controllers
                 return Redirect("~/Escuadron/IndexEscuadron");
             }
             else
-            { 
+            {
                 db = new airSoftAppEntities();
                 {
 
                     var escuadron = db.TB_ESCUADRON.Where(e => e.IDESCUADRON == IdEscuadron).FirstOrDefault();
-                    EscuadronViewModel model = new EscuadronViewModel 
+                    EscuadronViewModel model = new EscuadronViewModel
                     {
                         NomEscuadron = escuadron.NOMESCUADRON,
                         EstEscuadron = (bool)escuadron.ESTESCUADRON,
@@ -145,10 +169,11 @@ namespace AirsoftApp.Controllers
                     return View(model);
                 }
             }
-            
+
 
         }
         #region[GuardarEscuadron]
+
         [HttpPost]
         public ActionResult GuardarEscuadron(EscuadronViewModel model, HttpPostedFileBase imgPerfil)
         {

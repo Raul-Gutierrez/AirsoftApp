@@ -205,7 +205,7 @@ namespace AirsoftApp.Controllers
             model.Apellido_Materno = odatos.AMATERNOPER;
             model.Telefono = odatos.TELPERSONA;
             model.Correo = odatos.CORREOPER;
-            model.Rango = model.infoRango(model.Experiencia);
+            model.Rango = infoRango(model.Experiencia);
             model.Experiencia = (int)odatos.EXPERIENCIAPER;
 
             var selectRegion = new SelectList(CboRegion(), "Value", "Text", (int)odatos.TB_COMUNA.IDREGION);
@@ -287,6 +287,17 @@ namespace AirsoftApp.Controllers
                 }
                 else
                 {
+
+
+                    var selectRegion = new SelectList(CboRegion(), "Value", "Text", (int)model.IdRegion);
+                    var selectComuna = new SelectList(CboComuna((int)model.IdRegion), "Value", "Text", (int)model.IdComuna);
+                    model.Rango = infoRango(model.Experiencia);
+
+                    ViewData["idRegion"] = selectRegion;
+                    ViewData["idComuna"] = selectComuna;
+
+
+
                     return View(model);
                 }
             }
@@ -508,7 +519,25 @@ namespace AirsoftApp.Controllers
 
         #endregion
 
-       
+        public string infoRango(int experiencia)
+        {
+            airSoftAppEntities db = new airSoftAppEntities();
+            {
+                var valRango1 = (from a in db.TB_RANGO
+                                 where a.VALORRANGO > experiencia
+                                 select a.DESCRANGO
+                                 ).FirstOrDefault();
+                if (valRango1 == null)
+                {
+                    valRango1 = (from a in db.TB_RANGO
+                                 orderby a.VALORRANGO descending
+                                 select a.DESCRANGO
+                                     ).FirstOrDefault();
+                    return valRango1;
+                }
+                return valRango1;
+            }
+        }
 
     }
 }

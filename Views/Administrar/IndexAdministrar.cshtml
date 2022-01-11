@@ -23,8 +23,6 @@
     <label>@Html.RadioButtonFor(d => d.IdRol, "d6585171-7f60-4721-9426-f3dd61e9f6fc") Desenrolar</label><br />
     @Html.ValidationMessageFor(d => d.IdRol, "", new { @class = "text-danger" })<br />
 
-    @*@Html.DropDownList("IdRol", ViewData["Roles"] as SelectList, "--Seleccione--", new { @class = "form-control", ID = "Roles", value = "null" })*@
-
     <br />
     <input value="Enviar" class="btn btn-primary" type="submit" />
     <br />
@@ -65,7 +63,10 @@
             {
                 Dato2.push(miJson2[i].Value);
             }
-            mifuncion(Dato1, Dato2)
+            setTimeout(() => {
+                mifuncion(Dato1, Dato2)
+            }, 1000);
+           
         })
         
         

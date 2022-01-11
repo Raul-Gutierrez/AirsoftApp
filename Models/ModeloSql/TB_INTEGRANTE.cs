@@ -19,6 +19,7 @@ namespace AirsoftApp.Models.ModeloSql
         public Nullable<int> IDESCUADRON { get; set; }
         public Nullable<bool> ESTINTEGRANTE { get; set; }
         public Nullable<bool> CAPINTEGRANTE { get; set; }
+        public Nullable<int> IDCREADOR { get; set; }
     
         public virtual TB_ESCUADRON TB_ESCUADRON { get; set; }
         public virtual TB_PERSONA TB_PERSONA { get; set; }

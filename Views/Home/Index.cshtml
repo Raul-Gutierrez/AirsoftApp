@@ -1,64 +1,65 @@
 ﻿@model IEnumerable<AirsoftApp.Models.HomeViewModels>
 
-@{
-    ViewBag.Title = "Novedades";
-}
+<div >
+    <h1>Juegos disponibles</h1>
 
-<h2>@ViewBag.Title</h2>
-<h1>Juegos disponibles</h1>
-<table class="table">
-    <tr>
-        <th>
-            <p>Avatar</p>
-        </th>
-        <th>
-            <p>Descripción Juego</p>
-        </th>
-        <th></th>
-    </tr>
+    <table class="table-responsive">
+        <thead class="thead">
+            <tr>
+                <th>
+                    <p>Avatar</p>
+                </th>
+                <th>
+                    <p>Descripción Juego</p>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
 
-    @foreach (var item in Model)
-    {
+                <tr>
+                    <td>
+                        <div id="imagePreview"><img width="50" src="@Url.Action("ConvertirImagenHome","Home",new { IdJuego = item.IdJuego})" /></div>
+                    <td>
+                        @Html.DisplayFor(Item => item.DescJuego)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Ver", "VerJuego", "Home", new { idJuego = item.IdJuego }, new { @class = "btn btn-primary" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h1>Escuadrones vacantes</h1>
+
+    <table class="table">
         <tr>
-            <td>
-                <div id="imagePreview"><img width="50" src="@Url.Action("ConvertirImagenHome","Home",new { IdJuego = item.IdJuego})" /></div>
-            <td>
-                @Html.DisplayFor(Item => item.DescJuego)
-            </td>
-            <td>
-                @Html.ActionLink("Ver", "VerJuego", "Home", new { idJuego = item.IdJuego }, new { @class = "btn btn-primary" })
-            </td>
+            <th>
+                <p>Avatar</p>
+            </th>
+            <th>
+                <p>Nombre de escuadron</p>
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
+        @foreach (var item1 in ViewBag.escuadrones)
+        {
+            <tr>
+                <td>
+                    <div id="imagePreview"><img width="50" src="@Url.Action("ConvertirImagen","Escuadron",new { CodEscuadron = item1.CodEscuadron})" /></div>
+                <td>
+                    @item1.NomEscuadron
+                </td>
+                <td>
+                    @Html.ActionLink("Ver", "VerEscuadron", "Home", new { codEscuadron = item1.CodEscuadron }, new { @class = "btn btn-primary" })
+                </td>
+            </tr>
+        }
 
-<h1>Escuadrones vacantes</h1>
+    </table>
 
-<table class="table">
-    <tr>
-        <th>
-            <p>Avatar</p>
-        </th>
-        <th>
-            <p>Nombre de escuadron</p>
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item1 in ViewBag.escuadrones)
-    {
-        <tr>
-            <td>
-                <div id="imagePreview"><img width="50" src="@Url.Action("ConvertirImagen","Escuadron",new { CodEscuadron = item1.CodEscuadron})" /></div>
-            <td>
-                @item1.NomEscuadron
-            </td>
-            <td>
-                @Html.ActionLink("Ver", "VerEscuadron", "Home", new { codEscuadron = item1.CodEscuadron }, new { @class = "btn btn-primary" })
-            </td>
-        </tr>
-    }
-
-</table>
-
+</div>
