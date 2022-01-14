@@ -1,0 +1,186 @@
+﻿html {
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+header {
+    border-bottom: 0px !important;
+}
+
+body {
+
+
+
+   background: url("../Images/Fondo_Inicio.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+
+  min-height:100vh;
+  padding-bottom:4em;
+  padding-top:3em;
+  position:relative;
+
+
+}
+
+.opacidad {
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    position: fixed;
+    opacity: 0.3;
+    top: 0;
+    z-index: -1;
+}
+
+
+.superior {
+    border-top-color:darkorange;
+    border-top-width:10px;
+}
+
+
+.img {
+    background: url("../Images/black_horse 400x400 sin fondo.png") no-repeat;
+    background-size: cover;
+    height:400px;
+    width:400px;
+}
+
+div.img {
+
+    top:100%;
+}
+
+
+.ventana {
+    background: url("../Images/Fondo_Form.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+
+    background-color: #8c7959;
+    border-radius: 10px;
+    border: 1px solid white;
+    padding: 15px;
+    box-shadow: 10px 5px 50px #393328;
+    margin: 15px;
+
+    font-family:Arial, Helvetica, sans-serif;
+    color:white;
+
+}
+
+    .ventana h4 h2 {
+        font-weight:bold;
+        text-align:center;
+        
+    }
+
+    .ventana a {
+
+        color:greenyellow;
+    }
+
+    .inicio {
+        text-transform:uppercase;
+        font-size:15px;
+        text-align:justify;
+        width:500px;
+        height:100%;
+        margin-left:auto;
+        margin-right:auto;    
+        overflow:auto;
+    }
+
+.img {
+    background: src("~/Images/black_horse 400x400 sin fondo.png") 100%;
+    display: block;
+    margin: auto;
+    bottom: 0;
+    position: relative;
+}
+
+
+.btn-default {
+
+    border-radius: 5px;
+    margin-left:auto;
+    margin-right:auto;
+    display:block;
+}
+
+
+.tablas {
+    background: url("../Images/Fondo_Form.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    background-color: #8c7959;
+    border-radius: 10px;
+    border: 1px solid white;
+    padding: 15px;
+    box-shadow: 10px 5px 50px #393328;
+    margin: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    
+    
+}
+
+    .tablas dd {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+
+    }
+
+.graficos {
+
+    background-color:white;
+}
+
+
+.footer {
+
+    border-top-color: darkorange;
+    border-top-style:solid;
+    position:center;
+    width:auto;
+    height: 40px;
+    color: white;
+    background-color: #6e6e4a;
+    text-align: center;
+    padding: 10px;
+    bottom: 0;
+
+
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+/*input,
+select,
+textarea {
+    max-width: auto;
+    margin-left: auto;
+    margin-right: auto;
+}*/

@@ -3,39 +3,40 @@
     ViewBag.Title = "Administrar";
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="tablas">
+    <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("Enrolar", "Administrar", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.ValidationSummary(true)
-<div class="row">
+    @using (Html.BeginForm("Enrolar", "Administrar", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+        <div >
 
 
 
-    @Html.LabelFor(d => d.Run)
-    @Html.TextBoxFor(d => d.Run, "", new { @class = "form-control" })
-    @Html.ValidationMessageFor(d => d.Run, "", new { @class = "text-danger" })<br />
-    <br />
-    @Html.LabelFor(d => d.IdRol)
-    <br />
-    <label>@Html.RadioButtonFor(d => d.IdRol, "c8c3119d-de32-4e81-884f-fe1045fda393") Enrolar</label>
-    <br />
-    <label>@Html.RadioButtonFor(d => d.IdRol, "d6585171-7f60-4721-9426-f3dd61e9f6fc") Desenrolar</label><br />
-    @Html.ValidationMessageFor(d => d.IdRol, "", new { @class = "text-danger" })<br />
+            @Html.LabelFor(d => d.Run)
+            @Html.TextBoxFor(d => d.Run, "", new { @class = "form-control" })
+            @Html.ValidationMessageFor(d => d.Run, "", new { @class = "text-danger" })<br />
+            <br />
+            @Html.LabelFor(d => d.IdRol)
+            <br />
+            <label>@Html.RadioButtonFor(d => d.IdRol, "c8c3119d-de32-4e81-884f-fe1045fda393") Enrolar</label>
+            <br />
+            <label>@Html.RadioButtonFor(d => d.IdRol, "d6585171-7f60-4721-9426-f3dd61e9f6fc") Desenrolar</label><br />
+            @Html.ValidationMessageFor(d => d.IdRol, "", new { @class = "text-danger" })<br />
 
-    <br />
-    <input value="Enviar" class="btn btn-primary" type="submit" />
-    <br />
+            <br />
+            <input value="Enviar" class="btn btn-primary" type="submit" />
+            <br />
+
+
+        </div>
+    }
+
+    <h1>Estadísticas</h1>
+    <div id="GraficoDiv" class="graficos"><canvas id="Grafico"></canvas></div>
 
 
 </div>
-}
-
-<h1>Estadísticas</h1>
-<div id="GraficoDiv"><canvas id="Grafico"></canvas></div>
-
-
-
 <script type="text/javascript" src="~/Scripts/chart.js"></script>
 
 <script>

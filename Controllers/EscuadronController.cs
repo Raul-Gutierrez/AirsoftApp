@@ -59,7 +59,7 @@ namespace AirsoftApp.Controllers
                                      where d.ESTINTEGRANTE == false && d.IDCREADOR == idPersona && d.CAPINTEGRANTE == false
                                      select new Solicitud
                                      {
-                                         Run = (long)e.RUTPERSONA,
+                                         Run = e.RUTPERSONA,
                                          Nombre = e.NOMPERSONA,
                                          Escuadron = f.NOMESCUADRON,
                                          idInt = d.IDINTEGRANTES
@@ -72,7 +72,7 @@ namespace AirsoftApp.Controllers
 
         public class Solicitud
         {
-            public long Run { get; set; }
+            public string Run { get; set; }
             public string Nombre { get; set; }
             public string Escuadron { get; set; }
             public int idInt { get; set; }

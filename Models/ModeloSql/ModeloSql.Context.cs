@@ -25,8 +25,10 @@ namespace AirsoftApp.Models.ModeloSql
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<TB_COMUNA> TB_COMUNA { get; set; }
         public virtual DbSet<TB_ESCUADRON> TB_ESCUADRON { get; set; }
+        public virtual DbSet<TB_ESTADISTICA> TB_ESTADISTICA { get; set; }
         public virtual DbSet<TB_INTEGRANTE> TB_INTEGRANTE { get; set; }
         public virtual DbSet<TB_JUEGO> TB_JUEGO { get; set; }
         public virtual DbSet<TB_MODO_JUEGO> TB_MODO_JUEGO { get; set; }
@@ -38,6 +40,5 @@ namespace AirsoftApp.Models.ModeloSql
         public virtual DbSet<TB_SELECCION> TB_SELECCION { get; set; }
         public virtual DbSet<TB_TIPO_JUEGO> TB_TIPO_JUEGO { get; set; }
         public virtual DbSet<TB_TIPO_PARTIDA> TB_TIPO_PARTIDA { get; set; }
-        public virtual DbSet<TB_ESTADISTICA> TB_ESTADISTICA { get; set; }
     }
 }

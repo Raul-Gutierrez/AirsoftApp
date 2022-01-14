@@ -4,44 +4,52 @@
     ViewBag.Title = "Ver Escuadron";
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="container-fluid">
+    <div class="tablas" >
+        <h2>@ViewBag.Title</h2>
 
-<div>
-    <hr />
-    <dl class="dl-horizontal">
 
-        <dt>
-            Avatar:
-        </dt>
+        <br />
+        <dl class="dl-horizontal">
 
-        <dd>
-            <div id="imagePreview"><img width="50" src="@Url.Action("ConvertirImagen","Escuadron",new { CodEscuadron = Model.CODESCUADRON})" /></div>
-        </dd>
+            <dt>
+                Avatar:
+            </dt>
 
-        <dt>
-            Nombre escuadron:
-        </dt>
+            <dd>
+                <div id="imagePreview"><img width="50" src="@Url.Action("ConvertirImagen","Escuadron",new { CodEscuadron = Model.CODESCUADRON})" /></div>
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.NOMESCUADRON)
-        </dd>
+            <dt>
+                Nombre escuadron:
+            </dt>
 
-        <dt>
-            Integrantes:
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NOMESCUADRON)
+            </dd>
 
-        <dd>
-            @foreach (var item1 in ViewBag.lista)
-            {
-
-                @item1.Nick
+            <dt>
                 <br />
 
-            }
-        </dd>
+                Integrantes:
+            </dt>
 
-    </dl>
+            <dd>
+                <br />
+                @foreach (var item1 in ViewBag.lista)
+                {
+
+                    @item1.Nick
+                    <br />
+
+                }
+            </dd>
+
+        </dl>
+
+
+        @Html.ActionLink("Unirme", "SolicitudEscuadron", "Home", new { idEscuadron = Model.IDESCUADRON }, new { @class = "btn btn-primary" })
+    </div>
+    
+    
 </div>
-<p>
-    @Html.ActionLink("Unirme", "SolicitudEscuadron", "Home", new { idEscuadron = Model.IDESCUADRON }, new { @class = "btn btn-primary" }) 
-</p>

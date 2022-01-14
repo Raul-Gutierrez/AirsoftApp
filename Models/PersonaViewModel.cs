@@ -22,7 +22,7 @@ namespace AirsoftApp.Models
 
         [Required(ErrorMessage = "Debe ingresar un RUN")]
         [Display(Name = "R.U.N:")]
-        public long Run { get; set; }
+        public string Run { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar un digito verificador")]
         [Display(Name = "DV:")]

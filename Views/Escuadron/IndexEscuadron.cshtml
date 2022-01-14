@@ -4,127 +4,128 @@
     ViewBag.Title = "Mis Escuadrones";
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="tablas">
+    <h2>@ViewBag.Title</h2>
 
-<table class="table">
-    <tr>
-        <th>
-            <p>Avatar</p>
-        </th>
-        <th>
-            <p>Codigo Escuadron</p>
-        </th>
-        <th>
-            <p>Nombre Escuadron</p>
-        </th>
-        <th>
-            <p>¿Requiere Vacantes?</p>
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+    <table class="table">
         <tr>
-            <td>
-                <div id="imagePreview"><img width="50" src="@Url.Action("convertirImagen","Escuadron",new { CodEscuadron = item.CodEscuadron})" /></div>
-            <td>
-                @Html.DisplayFor(modelItem => item.CodEscuadron)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NomEscuadron)
-            </td>
-            <td>
-                @if (item.EstEscuadron == true)
-                {
-                    <p>Si </p>
-                }
-                else
-                { <p>No</p>}
-            </td>
-            <td>
-                @Html.ActionLink("Editar", "EditarEscuadron", "Escuadron", new { idEscuadron = item.IdEscuadron }, new { @class = "btn btn-primary" })
-                <a class="btn btn-danger" href="~/Escuadron/EliminarEscuadron/@item.IdEscuadron">Eliminar</a>
-            </td>
+            <th>
+                <p>Avatar</p>
+            </th>
+            <th>
+                <p>Codigo Escuadron</p>
+            </th>
+            <th>
+                <p>Nombre Escuadron</p>
+            </th>
+            <th>
+                <p>¿Requiere Vacantes?</p>
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
-<br />
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <div id="imagePreview"><img width="50" src="@Url.Action("convertirImagen","Escuadron",new { CodEscuadron = item.CodEscuadron})" /></div>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CodEscuadron)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomEscuadron)
+                </td>
+                <td>
+                    @if (item.EstEscuadron == true)
+                    {
+                        <p>Si </p>
+                    }
+                    else
+                    { <p>No</p>}
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "EditarEscuadron", "Escuadron", new { idEscuadron = item.IdEscuadron }, new { @class = "btn btn-primary" })
+                    <a class="btn btn-danger" href="~/Escuadron/EliminarEscuadron/@item.IdEscuadron">Eliminar</a>
+                </td>
+            </tr>
+        }
 
-<a class="btn btn-primary" href="~/Escuadron/NuevoEscuadron">Nuevo</a>
+    </table>
+    <br />
 
-<h1>Escuadrones a los que pertenezco</h1>
+    <a class="btn btn-primary" href="~/Escuadron/NuevoEscuadron">Nuevo</a>
 
-<table class="table">
-    <tr>
-        <th>
-            <p>Avatar</p>
-        </th>
-        <th>
-            <p>Nombre Escuadron</p>
-        </th>
-        <th>
-            <p>Abandonar</p>
-        </th>
-        <th></th>
-    </tr>
+    <h1>Escuadrones a los que pertenezco</h1>
 
-
-    @foreach (var item in ViewBag.Pertenencia)
-    {
-<tr>
-    <td>
-        <div id="imagePreview"><img width="50" src="@Url.Action("convertirImagen","Escuadron",new { CodEscuadron = item.CodEscuadron})" /></div>
-    <td>
-        @item.NomEscuadron
-    </td>
-    <td>
-        @Html.ActionLink("Retirarse", "RetiraEscuadron", "Home", new { escuadron = item.NomEscuadron }, new { @class = "btn btn-danger" })
-        
-    </td>
-</tr>
-    }
-
-</table>
-
-<h1>Solicitudes a mis escuadrones</h1>
-
-<table class="table">
-    <tr>
-        <th>
-            <p>RUN</p>
-        </th>
-        <th>
-            <p>Nombre</p>
-        </th>
-        <th>
-            <p>Escuadron</p>
-        </th>
-        <th>
-            <p>Responder</p>
-        </th>
-        <th></th>
-    </tr>
-
-
-    @foreach (var item in ViewBag.Solicitud)
-    {
-        
+    <table class="table">
         <tr>
-            <td>
-                @item.Run
-            <td>
-                @item.Nombre
-            </td>
-            <td>
-                @item.Escuadron
-            </td>
-            <td>
-                @Html.ActionLink("Aceptar", "UnirEscuadron", "Home", new { idInt = item.idInt }, new { @class = "btn btn-primary" }) | <a class="btn btn-danger" href="~/Escuadron/NuevoEscuadron">Rechazar</a>
-            </td>
+            <th>
+                <p>Avatar</p>
+            </th>
+            <th>
+                <p>Nombre Escuadron</p>
+            </th>
+            <th>
+                <p>Abandonar</p>
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
 
+        @foreach (var item in ViewBag.Pertenencia)
+        {
+            <tr>
+                <td>
+                    <div id="imagePreview"><img width="50" src="@Url.Action("convertirImagen","Escuadron",new { CodEscuadron = item.CodEscuadron})" /></div>
+                <td>
+                    @item.NomEscuadron
+                </td>
+                <td>
+                    @Html.ActionLink("Retirarse", "RetiraEscuadron", "Home", new { escuadron = item.NomEscuadron }, new { @class = "btn btn-danger" })
+
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <h1>Solicitudes a mis escuadrones</h1>
+
+    <table class="table">
+        <tr>
+            <th>
+                <p>RUN</p>
+            </th>
+            <th>
+                <p>Nombre</p>
+            </th>
+            <th>
+                <p>Escuadron</p>
+            </th>
+            <th>
+                <p>Responder</p>
+            </th>
+            <th></th>
+        </tr>
+
+
+        @foreach (var item in ViewBag.Solicitud)
+        {
+
+            <tr>
+                <td>
+                    @item.Run
+                <td>
+                    @item.Nombre
+                </td>
+                <td>
+                    @item.Escuadron
+                </td>
+                <td>
+                    @Html.ActionLink("Aceptar", "UnirEscuadron", "Home", new { idInt = item.idInt }, new { @class = "btn btn-primary" }) | <a class="btn btn-danger" href="~/Escuadron/NuevoEscuadron">Rechazar</a>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

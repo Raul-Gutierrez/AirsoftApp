@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -72,9 +73,10 @@ namespace AirsoftApp.Controllers
             PersonaViewModel model = new PersonaViewModel();
 
             if (USER != null)
-                {
+            {
                 return Redirect("~/Persona/EditarPersona");
-                }
+            }
+
             model.Correo = user;
             ViewData["idRegion"] = CboRegion();
 
@@ -95,10 +97,12 @@ namespace AirsoftApp.Controllers
         #region[Nuevo guardar]
 
         [HttpPost]
-        public ActionResult NuevaPersonaGuardar(PersonaViewModel model, HttpPostedFileBase imgPerfil)
+
+        public ActionResult NuevaPersona(PersonaViewModel model, HttpPostedFileBase imgPerfil)
         {
             model.PerfilPersona = this.ObtenerByte(imgPerfil, model.Run);
-            
+            var rut = ValidaRun(model.Run, model.Dv);
+
 
             db = new airSoftAppEntities();
             {
@@ -170,7 +174,7 @@ namespace AirsoftApp.Controllers
 
                                 //Agregar usuario a rol
                                 userManager.AddToRole(idUsarioActual, "USER");
-                                
+
                             };
 
                             return Redirect("~/Persona/EditarPersona");
@@ -178,6 +182,13 @@ namespace AirsoftApp.Controllers
                     }
                     else
                     {
+                        var selectRegion = new SelectList(CboRegion(), "Value", "Text", (int)model.IdRegion);
+                        var selectComuna = new SelectList(CboComuna((int)model.IdRegion), "Value", "Text", (int)model.IdComuna);
+                        model.Rango = infoRango(model.Experiencia);
+
+                        ViewData["idRegion"] = selectRegion;
+                        ViewData["idComuna"] = selectComuna;
+                        ViewBag.Mensaje = "El RUN ingresado es invalido o ya existe";
                         return View(model);
                     }
                 }
@@ -197,7 +208,7 @@ namespace AirsoftApp.Controllers
             PersonaViewModel model = new PersonaViewModel();
             TB_PERSONA odatos = this.ObtenerPersona(user);
 
-            model.Run = (long)odatos.RUTPERSONA;
+            model.Run = odatos.RUTPERSONA;
             model.Dv = odatos.DVPER;
             model.Nick = odatos.NICKPERSONA;
             model.Nombre = odatos.NOMPERSONA;
@@ -237,7 +248,6 @@ namespace AirsoftApp.Controllers
                     {
 
                         int IdPersona = this.ObtenerPersona(User.Identity.GetUserName()).IDPERSONA;
-
 
                         int h = 0;
                         var ObtenerSeleccion = new TB_SELECCION();
@@ -356,7 +366,7 @@ namespace AirsoftApp.Controllers
             }
         } //Obtiene datos de una persona existente 
 
-        public PosicionModel ObtenerPosiconesCheck(long Run)
+        public PosicionModel ObtenerPosiconesCheck(string Run)
         {
             PosicionModel pos = new PosicionModel();
             db = new airSoftAppEntities();
@@ -382,7 +392,7 @@ namespace AirsoftApp.Controllers
             return pos;
         } //Obtiene las posiciones 
 
-        public ActionResult ConvertirImagen(long run)
+        public ActionResult ConvertirImagen(string run)
         {
             db = new airSoftAppEntities();
             {
@@ -395,7 +405,7 @@ namespace AirsoftApp.Controllers
 
         } //Decodifica los bytes de la imagen
 
-        public byte[] ObtenerByte(HttpPostedFileBase imgPerfil, long run) // Obtiene los bytes de las imagenes 
+        public byte[] ObtenerByte(HttpPostedFileBase imgPerfil, string run) // Obtiene los bytes de las imagenes 
         {
 
             byte[] imagenData = null;
@@ -416,8 +426,11 @@ namespace AirsoftApp.Controllers
 
                 var Oper = db.TB_PERSONA.Where(d => d.RUTPERSONA == run).FirstOrDefault();
 
+                if (Oper != null) 
+                {
                 imagenData = Oper.PERFILPERSONA;
-
+                }
+                
                 return imagenData;
 
             }
@@ -517,7 +530,6 @@ namespace AirsoftApp.Controllers
         }
         #endregion
 
-        #endregion
 
         public string infoRango(int experiencia)
         {
@@ -539,5 +551,69 @@ namespace AirsoftApp.Controllers
             }
         }
 
+        public int ValidaRun(string run, string dv)
+        {
+            int respuesta = 0;
+
+            db = new airSoftAppEntities();
+            {
+                var _run = db.TB_PERSONA.Where(a => a.RUTPERSONA == run).FirstOrDefault();
+                if (_run != null)
+                {
+                    return respuesta + 1;
+                }
+                else 
+                {
+                        string rut = "" + run + " - " + dv + "";
+
+                        rut = rut.Replace(".", "").ToUpper();
+                        Regex expresion = new Regex("^([0-9]+-[0-9K])$");
+                        //string dv = rut.Substring(rut.Length - 1, 1);
+
+                        if (!expresion.IsMatch(rut))
+                        {
+                            return respuesta + 1;
+                        }
+                        char[] charCorte = { '-' };
+                        string[] rutTemp = rut.Split(charCorte);
+                        if (dv != Digito(int.Parse(rutTemp[0])))
+                        {
+                            return respuesta +1;
+                        }
+                        return respuesta;
+                }
+
+                     string Digito(int rut)
+                    {
+                        int suma = 0;
+                        int multiplicador = 1;
+                        while (rut != 0)
+                        {
+                            multiplicador++;
+                            if (multiplicador == 8)
+                                multiplicador = 2;
+                            suma += (rut % 10) * multiplicador;
+                            rut = rut / 10;
+                        }
+                        suma = 11 - (suma % 11);
+                        if (suma == 11)
+                        {
+                            return "0";
+                        }
+                        else if (suma == 10)
+                        {
+                            return "K";
+                        }
+                        else
+                        {
+                            return suma.ToString();
+                        }
+                    }
+                
+            }
+
+        }
+
+        #endregion
     }
 }

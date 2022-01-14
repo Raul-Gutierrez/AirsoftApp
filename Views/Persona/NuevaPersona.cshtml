@@ -1,92 +1,103 @@
 ﻿@model AirsoftApp.Models.PersonaViewModel
-
 @{
     ViewBag.Title = "Datos personales";
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="ventana">
+    <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("NuevaPersonaGuardar", "Persona", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.ValidationSummary(true)
-<div class="row">
+    @using (Html.BeginForm("NuevaPersona", "Persona", FormMethod.Post, new { @class = "form-group", enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
 
-    <div id="imagePreview"></div>
-    <br />
-    <input type="file" id="imagen" name="imgPerfil" accept=".jpg " class="form-control" />
-    <br />
+        <div>
 
-    <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-6">
+            <div id="imagePreview"></div>
+            <br />
+            <input type="file" id="imagen" name="imgPerfil" accept=".jpg " class="form-control" />
+            <br />
 
-            @Html.LabelFor(d => d.Run) @Html.TextBoxFor(d => d.Run, "", new { @class = "form-control" }) @Html.ValidationMessageFor(d => d.Run, "", new { @class = "text-danger" })<br />@Html.LabelFor(d => d.Dv) @Html.TextBoxFor(d => d.Dv, "", new { @class = "form-control" }) @Html.ValidationMessageFor(d => d.Dv, "", new { @class = "text-danger" })<br />
+            @Html.LabelFor(d => d.Run) @Html.TextBoxFor(d => d.Run, "", new { @class = "form-control", placeholder = "12345678" }) @Html.ValidationMessageFor(d => d.Run, "", new { @class = "label label-danger" })<br />
+            @Html.LabelFor(d => d.Dv) @Html.TextBoxFor(d => d.Dv, "", new { @class = "form-control" }) @Html.ValidationMessageFor(d => d.Dv, "", new { @class = "label label-danger" })<br />
+
+            @Html.LabelFor(d => d.Nombre)
+            @Html.TextBoxFor(d => d.Nombre, "", new { @class = "form-control", placeholder = "Ángel Muñoz" })
+            @Html.ValidationMessageFor(d => d.Nombre, "", new { @class = "label label-danger" })<br />
+
+            @Html.LabelFor(d => d.Apellido_Paterno)
+            @Html.TextBoxFor(d => d.Apellido_Paterno, "", new { @class = "form-control", placeholder = "García" })
+            @Html.ValidationMessageFor(d => d.Apellido_Paterno, "", new { @class = "label label-danger" })<br />
+
+            @Html.LabelFor(d => d.Apellido_Materno)
+            @Html.TextBoxFor(d => d.Apellido_Materno, "", new { @class = "form-control", placeholder = "García" })
+            @Html.ValidationMessageFor(d => d.Apellido_Materno, "", new { @class = "label label-danger" })<br />
+
+            @Html.LabelFor(d => d.Nick)
+            @Html.TextBoxFor(d => d.Nick, "", new { @class = "form-control", placeholder = "RAMBO" })
+            @Html.ValidationMessageFor(d => d.Nick, null, new { @class = "label label-danger" })
+
+            <br />
+
+            <fieldset class="container">
+                <h2>Posiciones</h2>
+                <table>
+                    @for (int i = 0; i < Model.ListPosPer.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @Html.CheckBoxFor(Model => Model.ListPosPer[i].IsChecked)
+                                <label>@Model.ListPosPer[i].DESCPOSICION</label>
+    
+                                @Html.HiddenFor(model => model.ListPosPer[i].IDPOSICION)
+                                @Html.HiddenFor(model => model.ListPosPer[i].DESCPOSICION)
+                            </td>
+                        </tr>
+                    }
+                </table>
+
+            </fieldset>
+            <br />
+
+            @Html.LabelFor(d => d.Telefono)
+            @Html.TextBoxFor(d => d.Telefono, "", new { @class = "form-control", placeholder = "91234567" } )
+            @Html.ValidationMessageFor(d => d.Telefono, null, new { @class = "label label-danger"})
+
+            @Html.LabelFor(d => d.Correo)
+            @Html.TextBoxFor(d => d.Correo, "", new { @class = "form-control", placeholder = "nombre@ejemplo.com" })
+            @Html.ValidationMessageFor(d => d.Correo, null, new { @class = "label label-danger" })
+
+
+            @Html.LabelFor(d => d.IdRegion)
+            @Html.DropDownList("idRegion", ViewData["Regioneslst"] as SelectList, "--Seleccione--", new { @class = "form-control", ID = "regiones", value = "null", onchange = "cargarComuna(this.value)" })
+            @Html.ValidationMessageFor(d => d.IdRegion, null, new { @class = "label label-danger" })
+
+            @Html.LabelFor(d => d.IdComuna)
+            <select id="comuna" name="idComuna" class="form-control">
+                <option value="null">--Seleccione--</option>
+            </select>
+            @Html.ValidationMessageFor(d => d.IdComuna, null, new { @class = "label label-danger" })
+            <br />
+            <input value="Nuevo" class="btn btn-primary" type="submit" />
 
         </div>
-    </div>
+     }
+</div>
 
-    @Html.LabelFor(d => d.Nombre)
-    @Html.TextBoxFor(d => d.Nombre, "", new { @class = "form-control" })
-    @Html.ValidationMessageFor(d => d.Nombre, "", new { @class = "text-danger" })<br />
+@if (ViewBag.Mensaje != null)
+{
+<script type="text/javascript">
 
-    @Html.LabelFor(d => d.Apellido_Paterno)
-    @Html.TextBoxFor(d => d.Apellido_Paterno, "", new { @class = "form-control" })
-    @Html.ValidationMessageFor(d => d.Apellido_Paterno, "", new { @class = "text-danger" })<br />
+        window.onsubmit = function()
+        {
+            alert("@ViewBag.Mensaje");
+        };
 
-    @Html.LabelFor(d => d.Apellido_Materno)
-    @Html.TextBoxFor(d => d.Apellido_Materno, "", new { @class = "form-control" })
-    @Html.ValidationMessageFor(d => d.Apellido_Materno, "", new { @class = "text-danger" })<br />
-
-    @Html.LabelFor(d => d.Nick)
-    @Html.TextBoxFor(d => d.Nick, "", new { @class = "form-control" })
-    @Html.ValidationMessageFor(d => d.Nick, null, new { @class = "label label-danger" })
-
-    <br />
-
-
-    <fieldset class="container">
-        <legend>Posiciones</legend>
-        <table>
-            @for (int i = 0; i < Model.ListPosPer.Count; i++)
-            {
-                <tr>
-                    <td>
-                        @Html.CheckBoxFor(Model => Model.ListPosPer[i].IsChecked)
-                        <label>@Model.ListPosPer[i].DESCPOSICION</label>
-
-                        @Html.HiddenFor(model => model.ListPosPer[i].IDPOSICION)
-                        @Html.HiddenFor(model => model.ListPosPer[i].DESCPOSICION)
-                    </td>
-                </tr>
-            }
-        </table>
-
-    </fieldset>
-    <br />
-
-    @Html.LabelFor(d => d.Telefono)
-    @Html.TextBoxFor(d => d.Telefono, "", new { @class = "form-control" })
-    @Html.ValidationMessageFor(d => d.Telefono, null, new { @class = "label label-danger" })
-
-    @Html.LabelFor(d => d.Correo)
-    @Html.TextBoxFor(d => d.Correo, "", new { @class = "form-control" })
-    @Html.ValidationMessageFor(d => d.Correo, null, new { @class = "label label-danger" })
-
-
-    @Html.LabelFor(d => d.IdRegion)
-    @Html.DropDownList("idRegion", ViewData["Regioneslst"] as SelectList, "--Seleccione--", new { @class = "form-control", ID = "regiones", value = "null", onchange = "cargarComuna(this.value)" })
-    @Html.ValidationMessageFor(d => d.IdRegion, null, new { @class = "label label-danger" })
-
-    @Html.LabelFor(d => d.IdComuna)
-    <select id="comuna" name="idComuna" class="form-control">
-        <option value="null">--Seleccione--</option>
-    </select>
-    @Html.ValidationMessageFor(d => d.IdComuna, null, new { @class = "label label-danger" })
-    <br />
-    <input value="Nuevo" class="btn btn-primary" type="submit" />
+</script>
+}
 
 
 
-</div>}
+
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -129,7 +140,8 @@
 </script>
 
 <script type="text/javascript">
-    (function () {
+    (function ()
+    {
         function filePreview(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -147,4 +159,6 @@
     })();
 
 </script>
+
+
 

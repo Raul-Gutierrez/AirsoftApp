@@ -3,18 +3,16 @@
     ViewBag.Title = "Datos personales";
 }
 
-
-<div class="box-form">
+<div class="ventana">
     <h2>@ViewBag.Title</h2>
 
 
-    @using (Html.BeginForm("EditarPersona", "Persona", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("EditarPersona", "Persona", FormMethod.Post, new { @class = "form-group" ,enctype = "multipart/form-data" }))
     {
         @Html.ValidationSummary(true)
 
-        <div class="panel panel-default">
+        <div >
 
-            <div class="col-md-12"></div>
 
             @Html.HiddenFor(d => d.Run)
             @Html.HiddenFor(d => d.Dv)
@@ -22,7 +20,7 @@
             @Html.Label("Foto Perfil")
             <div id="imagePreview"><img width="200" src="@Url.Action("convertirImagen", "Persona", new { run = Model.Run})" /></div>
 
-            <div id="imagePreview"></div>
+            <div id="imagePreview" class="img-circle"></div>
             <br />
             <input type="file" id="imagen" name="imgPerfil" accept=".jpg " class="form-control" />
             <br />
@@ -38,7 +36,7 @@
             @Html.ValidationMessageFor(d => d.Nick, null, new { @class = "text-danger" })
 
             <fieldset class="container">
-                <legend>Posiciones</legend>
+                <h2>Posiciones</h2>
                 <table>
                     @for (int i = 0; i < Model.ListPosPer.Count; i++)
                     {
@@ -78,8 +76,9 @@
             @Html.LabelFor(d => d.Rango) @Html.DisplayFor(d => d.Rango, "", new { @class = "form-control" })
             <br />
             @Html.LabelFor(d => d.Correo)
-            @Html.TextBoxFor(d => d.Correo, "", new { @class = "form-control" })
-            @Html.ValidationMessageFor(d => d.Correo, null, new { @class = "label label-danger" })
+            @Html.TextBoxFor(d => d.Correo, "", new { @class = "form-control", placeholder = "nombre@ejemplo.com" })
+            @Html.ValidationMessageFor(d => d.Correo, null, new { @class = "label label-danger"})
+    
 
             @Html.LabelFor(d => d.IdRegion)
             @Html.DropDownList("idRegion", ViewData["Regioneslst"] as SelectList, "--Seleccione--", new { @class = "form-control", ID = "regiones", value = "null", onchange = "cargarComuna(this.value)" })
@@ -92,11 +91,11 @@
 
             <br />
 
-            <input value="Enviar" class="btn btn-primary" type="submit" />
-            <br />
+            <input value="Enviar" class="btn btn-primary" type="submit" /> |
             <a class="btn btn-danger" href="~/Persona/EliminarPersona/@Model.Run">Dar de baja</a>
 
-        </div>}
+        </div>
+     }
 
 </div>
 

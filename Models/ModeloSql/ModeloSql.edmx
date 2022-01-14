@@ -4,7 +4,17 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="airSoftAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="airSoftAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="TB_COMUNA">
           <Key>
             <PropertyRef Name="IDCOMUNA" />
@@ -84,7 +94,7 @@
             <PropertyRef Name="IDPERSONA" />
           </Key>
           <Property Name="IDPERSONA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RUTPERSONA" Type="bigint" />
+          <Property Name="RUTPERSONA" Type="varchar" MaxLength="8" />
           <Property Name="DVPER" Type="varchar" MaxLength="1" />
           <Property Name="IDCOMUNA" Type="int" />
           <Property Name="IDRANGO" Type="int" />
@@ -338,6 +348,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="airSoftAppModelStoreContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_COMUNA" EntityType="Self.TB_COMUNA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_ESCUADRON" EntityType="Self.TB_ESCUADRON" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_ESTADISTICA" EntityType="Self.TB_ESTADISTICA" Schema="dbo" store:Type="Tables" />
@@ -417,10 +428,21 @@
             <End Role="TB_SELECCION" EntitySet="TB_SELECCION" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="airSoftAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <EntityType Name="TB_COMUNA">
           <Key>
             <PropertyRef Name="IDCOMUNA" />
@@ -446,6 +468,15 @@
           <NavigationProperty Name="TB_JUEGO" Relationship="Self.FK_TB_JUEGO_ESCUADRON_TB_ESCUA" FromRole="TB_ESCUADRON" ToRole="TB_JUEGO" />
           <NavigationProperty Name="TB_PARTICIPA_JUEGO" Relationship="Self.FK_TB_PARTI_ESC_PARTJ_TB_ESCUA" FromRole="TB_ESCUADRON" ToRole="TB_PARTICIPA_JUEGO" />
         </EntityType>
+        <EntityType Name="TB_ESTADISTICA">
+          <Key>
+            <PropertyRef Name="IDMES" />
+          </Key>
+          <Property Name="IDMES" Type="Int32" Nullable="false" />
+          <Property Name="DESCMES" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="PERPORMES" Type="Int32" />
+          <Property Name="ESCUADRONPORMES" Type="Int32" />
+        </EntityType>
         <EntityType Name="TB_INTEGRANTE">
           <Key>
             <PropertyRef Name="IDINTEGRANTES" />
@@ -455,9 +486,9 @@
           <Property Name="IDESCUADRON" Type="Int32" />
           <Property Name="ESTINTEGRANTE" Type="Boolean" />
           <Property Name="CAPINTEGRANTE" Type="Boolean" />
+          <Property Name="IDCREADOR" Type="Int32" />
           <NavigationProperty Name="TB_ESCUADRON" Relationship="Self.FK_TB_INTEG_ESCUADRON_TB_ESCUA" FromRole="TB_INTEGRANTE" ToRole="TB_ESCUADRON" />
           <NavigationProperty Name="TB_PERSONA" Relationship="Self.FK_TB_INTEG_PERSONA_I_TB_PERSO" FromRole="TB_INTEGRANTE" ToRole="TB_PERSONA" />
-          <Property Name="IDCREADOR" Type="Int32" />
         </EntityType>
         <EntityType Name="TB_JUEGO">
           <Key>
@@ -510,7 +541,7 @@
             <PropertyRef Name="IDPERSONA" />
           </Key>
           <Property Name="IDPERSONA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RUTPERSONA" Type="Int64" />
+          <Property Name="RUTPERSONA" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="DVPER" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="IDCOMUNA" Type="Int32" />
           <Property Name="IDRANGO" Type="Int32" />
@@ -777,8 +808,10 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="airSoftAppEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="TB_COMUNA" EntityType="Self.TB_COMUNA" />
           <EntitySet Name="TB_ESCUADRON" EntityType="Self.TB_ESCUADRON" />
+          <EntitySet Name="TB_ESTADISTICA" EntityType="Self.TB_ESTADISTICA" />
           <EntitySet Name="TB_INTEGRANTE" EntityType="Self.TB_INTEGRANTE" />
           <EntitySet Name="TB_JUEGO" EntityType="Self.TB_JUEGO" />
           <EntitySet Name="TB_MODO_JUEGO" EntityType="Self.TB_MODO_JUEGO" />
@@ -854,23 +887,24 @@
             <End Role="TB_POSICION" EntitySet="TB_POSICION" />
             <End Role="TB_SELECCION" EntitySet="TB_SELECCION" />
           </AssociationSet>
-          <EntitySet Name="TB_ESTADISTICA" EntityType="airSoftAppModel.TB_ESTADISTICA" />
         </EntityContainer>
-        <EntityType Name="TB_ESTADISTICA">
-          <Key>
-            <PropertyRef Name="IDMES" />
-          </Key>
-          <Property Name="IDMES" Type="Int32" Nullable="false" />
-          <Property Name="DESCMES" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="PERPORMES" Type="Int32" />
-          <Property Name="ESCUADRONPORMES" Type="Int32" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="airSoftAppModelStoreContainer" CdmEntityContainer="airSoftAppEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="airSoftAppModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TB_COMUNA">
             <EntityTypeMapping TypeName="airSoftAppModel.TB_COMUNA">
               <MappingFragment StoreEntitySet="TB_COMUNA">
@@ -892,15 +926,25 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="TB_ESTADISTICA">
+            <EntityTypeMapping TypeName="airSoftAppModel.TB_ESTADISTICA">
+              <MappingFragment StoreEntitySet="TB_ESTADISTICA">
+                <ScalarProperty Name="IDMES" ColumnName="IDMES" />
+                <ScalarProperty Name="DESCMES" ColumnName="DESCMES" />
+                <ScalarProperty Name="PERPORMES" ColumnName="PERPORMES" />
+                <ScalarProperty Name="ESCUADRONPORMES" ColumnName="ESCUADRONPORMES" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TB_INTEGRANTE">
             <EntityTypeMapping TypeName="airSoftAppModel.TB_INTEGRANTE">
               <MappingFragment StoreEntitySet="TB_INTEGRANTE">
-                <ScalarProperty Name="IDCREADOR" ColumnName="IDCREADOR" />
                 <ScalarProperty Name="IDINTEGRANTES" ColumnName="IDINTEGRANTES" />
                 <ScalarProperty Name="IDPERSONA" ColumnName="IDPERSONA" />
                 <ScalarProperty Name="IDESCUADRON" ColumnName="IDESCUADRON" />
                 <ScalarProperty Name="ESTINTEGRANTE" ColumnName="ESTINTEGRANTE" />
                 <ScalarProperty Name="CAPINTEGRANTE" ColumnName="CAPINTEGRANTE" />
+                <ScalarProperty Name="IDCREADOR" ColumnName="IDCREADOR" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1012,16 +1056,6 @@
               <MappingFragment StoreEntitySet="TB_TIPO_PARTIDA">
                 <ScalarProperty Name="IDTIPOPARTIDA" ColumnName="IDTIPOPARTIDA" />
                 <ScalarProperty Name="DESCTIPOPARTIDA" ColumnName="DESCTIPOPARTIDA" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TB_ESTADISTICA">
-            <EntityTypeMapping TypeName="airSoftAppModel.TB_ESTADISTICA">
-              <MappingFragment StoreEntitySet="TB_ESTADISTICA">
-                <ScalarProperty Name="ESCUADRONPORMES" ColumnName="ESCUADRONPORMES" />
-                <ScalarProperty Name="PERPORMES" ColumnName="PERPORMES" />
-                <ScalarProperty Name="DESCMES" ColumnName="DESCMES" />
-                <ScalarProperty Name="IDMES" ColumnName="IDMES" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

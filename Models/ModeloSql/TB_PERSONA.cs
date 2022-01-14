@@ -24,7 +24,7 @@ namespace AirsoftApp.Models.ModeloSql
         }
     
         public int IDPERSONA { get; set; }
-        public Nullable<long> RUTPERSONA { get; set; }
+        public string RUTPERSONA { get; set; }
         public string DVPER { get; set; }
         public Nullable<int> IDCOMUNA { get; set; }
         public Nullable<int> IDRANGO { get; set; }
