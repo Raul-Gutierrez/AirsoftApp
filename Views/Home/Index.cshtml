@@ -3,8 +3,8 @@
 <div class="tablas">
     <h1>Juegos disponibles</h1>
 
-    <table class="table table-dark table-hover">
-        <thead class="the-">
+    <table class="table table-dark">
+        <thead>
             <tr>
                 <th>
                     <p>Avatar</p>
@@ -15,7 +15,7 @@
                 <th></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table-hover">
             @foreach (var item in Model)
             {
 
@@ -26,7 +26,7 @@
                         @Html.DisplayFor(Item => item.DescJuego)
                     </td>
                     <td>
-                        @Html.ActionLink("Ver", "VerJuego", "Home", new { idJuego = item.IdJuego }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Ver", "VerJuego", "Home", new { IdJuego = item.IdJuego }, new { @class = "btn btn-primary" })
                     </td>
                 </tr>
             }
@@ -35,31 +35,49 @@
 
     <h1>Escuadrones vacantes</h1>
 
-    <table class="table">
-        <tr>
-            <th>
-                <p>Avatar</p>
-            </th>
-            <th>
-                <p>Nombre de escuadron</p>
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item1 in ViewBag.escuadrones)
-        {
+    <table class="table table-dark ">
+        <thead>
             <tr>
-                <td>
-                    <div id="imagePreview"><img width="50" src="@Url.Action("ConvertirImagen","Escuadron",new { CodEscuadron = item1.CodEscuadron})" /></div>
-                <td>
-                    @item1.NomEscuadron
-                </td>
-                <td>
-                    @Html.ActionLink("Ver", "VerEscuadron", "Home", new { codEscuadron = item1.CodEscuadron }, new { @class = "btn btn-primary" })
-                </td>
+                <th>
+                    <p>Avatar</p>
+                </th>
+                <th>
+                    <p>Nombre de escuadron</p>
+                </th>
+                <th></th>
             </tr>
-        }
-
+        </thead>
+        <tbody class="table-hover">
+            @foreach (var item1 in ViewBag.escuadrones)
+            {
+                <tr>
+                    <td>
+                        <div id="imagePreview"><img width="50" src="@Url.Action("ConvertirImagen","Escuadron",new { CodEscuadron = item1.CodEscuadron})" /></div>
+                    <td>
+                        @item1.NomEscuadron
+                    </td>
+                    <td>
+                        @Html.ActionLink("Ver", "VerEscuadron", "Home", new { codEscuadron = item1.CodEscuadron }, new { @class = "btn btn-primary" })
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
 
 </div>
+
+@if (TempData["Mensaje"] != null)
+{
+    @Html.Partial("_Modal_solicitud_enviada")
+    <script type="text/javascript">
+
+        window.onload = function()
+        {
+            $(document).ready(function () {  //sirve para cargar una ventana modal
+                $('#Exito').modal('toggle')
+            });
+            
+        };
+
+    </script>
+}

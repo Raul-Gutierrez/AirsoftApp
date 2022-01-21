@@ -233,9 +233,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModeloSql.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\ModeloSql\sysdiagrams.cs">
-      <DependentUpon>ModeloSql.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\ModeloSql\TB_COMUNA.cs">
       <DependentUpon>ModeloSql.tt</DependentUpon>
     </Compile>
@@ -294,10 +291,14 @@
     <Content Include="Images\black_horse 400x400 sin fondo.png" />
     <Content Include="Images\black_horse_big.png" />
     <Content Include="Images\black_horse_big_black.png" />
+    <Content Include="Images\descarga_sin_fondo.png" />
+    <Content Include="Images\error_600x600.png" />
     <Content Include="Images\favicon.png" />
     <Content Include="Images\Fondo_Form.jpg" />
     <Content Include="Images\Fondo_Inicio.jpg" />
     <Content Include="Images\logo.png" />
+    <Content Include="Images\Solicitud.png" />
+    <Content Include="Images\succeed_512x512.png" />
     <Content Include="Models\ModeloLocal\ModeloLocal.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ModeloLocal.edmx</DependentUpon>
@@ -344,6 +345,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="ClassDiagram1.cd" />
     <EntityDeploy Include="Models\ModeloSql\ModeloSql.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ModeloSql.Designer.cs</LastGenOutput>
@@ -366,6 +368,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\MisScript\modal.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
@@ -483,7 +486,6 @@
     <Content Include="Views\Administrar\IndexAdministrar.cshtml" />
     <Content Include="Views\Juego\EditarJuego.cshtml" />
     <Content Include="Views\Home\VerEscuadron.cshtml" />
-    <Content Include="Views\Home\VerJuego.cshtml" />
     <Content Include="Views\Asistencia\IndexAsistencia.cshtml" />
     <Content Include="Views\Asistencia\VerJuegoAsistido.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -496,6 +498,11 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Shared\_Modal_satisfactorio.cshtml" />
+    <Content Include="Views\Shared\_Modal_Solicitud_enviada.cshtml" />
+    <Content Include="Views\Home\VerJuego.cshtml" />
+    <Content Include="Views\Shared\_Modal_Integrantes.cshtml" />
+    <Content Include="Views\Shared\_Modal_error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

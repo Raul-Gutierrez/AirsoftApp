@@ -57,7 +57,7 @@ namespace AirsoftApp.Controllers
                     //Remover Rol
                     for (int i = 0;i < roles.Count; i++ ) 
                     {
-                        var resultado = userManager.RemoveFromRole(Usuario, roles[i]);
+                        /*var resultado = */userManager.RemoveFromRole(Usuario, roles[i]);
                     }
                     
 
@@ -164,11 +164,11 @@ namespace AirsoftApp.Controllers
         public string ObtenerUsuario(string Run)
         {
 
-            long run = long.Parse(Run);
+           
 
             db = new airSoftAppEntities();
             {
-                var Persona = db.TB_PERSONA.Where(a => a.RUTPERSONA == run).FirstOrDefault();
+                var Persona = db.TB_PERSONA.Where(a => a.RUTPERSONA == Run).FirstOrDefault();
 
                 db1 = new EntitiesLocal();
                 {

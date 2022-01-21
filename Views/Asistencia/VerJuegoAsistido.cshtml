@@ -1,54 +1,53 @@
-﻿@model AirsoftApp.Models.ModeloSql.TB_JUEGO
+﻿@model AirsoftApp.Models.JuegoViewModel
 
 @{
     ViewBag.Title = "juego";
 }
+<div class="ventana">
+    <h2>@ViewBag.Title</h2>
 
-<h2>@ViewBag.Title</h2>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
 
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        
+            <dt>
+                @Html.LabelFor(model => model.NomJuego)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.NOMJUEGO)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NomJuego)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.NOMJUEGO)
-        </dd>
+            <dt>
+                @Html.LabelFor(model => model.DescJuego)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DESCJUEGO)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DescJuego)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.DESCJUEGO)
-        </dd>
+            <dt>
+                @Html.LabelFor(model => model.FechJuego)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FECHJUEGO)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.FechJuego)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.FECHJUEGO)
-        </dd>
-
-    </dl>
-</div>
-@using (Html.BeginForm("IniciarJuego", "Asistencia", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.ValidationSummary(true)
-    <div class="row">
-
-        
-        @Html.TextBoxFor(d => d.CODJUEGO, "", new { @class = "form-control" })
-        @Html.HiddenFor(d => d.IDJUEGO)
-
-        <input value="Iniciar" class="btn btn-primary" type="submit" />
-
-
-
+        </dl>
     </div>
-}
+    @using (Html.BeginForm("IniciarJuego", "Asistencia", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+        <div>
+            <h3>Debe ingresar el codigo del creador para comenzar el juego</h3>
+            @Html.TextBoxFor(d => d.CodJuego, "", new { @class = "form-control" })
+            @Html.HiddenFor(d => d.IdJuego)<br />
+
+            <input value="Iniciar" class="btn btn-primary" type="submit" />
+
+
+
+        </div>
+    }
+</div>

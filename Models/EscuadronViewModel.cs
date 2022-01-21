@@ -10,18 +10,23 @@ namespace AirsoftApp.Models
     {
         public int IdEscuadron { get; set; }
 
-        [Display(Name = "Nombre del Escuadron")]
-        public string NomEscuadron { get; set; }
-        [Display(Name = "Nombre del capitan")]
-        public string CapEscuadron { get; set; }
 
-        [Display(Name = "Su codigo de escuadron")]
+
+        [Required(ErrorMessage = "Debe ingresar un nombre")]
+        [MinLength(3, ErrorMessage = "{0} debe tener un minimo de 3 caracteres")]
+        [MaxLength(10, ErrorMessage = "{0} debe tener un maximo de 10 caracteres")]
+        [Display(Name = "Nombre del Escuadron*")]
+        public string NomEscuadron { get; set; }
+
+        [Display(Name = "Su codigo de escuadron: ")]
         public string CodEscuadron { get; set; }
 
-        [Display(Name = "Imagen Escuadron")]
+        [Display(Name = "Imagen de escuadron*")]
         public byte[] ImgEscuadron { get; set; }
 
-        [Display(Name = "¿Aceptar vacantes?")]
+        [Required(ErrorMessage = "Debe escoger una opción")]
+
+        [Display(Name = "¿Aceptar vacantes?*")]
         public bool EstEscuadron { get; set; }
 
 

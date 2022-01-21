@@ -4,98 +4,102 @@
 }
 
 <div class="ventana">
+
     <h2>@ViewBag.Title</h2>
 
 
-    @using (Html.BeginForm("EditarPersona", "Persona", FormMethod.Post, new { @class = "form-group" ,enctype = "multipart/form-data" }))
+
+
+    <div class="readonly">
+        <div> <label>R.U.N:</label> <label>@Html.DisplayFor(d => d.Run)</label><label>-</label> <label>@Html.DisplayFor(d => d.Dv)</label></div>
+        <div><label>EXPERIENCIA:</label> <label>@Html.DisplayFor(d => d.Experiencia)</label></div>
+        <div><label>RANGO:</label> <label> @Html.DisplayFor(d => d.Rango)</label></div>
+    </div>
+
+    @using (Html.BeginForm("EditarPersona", "Persona", FormMethod.Post, new { @class = "form-group", enctype = "multipart/form-data" }))
     {
+        @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
 
-        <div >
+<div>
+
+    @Html.HiddenFor(d => d.Run)
+    @Html.HiddenFor(d => d.Dv)
 
 
-            @Html.HiddenFor(d => d.Run)
-            @Html.HiddenFor(d => d.Dv)
+    <br />
+    @Html.LabelFor(d => d.PerfilPersona)
+    <div class="alineador"><div class="perfil" id="imagePreview"><img width="200" src="@Url.Action("convertirImagen", "Persona", new { run = Model.Run})" /></div></div>
+    <br />
+    <input type="file" id="imagen" name="imagenSubida" accept=".jpg " class="form-control" />
+    <br />
+    @Html.ValidationMessageFor(d => d.PerfilPersona, "", new { @class = "label label-danger" })<br />
+    <br />
+    @Html.LabelFor(d => d.Nick)
+    @Html.TextBoxFor(d => d.Nick, "", new { @class = "form-control" })
+    @Html.ValidationMessageFor(d => d.Nick, null, new { @class = "label text-danger" })
 
-            @Html.Label("Foto Perfil")
-            <div id="imagePreview"><img width="200" src="@Url.Action("convertirImagen", "Persona", new { run = Model.Run})" /></div>
+    <fieldset class="container">
+        <h2>Posiciones</h2>
+        <table>
+            @for (int i = 0; i < Model.ListPosPer.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Html.CheckBoxFor(Model => Model.ListPosPer[i].IsChecked)
+                        <label>@Model.ListPosPer[i].DESCPOSICION</label>
 
-            <div id="imagePreview" class="img-circle"></div>
-            <br />
-            <input type="file" id="imagen" name="imgPerfil" accept=".jpg " class="form-control" />
-            <br />
+                        @Html.HiddenFor(model => model.ListPosPer[i].IDPOSICION)
+                        @Html.HiddenFor(model => model.ListPosPer[i].DESCPOSICION)
+                    </td>
+                </tr>
+            }
+        </table>
 
-            @Html.LabelFor(d => d.Run) @Html.DisplayFor(d => d.Run, "", new { @class = "form-control" })
+    </fieldset>
+    <br />
 
+    @Html.LabelFor(d => d.Nombre)
+    @Html.TextBoxFor(d => d.Nombre, "", new { @class = "form-control" })
+    @Html.ValidationMessageFor(d => d.Nombre, "", new { @class = "text-danger" })<br />
 
-            @Html.LabelFor(d => d.Dv) @Html.DisplayFor(d => d.Dv, "", new { @class = "form-control" })
+    @Html.LabelFor(d => d.Apellido_Paterno)
+    @Html.TextBoxFor(d => d.Apellido_Paterno, "", new { @class = "form-control" })
+    @Html.ValidationMessageFor(d => d.Apellido_Paterno, "", new { @class = "text-danger" })<br />
 
-            <br />
-            @Html.LabelFor(d => d.Nick)
-            @Html.TextBoxFor(d => d.Nick, "", new { @class = "form-control" })
-            @Html.ValidationMessageFor(d => d.Nick, null, new { @class = "text-danger" })
+    @Html.LabelFor(d => d.Apellido_Materno)
+    @Html.TextBoxFor(d => d.Apellido_Materno, "", new { @class = "form-control" })
+    @Html.ValidationMessageFor(d => d.Apellido_Materno, "", new { @class = "text-danger" })<br />
 
-            <fieldset class="container">
-                <h2>Posiciones</h2>
-                <table>
-                    @for (int i = 0; i < Model.ListPosPer.Count; i++)
-                    {
-                        <tr>
-                            <td>
-                                @Html.CheckBoxFor(Model => Model.ListPosPer[i].IsChecked)
-                                <label>@Model.ListPosPer[i].DESCPOSICION</label>
-
-                                @Html.HiddenFor(model => model.ListPosPer[i].IDPOSICION)
-                                @Html.HiddenFor(model => model.ListPosPer[i].DESCPOSICION)
-                            </td>
-                        </tr>
-                    }
-                </table>
-
-            </fieldset>
-            <br />
-
-            @Html.LabelFor(d => d.Nombre)
-            @Html.TextBoxFor(d => d.Nombre, "", new { @class = "form-control" })
-            @Html.ValidationMessageFor(d => d.Nombre, "", new { @class = "text-danger" })<br />
-
-            @Html.LabelFor(d => d.Apellido_Paterno)
-            @Html.TextBoxFor(d => d.Apellido_Paterno, "", new { @class = "form-control" })
-            @Html.ValidationMessageFor(d => d.Apellido_Paterno, "", new { @class = "text-danger" })<br />
-
-            @Html.LabelFor(d => d.Apellido_Materno)
-            @Html.TextBoxFor(d => d.Apellido_Materno, "", new { @class = "form-control" })
-            @Html.ValidationMessageFor(d => d.Apellido_Materno, "", new { @class = "text-danger" })<br />
-
-            @Html.LabelFor(d => d.Telefono)
-            @Html.TextBoxFor(d => d.Telefono, "", new { @class = "form-control" })
-            @Html.ValidationMessageFor(d => d.Telefono, null, new { @class = "label label-danger" })
-
-            @Html.LabelFor(d => d.Experiencia) @Html.DisplayFor(d => d.Experiencia, "", new { @class = "form-control" })
-            <br />
-            @Html.LabelFor(d => d.Rango) @Html.DisplayFor(d => d.Rango, "", new { @class = "form-control" })
-            <br />
-            @Html.LabelFor(d => d.Correo)
-            @Html.TextBoxFor(d => d.Correo, "", new { @class = "form-control", placeholder = "nombre@ejemplo.com" })
-            @Html.ValidationMessageFor(d => d.Correo, null, new { @class = "label label-danger"})
-    
-
-            @Html.LabelFor(d => d.IdRegion)
-            @Html.DropDownList("idRegion", ViewData["Regioneslst"] as SelectList, "--Seleccione--", new { @class = "form-control", ID = "regiones", value = "null", onchange = "cargarComuna(this.value)" })
-            @Html.ValidationMessageFor(d => d.IdRegion, null, new { @class = "label label-danger" })
+    @Html.LabelFor(d => d.Telefono)
+    @Html.TextBoxFor(d => d.Telefono, "", new { @class = "form-control" })
+    @Html.ValidationMessageFor(d => d.Telefono, null, new { @class = "label label-danger" })
 
 
-            @Html.LabelFor(d => d.IdComuna)
-            @Html.DropDownList("idComuna", ViewData["comunalst"] as SelectList, "--Seleccione--", new { @class = "form-control", ID = "comuna", value = "null" })
-            @Html.ValidationMessageFor(d => d.IdComuna, null, new { @class = "label label-danger" })
+    <br />
 
-            <br />
+    <br />
+    @Html.LabelFor(d => d.Correo)
+    @Html.TextBoxFor(d => d.Correo, "", new { @class = "form-control", placeholder = "nombre@ejemplo.com", ReadOnly = true })
+    @Html.ValidationMessageFor(d => d.Correo, null, new { @class = "label label-danger" })
 
-            <input value="Enviar" class="btn btn-primary" type="submit" /> |
-            <a class="btn btn-danger" href="~/Persona/EliminarPersona/@Model.Run">Dar de baja</a>
 
-        </div>
-     }
+    @Html.LabelFor(d => d.IdRegion)
+    @Html.DropDownList("idRegion", ViewData["Regioneslst"] as SelectList, "--Seleccione--", new { @class = "form-control", ID = "regiones", value = "null", onchange = "cargarComuna(this.value)" })
+    @Html.ValidationMessageFor(d => d.IdRegion, null, new { @class = "label label-danger" })
+
+    @Html.LabelFor(d => d.IdComuna)
+    @Html.DropDownList("idComuna", ViewData["comunalst"] as SelectList, "--Seleccione--", new { @class = "form-control", ID = "comuna", value = "null", name = "idcomuna" })
+    @Html.ValidationMessageFor(d => d.IdComuna, null, new { @class = "label label-danger" })
+
+    <br />
+
+    <input value="Enviar" class="btn btn-primary" type="submit" /> |
+    <a class="btn btn-danger" href="~/Persona/EliminarPersona/@Model.Run">Dar de baja</a> | 
+    <a href="~/Home/Index" class="btn btn-primary">volver</a>
+
+</div>
+    }
 
 </div>
 

@@ -21,44 +21,54 @@ namespace AirsoftApp.Controllers
 
             db = new airSoftAppEntities();
             {
-                
-                var model = (from a in db.TB_JUEGO join b in db.TB_PARTICIPA_JUEGO on a.IDJUEGO equals b.IDJUEGO
-                             where b.IDPERSONA == idUsuario && b.ESTPARTJUEGO == 0
-                             select new AsistenciaViewModel
-                             {
-                                 CodJuego = a.CODJUEGO,
-                                 idJuego = a.IDJUEGO,
-                                 nomJuego = a.NOMJUEGO,
-                                 FechJuego = (DateTime)a.FECHJUEGO,
-                                 AvatarJuego = a.IMGJUEGO
-                             }).ToList();
+
+                var model = (from a in (from a in db.TB_JUEGO where a.ESTJUEGO == true select new {a.IDJUEGO,a.DESCJUEGO,a.IMGJUEGO,a.CODJUEGO,a.NOMJUEGO,a.FECHJUEGO }  )
+                           join b in db.TB_PARTICIPA_JUEGO on a.IDJUEGO equals b.IDJUEGO
+                           where b.IDPERSONA == idUsuario && b.ESTPARTJUEGO == 0 
+                             select new AsistenciaViewModel 
+                           {
+
+                               CodJuego = a.CODJUEGO,
+                               idJuego = a.IDJUEGO,
+                               nomJuego = a.NOMJUEGO,
+                               FechJuego = (DateTime)a.FECHJUEGO,
+                               AvatarJuego = a.IMGJUEGO
+
+
+                           }).ToList();
+
 
                 return View(model);
             };
 
         }
 
-        public ActionResult AceptarJuego(int IdEscuadron, int IdJuego)
+        public ActionResult AceptarJuego(int IdJuego, int IdEscuadron)
         {
             int IdPersona = ObtenerIdUsuario(User.Identity.GetUserName());
+           
 
-            db = new airSoftAppEntities();
-            {
-                TB_PARTICIPA_JUEGO Juego = new TB_PARTICIPA_JUEGO
-                {
-                    IDESCUADRON = IdEscuadron,
-                    IDJUEGO = IdJuego,
-                    IDPERSONA = IdPersona,
-                    ESTPARTJUEGO = 1
-                };
+                    db = new airSoftAppEntities();
+                    {   
+                        if (db.TB_PARTICIPA_JUEGO.Where(a => a.IDJUEGO == IdJuego && a.IDESCUADRON == IdEscuadron).Count() == 0)
+                        {    
 
-                db.TB_PARTICIPA_JUEGO.Add(Juego);
-                db.SaveChanges();
+                                TB_PARTICIPA_JUEGO Juego = new TB_PARTICIPA_JUEGO
+                                {
+                                IDJUEGO = IdJuego,
+                                IDPERSONA = IdPersona,
+                                ESTPARTJUEGO = 0,
+                                IDESCUADRON = IdEscuadron
+                                };
 
-                return Redirect("~/Asistencia/IndexAsistencia");
-            }
+                             db.TB_PARTICIPA_JUEGO.Add(Juego);
+                             db.SaveChanges();
+                            
+                            } 
 
-
+                        return Redirect("~/Asistencia/IndexAsistencia");
+                    }
+           
         }
 
         public ActionResult VerJuegoAsistido(int IdJuego)
@@ -68,14 +78,13 @@ namespace AirsoftApp.Controllers
             {
                 var Juego = db.TB_JUEGO.Find(IdJuego);
 
-                TB_JUEGO Juegos = new TB_JUEGO
+                JuegoViewModel Juegos = new JuegoViewModel
                 {
-                    IMGJUEGO = Juego.IMGJUEGO,
-                    NOMJUEGO = Juego.NOMJUEGO,
-                    DESCJUEGO = Juego.DESCJUEGO,
-                    FECHJUEGO = Juego.FECHJUEGO
+                    AvatarJuego = Juego.IMGJUEGO,
+                    NomJuego = Juego.NOMJUEGO,
+                    DescJuego = Juego.DESCJUEGO,
+                    FechJuego = (DateTime)Juego.FECHJUEGO
                 };
-
 
                 return View(Juegos);
             }
@@ -90,6 +99,9 @@ namespace AirsoftApp.Controllers
             {
                 db = new airSoftAppEntities();
                 {
+                    var exp = db.TB_PERSONA.Find(IdPersona).EXPERIENCIAPER;
+
+
                     var IdPartJuego = (from a in db.TB_PARTICIPA_JUEGO
                                  where a.IDJUEGO == IdJuego && a.IDPERSONA == IdPersona
                                  select a.IDPARTICIPANTE).FirstOrDefault();
@@ -97,8 +109,8 @@ namespace AirsoftApp.Controllers
                     TB_PARTICIPA_JUEGO ObtJuego = db.TB_PARTICIPA_JUEGO.Find(IdPartJuego);
                     TB_PERSONA ObtPer = db.TB_PERSONA.Find(IdPersona);
 
-                    ObtJuego.ESTPARTJUEGO = 1;
-                    ObtPer.EXPERIENCIAPER = 500;
+                    ObtJuego.ESTPARTJUEGO = 2;
+                    ObtPer.EXPERIENCIAPER = 500 + exp;
 
                     db.Entry(ObtJuego).State = EntityState.Modified;
                     db.SaveChanges();

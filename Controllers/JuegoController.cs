@@ -19,6 +19,11 @@ namespace AirsoftApp.Controllers
         // GET: Juego
         public ActionResult IndexJuego()
         {
+            if (ValidaCantidadEscuadrones() == true)
+            {
+                TempData["Mensaje"] = "Debe Crear primero un escudron";
+                return Redirect("~/Escuadron/NuevoEscuadron");
+            }
             int IdPersona = ObtenerPersona(User.Identity.GetUserName()).IDPERSONA;
 
             db = new airSoftAppEntities();
@@ -34,7 +39,7 @@ namespace AirsoftApp.Controllers
                              where a.IDPERSONA == IdPersona
                              select new JuegoViewModel
                              {
-                                 idJuego = a.IDJUEGO,
+                                 IdJuego = a.IDJUEGO,
                                  CodJuego = a.CODJUEGO,
                                  AvatarJuego = a.IMGJUEGO,
                                  DescEscuadronJuego = b.NOMESCUADRON,
@@ -50,7 +55,7 @@ namespace AirsoftApp.Controllers
         public ActionResult NuevoJuego()
         {
             JuegoViewModel Model = new JuegoViewModel();
-            PersonaController ObtFunc = new PersonaController();
+            PersonaController p = new PersonaController();
             int IdPersona = ObtenerPersona(User.Identity.GetUserName()).IDPERSONA;
 
             Model.CodJuego = Token();
@@ -59,22 +64,49 @@ namespace AirsoftApp.Controllers
             Model.FechJuego = DateTime.Now;
             Model.AvatarJuego = null;
             Model.EstJuego = false;
-            Model.idPersonaJuego = IdPersona;
+            Model.IdPersonaJuego = IdPersona;
             //Model.DescModoJuego = "";
-            ViewData["idRegion"] = ObtFunc.CboRegion();
+            ViewData["idRegion"] = p.CboRegion();
             ViewData["IdModoJuego"] = ModoJuegoList();
             ViewData["IdTipoPartida"] = TipoPartidaList();
             ViewData["IdTipoJuego"] = TipoJuegoList();
             ViewData["IdEscuadronJuego"] = EscuadronesList();
+            ViewData["IdComuna"] = p.CboComuna();
+
 
             return View(Model);
         }
 
         // POST: Juego/Create
         [HttpPost]
-        public ActionResult NuevoJuego(JuegoViewModel Model, HttpPostedFileBase Avatar)
+        public ActionResult NuevoJuego(JuegoViewModel model)
         {
-            Model.AvatarJuego = ObtenerByteJuego(Avatar, Model.CodJuego);
+            HttpPostedFileBase avatar = Request.Files[0];
+
+
+
+            if (avatar.ContentLength == 0)
+            {
+                ModelState.AddModelError("AvatarJuego", "Debe establecer una imagen de perfil");
+            }
+            else
+            {
+                if (avatar.FileName.EndsWith(".jpg"))
+                {
+                    model.AvatarJuego = ObtenerByteJuego(avatar);
+                }
+                else
+                {
+                    ModelState.AddModelError("ImgEscuadron", "Solo se aceptan imagenes formato .JPG");
+                }
+            }
+
+            if (model.FechJuego <= DateTime.Today.AddDays(2))
+            {
+                ModelState.AddModelError("FechJuego", "La fecha ingresada no puede ser menor a 2 días contando hoy");
+            }
+
+
 
             try
             {
@@ -84,18 +116,18 @@ namespace AirsoftApp.Controllers
                     {
                         TB_JUEGO ObjJuego = new TB_JUEGO 
                         {
-                            CODJUEGO = Model.CodJuego,
-                            NOMJUEGO = Model.NomJuego,
-                            DESCJUEGO = Model.DescJuego,
-                            FECHJUEGO = Model.FechJuego,
-                            IMGJUEGO = Model.AvatarJuego,
+                            CODJUEGO = model.CodJuego,
+                            NOMJUEGO = model.NomJuego,
+                            DESCJUEGO = model.DescJuego,
+                            FECHJUEGO = model.FechJuego,
+                            IMGJUEGO = model.AvatarJuego,
                             ESTJUEGO = true,
-                            IDESCUADRON = Model.IdEscuadronJuego,
-                            IDMODOJUEGO = Model.IdModoJuego,
-                            IDTIPOJUEGO = Model.IdTipoJuego,
-                            IDTIPOPARTIDA = Model.IdTipoPartida,
-                            IDCOMUNA = Model.IdComuna,
-                            IDPERSONA = Model.idPersonaJuego
+                            IDESCUADRON = model.IdEscuadronJuego,
+                            IDMODOJUEGO = model.IdModoJuego,
+                            IDTIPOJUEGO = model.IdTipoJuego,
+                            IDTIPOPARTIDA = model.IdTipoPartida,
+                            IDCOMUNA = model.IdComuna,
+                            IDPERSONA = model.IdPersonaJuego
                         };
 
                         db.TB_JUEGO.Add(ObjJuego);
@@ -104,9 +136,9 @@ namespace AirsoftApp.Controllers
                         TB_PARTICIPA_JUEGO ObjAsistencia = new TB_PARTICIPA_JUEGO
                         {
                             ESTPARTJUEGO = 0,
-                            IDPERSONA = Model.idPersonaJuego,
-                            IDESCUADRON = Model.IdEscuadronJuego,
-                            IDJUEGO = db.TB_JUEGO.Where(a => a.CODJUEGO == Model.CodJuego).FirstOrDefault().IDPERSONA
+                            IDPERSONA = model.IdPersonaJuego,
+                            IDESCUADRON = model.IdEscuadronJuego,
+                            IDJUEGO = db.TB_JUEGO.Where(a => a.CODJUEGO == model.CodJuego).FirstOrDefault().IDJUEGO
                                                        
                         };
 
@@ -117,7 +149,17 @@ namespace AirsoftApp.Controllers
                 }
                 else 
                 {
-                    return View();
+                    PersonaController ObtFunc = new PersonaController();
+                    //int IdPersona = ObtenerPersona(User.Identity.GetUserName()).IDPERSONA;
+
+                    ViewData["idRegion"] = ObtFunc.CboRegion();
+                    ViewData["IdModoJuego"] = ModoJuegoList();
+                    ViewData["IdTipoPartida"] = TipoPartidaList();
+                    ViewData["IdTipoJuego"] = TipoJuegoList();
+                    ViewData["IdEscuadronJuego"] = EscuadronesList();
+                    ViewData["IdComuna"] = ObtFunc.CboComuna();
+
+                    return View(model);
                 }
             }
             catch (Exception ex)
@@ -129,6 +171,7 @@ namespace AirsoftApp.Controllers
         // GET: Juego/Edit/5
         public ActionResult EditarJuego(int idJuego)
         {
+
             if (idJuego == 0)
             {
                 return Redirect("~/Juego/IndexJuego");
@@ -142,7 +185,7 @@ namespace AirsoftApp.Controllers
                 PersonaController persona = new PersonaController();
 
 
-                model.idJuego = juego.IDJUEGO;
+                model.IdJuego = juego.IDJUEGO;
                 model.CodJuego = juego.CODJUEGO;
                 model.NomJuego = juego.NOMJUEGO;
                 model.DescJuego = juego.DESCJUEGO;
@@ -202,9 +245,30 @@ namespace AirsoftApp.Controllers
 
         // POST: Juego/Edit/5
         [HttpPost]
-        public ActionResult EditarJuego(HttpPostedFileBase Avatar, JuegoViewModel model)
+        public ActionResult EditarJuego(JuegoViewModel model)
         {
-            model.AvatarJuego = ObtenerByteJuego(Avatar, model.CodJuego);
+            HttpPostedFileBase avatar = Request.Files[0];
+
+            if (avatar.ContentLength == 0)
+            {
+                model.AvatarJuego = ObtenerByteGuardado(model.CodJuego);
+            }
+            else
+            {
+                if (avatar.FileName.EndsWith(".jpg"))
+                {
+                    model.AvatarJuego = ObtenerByteJuego(avatar);
+                }
+                else
+                {
+                    ModelState.AddModelError("ImgEscuadron", "Solo se aceptan imagenes formato .JPG");
+                }
+            }
+
+            if (model.FechJuego <= DateTime.Today.AddDays(2))
+            {
+                ModelState.AddModelError("FechJuego", "La fecha ingresada no puede ser menor a 2 días contando hoy");
+            }
 
             try
             {
@@ -250,11 +314,20 @@ namespace AirsoftApp.Controllers
 
             db = new airSoftAppEntities();
             {
+
+                List<TB_PARTICIPA_JUEGO> Lista = new List<TB_PARTICIPA_JUEGO>();
+
+                Lista = db.TB_PARTICIPA_JUEGO.Where(a => a.IDJUEGO == idJuego).ToList();
+                if (Lista != null)
+                {
+                    db.TB_PARTICIPA_JUEGO.RemoveRange(Lista);
+                    db.SaveChanges();
+                }
+
                 db.TB_JUEGO.Remove(db.TB_JUEGO.Where(a => a.IDJUEGO == idJuego).FirstOrDefault());
                 db.SaveChanges();
 
                 return Redirect("~/Juego/IndexJuego");
-
 
             }
         }
@@ -276,34 +349,33 @@ namespace AirsoftApp.Controllers
 
 
 
-        public byte[] ObtenerByteJuego(HttpPostedFileBase Avatar, string CodJuego) // Obtiene los bytes de las imagenes 
+        public byte[] ObtenerByteJuego(HttpPostedFileBase avatar) // Obtiene los byte de la imagen 
         {
 
             byte[] imagenData = null;
 
-            if (Avatar != null && Avatar.ContentLength > 0)
+            if (avatar != null && avatar.ContentLength > 0)
             {
 
-                using (var imagenBinaria = new BinaryReader(Avatar.InputStream))
+                using (var imagenBinaria = new BinaryReader(avatar.InputStream))
                 {
-                    imagenData = imagenBinaria.ReadBytes(Avatar.ContentLength);
+                    imagenData = imagenBinaria.ReadBytes(avatar.ContentLength);
                 }
-
-                return imagenData;
             }
-            else
-            {
-                db = new airSoftAppEntities();
-
-                var Juego = db.TB_JUEGO.Where(a => a.CODJUEGO == CodJuego).FirstOrDefault();
-
-                imagenData = Juego.IMGJUEGO;
-
-                return imagenData;
-
-            }
-
+            return imagenData;
         }
+
+        public byte[] ObtenerByteGuardado(string codJuego) // consulta una imagen guardada
+        {
+            byte[] imagenData = null; //Convierte la imagen a byte
+
+            db = new airSoftAppEntities();
+            {
+                imagenData = db.TB_JUEGO.Where(d => d.CODJUEGO == codJuego).FirstOrDefault().IMGJUEGO;
+            }
+            return imagenData;
+        }
+
 
         public ActionResult ConvertirImagenJuego(string CodJuego)
         {
@@ -412,6 +484,20 @@ namespace AirsoftApp.Controllers
             }
             return (EscuadronesList);
 
+        }
+
+        public bool ValidaCantidadEscuadrones()
+        {
+            int IdPersona = ObtenerPersona(User.Identity.GetUserName()).IDPERSONA;
+
+            db = new airSoftAppEntities();
+            {
+                if (db.TB_INTEGRANTE.Where(a => a.IDCREADOR == IdPersona).ToList().Count() == 0 )
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
     }

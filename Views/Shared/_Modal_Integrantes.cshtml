@@ -1,0 +1,55 @@
+﻿
+<div id="modal_detalle_nick" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content ventana">
+            <div class="alineador">
+                <div class="modal-body">
+                    <h1>Integrantes</h1>
+
+                    <table class="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <p>Nick</p>
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="nick" class="table-hover"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+
+
+<script type="text/javascript">
+
+
+    function detalle_nick(CodEscuadron)
+    {
+
+        fetch("@Url.Content("~/Escuadron/ListaNick")" + "?CodEscuadron=" + CodEscuadron)
+        .then(function (res1)
+            {
+            return res1.json();
+            })
+            .then(function (miJson1)
+            {
+                let resultado = "";
+              /*  console.log(miJson1)*/
+            for (let i = 0; i < miJson1.length; i++)
+            {
+                resultado += "<tr> " + miJson1[i].Nick + "</tr>"
+            }
+                document.getElementById("nick").innerHTML = resultado;
+        })
+    };
+</script>

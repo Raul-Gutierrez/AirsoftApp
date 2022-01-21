@@ -24,19 +24,19 @@
             <th></th>
         </tr>
 
-        @foreach (var item in Model)
+        @foreach (var item1 in Model)
         {
             <tr>
                 <td>
-                    <div id="imagePreview"><img width="50" src="@Url.Action("convertirImagen","Escuadron",new { CodEscuadron = item.CodEscuadron})" /></div>
+                    <div id="imagePreview"><img width="50" src="@Url.Action("convertirImagen","Escuadron",new { CodEscuadron = item1.CodEscuadron})" /></div>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CodEscuadron)
+                    @Html.DisplayFor(modelItem => item1.CodEscuadron)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.NomEscuadron)
+                    @Html.DisplayFor(modelItem => item1.NomEscuadron)
                 </td>
                 <td>
-                    @if (item.EstEscuadron == true)
+                    @if (item1.EstEscuadron == true)
                     {
                         <p>Si </p>
                     }
@@ -44,8 +44,8 @@
                     { <p>No</p>}
                 </td>
                 <td>
-                    @Html.ActionLink("Editar", "EditarEscuadron", "Escuadron", new { idEscuadron = item.IdEscuadron }, new { @class = "btn btn-primary" })
-                    <a class="btn btn-danger" href="~/Escuadron/EliminarEscuadron/@item.IdEscuadron">Eliminar</a>
+                    @Html.ActionLink("Editar", "EditarEscuadron", "Escuadron", new { idEscuadron = item1.IdEscuadron }, new { @class = "btn btn-primary" })
+                    <a class="btn btn-danger" href="~/Escuadron/EliminarEscuadron/@item1.IdEscuadron">Eliminar</a>
                 </td>
             </tr>
         }
@@ -77,10 +77,14 @@
             <tr>
                 <td>
                     <div id="imagePreview"><img width="50" src="@Url.Action("convertirImagen","Escuadron",new { CodEscuadron = item.CodEscuadron})" /></div>
+                </td>
                 <td>
                     @item.NomEscuadron
                 </td>
                 <td>
+
+                    <a class="btn btn-info" data-toggle="modal" data-target="#modal_detalle_nick" onclick="detalle_nick(@item.CodEscuadron)">Ver</a>
+
                     @Html.ActionLink("Retirarse", "RetiraEscuadron", "Home", new { escuadron = item.NomEscuadron }, new { @class = "btn btn-danger" })
 
                 </td>
@@ -111,7 +115,6 @@
 
         @foreach (var item in ViewBag.Solicitud)
         {
-
             <tr>
                 <td>
                     @item.Run
@@ -122,10 +125,13 @@
                     @item.Escuadron
                 </td>
                 <td>
-                    @Html.ActionLink("Aceptar", "UnirEscuadron", "Home", new { idInt = item.idInt }, new { @class = "btn btn-primary" }) | <a class="btn btn-danger" href="~/Escuadron/NuevoEscuadron">Rechazar</a>
+                    @Html.ActionLink("Aceptar", "UnirEscuadron", "Home", new { IdIngreso = item.IdIngreso }, new { @class = "btn btn-primary" }) | <a class="btn btn-danger" href="~/Escuadron/NuevoEscuadron">Rechazar</a>
                 </td>
             </tr>
         }
 
     </table>
 </div>
+
+
+@Html.Partial("_Modal_integrantes")

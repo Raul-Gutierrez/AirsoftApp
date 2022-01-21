@@ -2,15 +2,17 @@
 @{
     ViewBag.Title = "Editar Juego";
 }
+<div class="ventana">
+    <h2>@ViewBag.Title</h2>
 
-<h2>@ViewBag.Title</h2>
-
-@using (Html.BeginForm("EditarJuego", "Juego", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.ValidationSummary(true)
-<div class="row">
-    @Html.HiddenFor(a => a.idPersonaJuego)
-    <div id="imagePreview"><img width="200" src="@Url.Action("ConvertirImagenJuego","Juego",new { CodJuego = Model.CodJuego})" /></div>
+    @using (Html.BeginForm("EditarJuego", "Juego", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <span>-La fecha del jeugo no puede ser menor a 2 días al actual  </span><br /><br />
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+<div>
+    @Html.LabelFor(d => d.AvatarJuego)
+    <div class="alineador"> <div id="imagePreview"><img width="200" src="@Url.Action("ConvertirImagenJuego","Juego",new { CodJuego = Model.CodJuego})" /></div></div>
     <br />
     <input type="file" id="imagen" name="Avatar" accept=".jpg " class="form-control" />
     <br />
@@ -28,7 +30,7 @@
     @Html.TextAreaFor(d => d.DescJuego, new { @class = "form-control" })
 
     @Html.LabelFor(d => d.FechJuego)
-    @Html.TextBoxFor(d => d.FechJuego, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date"})
+    @Html.TextBoxFor(d => d.FechJuego, "{0:yyyy-MM-dd}", new { @class = "form-control fecha", type = "date" })
 
 
     <br />
@@ -50,11 +52,11 @@
     @Html.LabelFor(d => d.Comuna)
     @Html.DropDownList("idComuna", ViewData["comunalst"] as SelectList, "--Seleccione--", new { @class = "form-control", ID = "comuna", value = "null" })
     <br />
-    <input value="Guardar" class="btn btn-primary" type="submit" />
+    <input value="Guardar" class="btn btn-primary" type="submit" /> | <a href="~/Juego/IndexJuego" class="btn btn-primary">volver</a>
 
 
 </div>}
-
+</div>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous">

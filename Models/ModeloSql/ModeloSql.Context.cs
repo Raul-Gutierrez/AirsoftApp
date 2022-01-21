@@ -25,7 +25,6 @@ namespace AirsoftApp.Models.ModeloSql
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<TB_COMUNA> TB_COMUNA { get; set; }
         public virtual DbSet<TB_ESCUADRON> TB_ESCUADRON { get; set; }
         public virtual DbSet<TB_ESTADISTICA> TB_ESTADISTICA { get; set; }

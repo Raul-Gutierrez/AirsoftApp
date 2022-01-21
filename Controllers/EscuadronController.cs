@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace AirsoftApp.Controllers
@@ -59,10 +60,11 @@ namespace AirsoftApp.Controllers
                                      where d.ESTINTEGRANTE == false && d.IDCREADOR == idPersona && d.CAPINTEGRANTE == false
                                      select new Solicitud
                                      {
-                                         Run = e.RUTPERSONA,
+                                         IdIngreso = d.IDINTEGRANTES,
+                                         Run = e.RUTPERSONA.ToString(),
                                          Nombre = e.NOMPERSONA,
                                          Escuadron = f.NOMESCUADRON,
-                                         idInt = d.IDINTEGRANTES
+                                         IdInt = d.IDINTEGRANTES
                                      }).ToList();
 
                 return View(model);
@@ -72,34 +74,81 @@ namespace AirsoftApp.Controllers
 
         public class Solicitud
         {
+            public int IdIngreso { get; set; }
             public string Run { get; set; }
             public string Nombre { get; set; }
             public string Escuadron { get; set; }
-            public int idInt { get; set; }
+            public int IdInt { get; set; }
 
         }
+
+
+        public JsonResult ListaNick(string CodEscuadron)
+        {
+            List<ElementJsonIntKey> list = new List<ElementJsonIntKey>();
+
+            db = new airSoftAppEntities();
+            {
+
+               list = (from a in db.TB_INTEGRANTE
+                                 where a.TB_ESCUADRON.CODESCUADRON == CodEscuadron && a.ESTINTEGRANTE == true
+                                 select new ElementJsonIntKey
+                                 {
+
+                                     Nick = a.TB_PERSONA.NICKPERSONA
+                                 }).ToList();
+                return Json(list, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public class ElementJsonIntKey
+        {
+            public string Nick { get; set; }
+        }
+
 
         public ActionResult NuevoEscuadron()
         {
             EscuadronViewModel model = new EscuadronViewModel
             {
-                CapEscuadron = "",
                 CodEscuadron = this.Token().ToUpper(),
                 ImgEscuadron = null,
-                NomEscuadron = ""
+                NomEscuadron = "".ToUpper()
             };
             return View(model);
         }
 
+
         [HttpPost]
-        public ActionResult NuevoEscuadron(EscuadronViewModel model, HttpPostedFileBase imgPerfil)
+        public ActionResult NuevoEscuadron(EscuadronViewModel model)
         {
+            HttpPostedFileBase imgPerfil = Request.Files[0];
+
+            if (ValidarEscuadronUnico(model.NomEscuadron) == true)
+            {
+                ModelState.AddModelError("NomEscuadron", "El nombre ya existe");
+            }
+
+            if (imgPerfil.ContentLength == 0)
+            {
+                ModelState.AddModelError("ImgEscuadron", "Debe establecer una imagen de perfil");     
+            }
+            else
+            {
+                if (imgPerfil.FileName.EndsWith(".jpg"))
+                {
+                    model.ImgEscuadron = ObtenerByte(imgPerfil);
+                }
+                else
+                {
+                    ModelState.AddModelError("ImgEscuadron", "Solo se aceptan imagenes formato .JPG");
+                }
+            }
 
             db = new airSoftAppEntities();
             {
                 try
                 {
-                    model.ImgEscuadron = ObtByteEscuadron(imgPerfil, model.CodEscuadron);
 
                     if (ModelState.IsValid)
                     {
@@ -112,6 +161,7 @@ namespace AirsoftApp.Controllers
                                 CODESCUADRON = model.CodEscuadron,
                                 ESTESCUADRON = model.EstEscuadron,
                                 FECHACREACION = Convert.ToDateTime(DateTime.Now.Date.ToString("dd-MM-yyyy"))
+
 
                             };
 
@@ -126,7 +176,9 @@ namespace AirsoftApp.Controllers
                                 IDPERSONA = IdPersona,
                                 IDESCUADRON = IdEscuadron,
                                 ESTINTEGRANTE = true,
-                                CAPINTEGRANTE = true
+                                CAPINTEGRANTE = true,
+                                IDCREADOR = IdPersona
+                                
                             };
 
                             db.TB_INTEGRANTE.Add(oInt);
@@ -162,6 +214,7 @@ namespace AirsoftApp.Controllers
                     var escuadron = db.TB_ESCUADRON.Where(e => e.IDESCUADRON == IdEscuadron).FirstOrDefault();
                     EscuadronViewModel model = new EscuadronViewModel
                     {
+                        IdEscuadron = escuadron.IDESCUADRON,
                         NomEscuadron = escuadron.NOMESCUADRON,
                         EstEscuadron = (bool)escuadron.ESTESCUADRON,
                         CodEscuadron = escuadron.CODESCUADRON
@@ -172,21 +225,47 @@ namespace AirsoftApp.Controllers
 
 
         }
+
         #region[GuardarEscuadron]
 
         [HttpPost]
-        public ActionResult GuardarEscuadron(EscuadronViewModel model, HttpPostedFileBase imgPerfil)
+        public ActionResult EditarEscuadron(EscuadronViewModel model)
         {
             if (model.CodEscuadron == null || model.CodEscuadron == "")
             {
                 return Redirect("~/Escuadron/IndexEscuadron");
             }
 
+            HttpPostedFileBase imgPerfil = Request.Files[0];
+
+            if (ValidarEscuadronUnico(model.NomEscuadron) == true)
+            {
+                if (ObtenerNombreEscuadron(model.IdEscuadron) != model.NomEscuadron.ToUpper())
+                {
+                    ModelState.AddModelError("NomEscuadron", "El nombre ya existe");
+                }
+            }
+
+            if (imgPerfil.ContentLength == 0)
+            {
+                model.ImgEscuadron = ObtenerByteGuardado(model.CodEscuadron);
+            }
+            else
+            {
+                if (imgPerfil.FileName.EndsWith(".jpg"))
+                {
+                    model.ImgEscuadron = ObtenerByte(imgPerfil);
+                }
+                else
+                {
+                    ModelState.AddModelError("ImgEscuadron", "Solo se aceptan imagenes formato .JPG");
+                }
+            }
+
             db = new airSoftAppEntities();
             {
                 try
                 {
-                    model.ImgEscuadron = ObtByteEscuadron(imgPerfil, model.CodEscuadron);
 
                     if (ModelState.IsValid)
                     {
@@ -218,7 +297,7 @@ namespace AirsoftApp.Controllers
         #endregion
 
         
-        public ActionResult EliminarEscuadron(int id)
+        public ActionResult EliminarEscuadron(int id)//Pendiente de edicion
         {
 
             if (id == 0)
@@ -229,17 +308,31 @@ namespace AirsoftApp.Controllers
             {
                 db = new airSoftAppEntities();
                 {
-                    db.TB_INTEGRANTE.Remove(db.TB_INTEGRANTE.Where(x => x.IDESCUADRON == id).FirstOrDefault());
-                    db.TB_ESCUADRON.Remove(db.TB_ESCUADRON.Where(X => X.IDESCUADRON == id).FirstOrDefault());
-                    //Eventos
-                    //partidas
 
+
+                    List<TB_INTEGRANTE> Lista = new List<TB_INTEGRANTE>();
+
+                    Lista = db.TB_INTEGRANTE.Where(a => a.IDESCUADRON == id).ToList();
+
+                    if(Lista != null);
+                    {
+                        db.TB_INTEGRANTE.RemoveRange(Lista);
+                        db.SaveChanges();
+                    } 
+
+                    // la lista de jeugos debe eliminar tanto la lista de juegos como los integrantes del juego 
+
+
+
+                    db.TB_ESCUADRON.Remove(db.TB_ESCUADRON.Find(id));
                     db.SaveChanges();
+                    //db.TB_JUEGO.RemoveRange(db.TB_JUEGO.Where(e=>e.IDESCUADRON == id));
+                    //db.SaveChanges();
+                    //db.TB_PARTICIPA_JUEGO.RemoveRange(db.TB_JUEGO.Where(e => e.IDESCUADRON == id));
+                    //db.SaveChanges();
                 }
             }
             
-
-
             return Redirect("~/Escuadron/IndexEscuadron");
         }
 
@@ -328,6 +421,69 @@ namespace AirsoftApp.Controllers
             }
 
         }
+
+        public bool ValidarEscuadronUnico(string escuadron)
+        {
+            if(escuadron != null)
+            { 
+                db = new airSoftAppEntities();
+                {
+                    //var _escuadron = db.TB_ESCUADRON.Where(x => x.NOMESCUADRON == escuadron).FirstOrDefault();
+
+                    if (db.TB_ESCUADRON.Where(x => x.NOMESCUADRON == escuadron).ToString() == null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                    return false;
+                    }
+                }
+            }
+            else 
+            {
+                return false;
+            }
+        }
+
+        public byte[] ObtenerByte(HttpPostedFileBase imgPerfil) // Obtiene los byte de la imagen 
+        {
+
+            byte[] imagenData = null;
+
+            if (imgPerfil != null && imgPerfil.ContentLength > 0)
+            {
+
+                using (var imagenBinaria = new BinaryReader(imgPerfil.InputStream))
+                {
+                    imagenData = imagenBinaria.ReadBytes(imgPerfil.ContentLength);
+                }
+            }
+            return imagenData;
+        }
+
+        public byte[] ObtenerByteGuardado(string codEscuadron) // consulta una imagen guardada
+        {
+            byte[] imagenData = null; //Convierte la imagen a byte
+
+            db = new airSoftAppEntities();
+            {
+                imagenData = db.TB_ESCUADRON.Where(d => d.CODESCUADRON == codEscuadron).FirstOrDefault().IMGESCUADRON;
+            }
+            return imagenData;
+        }
+
+        public string ObtenerNombreEscuadron(int id)
+        {
+            db = new airSoftAppEntities();
+            {
+                string Nombre = db.TB_ESCUADRON.Find(id).NOMESCUADRON;
+                return Nombre;
+            }
+        }
+
+
+
         #endregion
     }
 }

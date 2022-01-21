@@ -27,14 +27,11 @@
                     </button>
 
                     <img src="~/Images/logo.png" />
-
                     @if (User.Identity.IsAuthenticated)
                     {
-
                         if (User.IsInRole("UNREGISTERED"))
                         {
                             @Html.ActionLink("BLACKHORSE CHILE", "Inicio", "Home", new { area = "" }, new { @class = "navbar-brand" })
-
                         }
                         else
                         {
@@ -45,15 +42,16 @@
                     {
                         @Html.ActionLink("BLACKHORSE CHILE", "Inicio", "Home", new { area = "" }, new { @class = "navbar-brand" })
                     }
-
-
-
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            if (!User.IsInRole("UNREGISTERED"))
+                            if (User.IsInRole("UNREGISTERED"))
+                            {
+                                <li>@Html.ActionLink("Mis Datos", "IndexPersona", "Persona")</li>
+                            }
+                            else
                             {
                                 if (User.IsInRole("USER") || User.IsInRole("ADMIN"))
                                 {
@@ -66,11 +64,9 @@
                                 {
                                     <li>@Html.ActionLink("Admin", "IndexAdministrar", "Administrar")</li>
                                 }
+
                             }
-                            <li>@Html.ActionLink("Mis Datos", "IndexPersona", "Persona")</li>
                         }
-
-
                     </ul>
                     @Html.Partial("_LoginPartial")
                 </div>

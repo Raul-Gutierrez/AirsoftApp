@@ -1,119 +1,60 @@
-﻿@model AirsoftApp.Models.ModeloSql.TB_JUEGO
+﻿@model AirsoftApp.Models.JuegoViewModel
 
 @{
     ViewBag.Title = "Ver Juego";
 }
-
-<h2>VerJuego</h2>
-
-
-<div id="Capture">
+<div class="ventana">
+    <h2>VerJuego</h2>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.IDJUEGO)
-        </dt>
+    <div id="Capture" class="captura">
+        <br />
+        <dl class="dl-horizontal">
 
-        <dd>
-            @Html.DisplayFor(model => model.IDJUEGO)
-        </dd>
+            <dt>
+                @Html.LabelFor(model => model.IdJuego)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.IDPERSONA)
-        </dt>
+            <dd id="idjuego">
+                @Html.DisplayFor(model => model.IdJuego)
 
-        <dd>
-            @Html.DisplayFor(model => model.IDPERSONA)
-        </dd>
+            </dd>
+            <dt>
+                @Html.LabelFor(model => model.NomJuego)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.IDESCUADRON)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NomJuego)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.IDESCUADRON)
-        </dd>
+            <dt>
+                @Html.LabelFor(model => model.FechJuego)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CODJUEGO)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.FechJuego)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.CODJUEGO)
-        </dd>
+            <dt>
+                @Html.LabelFor(model => model.DescJuego)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.IDTIPOJUEGO)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DescJuego)
+            </dd>
+        </dl>
+        <br />
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.IDTIPOJUEGO)
-        </dd>
+    <h2>Escoja un escuadron</h2>
+    @Html.DropDownList("IdEscuadronesJuego", ViewData["IdEscuadronesJuego"] as SelectList, "--Seleccione--", new { @class = "form-control", id = "idescuadron", value = "null" })<br />
+    <input id="enviar" type="button" class="btn btn-primary" onclick="asistir();" value="Asistir">
+    <button id="Guardar" class="btn btn-primary">Descargar</button>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.IDMODOJUEGO)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IDMODOJUEGO)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IDCOMUNA)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IDCOMUNA)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IDTIPOPARTIDA)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IDTIPOPARTIDA)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.NOMJUEGO)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.NOMJUEGO)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DESCJUEGO)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DESCJUEGO)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FECHJUEGO)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FECHJUEGO)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ESTJUEGO)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ESTJUEGO)
-        </dd>
-
-    </dl>
 </div>
 
-<p>
-    @Html.ActionLink("Asistir", "AceptarJuego", "Asistencia", new { IdEscuadron = Model.IDPERSONA, IdJuego = Model.IDJUEGO }, new { @class = "btn btn-primary" }) |
-    <button id="Guardar" class="btn btn-primary">Descargar</button>
-</p>
-<div id="captures" ></div>
+@Html.Partial("_Modal_satisfactorio")
+@Html.Partial("_Modal_error")
+
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script type="text/javascript" src="~/Scripts/html2canvas.min.js"></script>
@@ -121,20 +62,50 @@
 <script type="text/javascript" src="~/Scripts/dom-to-image.min.js"></script>
 
 
+<script>
 
+    $("#Guardar").click(function () {
 
-    <script>
-
-        $("#Guardar").click(function () {
-
-            domtoimage.toJpeg(document.getElementById('Capture'), { quality: 1.0 })
-                .then(function (dataUrl) {
-                    var link = document.createElement('a');
-                    link.download = 'captura.jpeg';
-                    link.href = dataUrl;
-                    link.click();
-                });
-
+        domtoimage.toJpeg(document.getElementById('Capture'), { quality: 1.0 })
+            .then(function (dataUrl) {
+                var link = document.createElement('a');
+                link.download = 'captura.jpeg';
+                link.href = dataUrl;
+                link.click();
+            });
     });
 
-</script>                
+</script>
+
+<script>
+
+    function asistir()
+    {
+
+        let idjuego = $("#idjuego").text()
+        let idescuadron = $("#idescuadron").val()
+        
+        if (idescuadron != 0)
+        {
+            fetch("@Url.Content("~/Asistencia/AceptarJuego")" + "?IdJuego=" + idjuego + "&IdEscuadron=" + idescuadron)
+                .then(function (response)
+                {
+                    if (response.ok) {
+
+                        $('#Exito').modal();
+                    }
+                    else
+                    {
+                        $('#Error').modal();
+                    }
+                });
+        }
+        else
+        {
+            alert("Debe seleecionar un escuadron");
+        }
+    }
+</script>
+
+}
+

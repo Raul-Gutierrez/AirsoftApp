@@ -7,10 +7,15 @@
 
     @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
+        <span>-El correo debe ser un correo valido</span><br />
+        <span>-Las contraseñas deben tener al menos un carácter que no sea una letra ni un dígito.</span><br />
+        <span>-Las contraseñas deben tener al menos una letra en minúscula ('a'-'z').</span><br />
+        <span>-Las contraseñas deben tener al menos una letra en mayúscula ('A'-'Z').</span><br />
+
         @Html.AntiForgeryToken()
-        <h4>Cree una cuenta nueva.</h4>
+        <h4>Cree una cuenta nueva, (*)Los campos son obligatorios.</h4>
         <hr />
-        @Html.ValidationSummary("", new { @class = "text-danger" })
+        @Html.ValidationSummary("", new { @class = "label-danger" })
         <div class="form-group">
             @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
@@ -37,6 +42,7 @@
     }
 
 </div>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

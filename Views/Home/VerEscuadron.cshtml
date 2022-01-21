@@ -1,55 +1,34 @@
 ﻿@model AirsoftApp.Models.ModeloSql.TB_ESCUADRON
 
-@{
-    ViewBag.Title = "Ver Escuadron";
-}
 
-<div class="container-fluid">
-    <div class="tablas" >
-        <h2>@ViewBag.Title</h2>
-
-
+<div class="ventana">
+    <h1>@Html.DisplayFor(model => model.NOMESCUADRON)</h1>
+    <div class="visualiza">
+        
         <br />
-        <dl class="dl-horizontal">
+        <br />
+        <div>
+            <label>AVATAR</label>
+            <br />
+            <div id="imagePreview"><img width="300" src="@Url.Action("ConvertirImagen","Escuadron",new { CodEscuadron = Model.CODESCUADRON})" /></div>
+            <br />
+        </div>
+        <div>
 
-            <dt>
-                Avatar:
-            </dt>
+            <br />
+            <label>INTEGRANTES:</label>
+            <br />
+            @foreach (var item1 in ViewBag.lista)
+            {
 
-            <dd>
-                <div id="imagePreview"><img width="50" src="@Url.Action("ConvertirImagen","Escuadron",new { CodEscuadron = Model.CODESCUADRON})" /></div>
-            </dd>
-
-            <dt>
-                Nombre escuadron:
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.NOMESCUADRON)
-            </dd>
-
-            <dt>
+                <label>-</label>@item1.Nick
                 <br />
+            }
+        </div>
 
-                Integrantes:
-            </dt>
-
-            <dd>
-                <br />
-                @foreach (var item1 in ViewBag.lista)
-                {
-
-                    @item1.Nick
-                    <br />
-
-                }
-            </dd>
-
-        </dl>
-
-
-        @Html.ActionLink("Unirme", "SolicitudEscuadron", "Home", new { idEscuadron = Model.IDESCUADRON }, new { @class = "btn btn-primary" })
     </div>
-    
-    
 </div>
+
+@Html.ActionLink("Solicitud", "SolicitudEscuadron", "Home", new { idEscuadron = Model.IDESCUADRON }, new { @class = "btn btn-primary" })
+
+@Html.Partial("_Modal_integrantes")

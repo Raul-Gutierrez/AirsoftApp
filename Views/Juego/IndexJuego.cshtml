@@ -3,48 +3,48 @@
 @{
     ViewBag.Title = "Mis Juego";
 }
+<div class="ventana">
+    <h2>@ViewBag.Title</h2>
 
-<h2>@ViewBag.Title</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            <p>Avatar</p>
-        </th>
-        <th>
-            <p>Codigo Juego</p>
-        </th>
-        <th>
-            <p>Descripcion del juego</p>
-        </th>
-        <th>
-            <p>Anfitrión</p>
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+    <table class="table">
         <tr>
-            <td>
-                <div id="imagePreview"><img width="50" src="@Url.Action("convertirImagenJuego","Juego",new { CodJuego = item.CodJuego})" /></div>
-            <td>
-                @Html.DisplayFor(modelItem => item.CodJuego)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DescJuego)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DescEscuadronJuego)
-            </td>
-            <td>
-                @Html.ActionLink("Editar", "EditarJuego", "Juego", new { idJuego = item.idJuego }, new { @class = "btn btn-primary" })
-                @Html.ActionLink("Eliminar", "EliminarJuego", "Juego", new { idJuego = item.idJuego }, new { @class = "btn btn-danger" })
-            </td>
+            <th>
+                <p>Avatar</p>
+            </th>
+            <th>
+                <p>Codigo Juego</p>
+            </th>
+            <th>
+                <p>Descripcion del juego</p>
+            </th>
+            <th>
+                <p>Anfitrión</p>
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <div id="imagePreview"><img width="50" src="@Url.Action("convertirImagenJuego","Juego",new { CodJuego = item.CodJuego})" /></div>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CodJuego)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescJuego)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescEscuadronJuego)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "EditarJuego", "Juego", new { idJuego = item.IdJuego }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Eliminar", "EliminarJuego", "Juego", new { idJuego = item.IdJuego }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+        }
 
-<a class="btn btn-primary" href="~/Juego/NuevoJuego">Nuevo Juego</a>
+    </table>
 
+    <a class="btn btn-primary" href="~/Juego/NuevoJuego">Nuevo Juego</a>
+</div>

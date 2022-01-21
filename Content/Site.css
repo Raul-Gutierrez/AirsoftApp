@@ -44,12 +44,20 @@ body {
 }
 
 
-.img {
-    background: url("../Images/black_horse 400x400 sin fondo.png") no-repeat;
+.img-inicio {
+    background: url("../Images/descarga_sin_fondo.png") no-repeat;
     background-size: cover;
     height:400px;
     width:400px;
+    margin-left:auto;
+    margin-right:auto;
+
+    
 }
+.imagePreview {
+    
+}
+
 
 div.img {
 
@@ -76,6 +84,50 @@ div.img {
 
 }
 
+.visualiza {
+
+    display: flex;
+    flex-flow: row wrap !important;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+    .visualiza div {
+        text-align:center;
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+.readonly {
+    background-color: black;
+    display: flex;
+    flex-flow: row wrap !important;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    border-radius: 10px;
+    border: 1px solid white;
+    padding: 15px;
+    box-shadow: 10px 5px 50px #393328;
+    margin: 15px;
+}
+    .readonly div {
+        border: 2px solid #dfe;
+        padding: 10px;
+        margin: 20px;
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+    .readonly label {
+        font-size: 1.4em;
+        color: white;
+        
+
+    }
+
+
+
     .ventana h4 h2 {
         font-weight:bold;
         text-align:center;
@@ -98,12 +150,36 @@ div.img {
         overflow:auto;
     }
 
-.img {
-    background: src("~/Images/black_horse 400x400 sin fondo.png") 100%;
-    display: block;
-    margin: auto;
-    bottom: 0;
-    position: relative;
+.alineador {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+}
+
+.modal-body h1 {
+    text-align:center;
+
+}
+
+.perfil {
+    text-align: center;
+    background-color: aliceblue;
+    border-radius: 40% !important;
+}
+
+.captura {
+    width: 50%;
+    background-color: aqua;
+    background: url("../Images/Fondo_Form.jpg") no-repeat center center fixed;
+}
+
+    .perfil img {
+        border-radius: 50% !important;
+    }
+
+.fecha {
+    width:150px;
 }
 
 
@@ -144,6 +220,12 @@ div.img {
 .graficos {
 
     background-color:white;
+}
+
+.label-danger {
+    font-size: 1em;
+    border-radius:15px;
+    display:block;
 }
 
 

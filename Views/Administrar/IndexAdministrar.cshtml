@@ -9,7 +9,7 @@
     @using (Html.BeginForm("Enrolar", "Administrar", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.ValidationSummary(true)
-        <div >
+        <div>
 
 
 
@@ -34,7 +34,8 @@
 
     <h1>Estadísticas</h1>
     <div id="GraficoDiv" class="graficos"><canvas id="Grafico"></canvas></div>
-
+    @Html.Partial("_Modal_satisfactorio")
+    @Html.Partial("_Modal_error")
 
 </div>
 <script type="text/javascript" src="~/Scripts/chart.js"></script>

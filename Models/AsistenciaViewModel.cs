@@ -17,7 +17,7 @@ namespace AirsoftApp.Models
 
             public string nomJuego { get; set; }
 
-        [Required(ErrorMessage = "Debe ingresar una fecha valida")]
+            [Required(ErrorMessage = "Debe ingresar una fecha valida")]
             [Display(Name = "Fecha del juego")]
             [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
             [DataType(DataType.Date)]
@@ -28,7 +28,7 @@ namespace AirsoftApp.Models
 
         public string CodJuego { get; set; }
 
-        public int EstPArtJuego { get; set; }
+        public int EstPartJuego { get; set; }
 
     }
 }

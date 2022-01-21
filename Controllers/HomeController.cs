@@ -2,8 +2,11 @@
 using AirsoftApp.Models.ModeloSql;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace AirsoftApp.Controllers
@@ -23,14 +26,31 @@ namespace AirsoftApp.Controllers
                 db = new airSoftAppEntities();
                 {
 
-                    var model = (from a in db.TB_JUEGO
-                                 where a.TB_PERSONA.CORREOPER != usuario && a.ESTJUEGO != false
+                    var model = (from a in (from a in db.TB_JUEGO where a.ESTJUEGO == true select new { a.IDJUEGO, a.DESCJUEGO, a.IMGJUEGO, a.CODJUEGO, a.NOMJUEGO, a.FECHJUEGO })
+                                 join b in db.TB_PARTICIPA_JUEGO on a.IDJUEGO equals b.IDJUEGO
+                                 where b.IDPERSONA != idPersona && b.ESTPARTJUEGO == 0
                                  select new HomeViewModels
                                  {
+
                                      IdJuego = a.IDJUEGO,
                                      DescJuego = a.DESCJUEGO,
                                      ImgJuego = a.IMGJUEGO
-                                 });
+
+
+                                 }).ToList();
+
+
+
+
+
+                    //var model = (from a in db.TB_JUEGO 
+                    //             where a.IDPERSONA != idPersona && a.ESTJUEGO == true 
+                    //             select new HomeViewModels
+                    //             {
+                    //                 IdJuego = a.IDJUEGO,
+                    //                 DescJuego = a.DESCJUEGO,
+                    //                 ImgJuego = a.IMGJUEGO
+                    //             });
 
                     ViewBag.escuadrones = (from b in db.TB_ESCUADRON
                                            join c in db.TB_INTEGRANTE on b.IDESCUADRON equals c.IDESCUADRON
@@ -67,10 +87,20 @@ namespace AirsoftApp.Controllers
                     if (userManager.IsInRole(idUsarioActual, "UNREGISTERED") == false)
                     {
                         var resultado = userManager.AddToRole(idUsarioActual, "UNREGISTERED");
+                        if (resultado.Succeeded)
+                        {
+                            Request.GetOwinContext().Authentication.SignOut();
+                            Session.Abandon();
+                            Session.Clear(); 
+                        }
+                        
+
+                        return Redirect("~/Account/Login");
                     }
+
                 };
 
-                return Redirect("~/Home/Inicio");
+                return Redirect("~/Home/inicio");
             }
         }
         [AllowAnonymous]
@@ -104,14 +134,13 @@ namespace AirsoftApp.Controllers
 
             db = new airSoftAppEntities();
             {             
-                var valida = db.TB_INTEGRANTE.Where(a => a.IDPERSONA == IdPersona && a.IDESCUADRON == idEscuadron).FirstOrDefault();
 
-                if (valida != null)
+                if (db.TB_INTEGRANTE.Where(a => a.IDPERSONA == IdPersona && a.IDESCUADRON == idEscuadron).FirstOrDefault() != null)
                 {
                     return Redirect("~/Home/index");
                 }
 
-                var creador = db.TB_INTEGRANTE.Find(valida.IDCREADOR).IDCREADOR;
+                var creador = db.TB_INTEGRANTE.Where(a => a.IDESCUADRON == idEscuadron).FirstOrDefault().IDCREADOR;
 
                 TB_INTEGRANTE integrante = new TB_INTEGRANTE();
                 
@@ -124,18 +153,20 @@ namespace AirsoftApp.Controllers
                 db.TB_INTEGRANTE.Add(integrante);
                 db.SaveChanges();
 
+                TempData["Mensaje"] = "ok";
+
                 return Redirect("~/Home/index");
             }
         }
 
-        public ActionResult UnirEscuadron(int idInt)
+        public ActionResult UnirEscuadron(int IdIngreso)
         {
-            PersonaController persona = new PersonaController();
-            int IdPersona = persona.ObtenerPersona(User.Identity.GetUserName()).IDPERSONA;
+            //PersonaController persona = new PersonaController();
+            //int IdPersona = persona.ObtenerPersona(User.Identity.GetUserName()).IDPERSONA;
 
             db = new airSoftAppEntities();
             {
-                var Objeto = db.TB_INTEGRANTE.Find(idInt);
+                var Objeto = db.TB_INTEGRANTE.Find(IdIngreso);
 
                 if (Objeto == null)
                 {
@@ -146,7 +177,7 @@ namespace AirsoftApp.Controllers
 
                 db.Entry(Objeto).State = EntityState.Modified;
                 db.SaveChanges();
-                return Redirect("~/Home/index");
+                return Redirect("~/Escuadron/IndexEscuadron");
             }
         }
 
@@ -169,11 +200,28 @@ namespace AirsoftApp.Controllers
             return Redirect("~/Home/Index");
         }
 
-        public ActionResult VerJuego(int idJuego)
+        public ActionResult VerJuego(int IdJuego)
         {  
             db = new airSoftAppEntities();
             {
-                var model = db.TB_JUEGO.Where(a => a.IDJUEGO == idJuego).FirstOrDefault();
+                if (EscuadronesListJuego().Count() == 0)
+                {
+                    TempData["Mensaje"] = "Debe crear un escuadron primero";
+                    return Redirect("~/Escuadron/NuevoEscuadron");
+                }
+
+                var _modelo = db.TB_JUEGO.Where(a => a.IDJUEGO == IdJuego).FirstOrDefault();
+
+                JuegoViewModel model = new JuegoViewModel()
+                {
+                    IdJuego= _modelo.IDJUEGO,
+                    NomJuego = _modelo.NOMJUEGO,
+                    FechJuego = (DateTime)_modelo.FECHJUEGO,
+                    DescJuego = _modelo.DESCJUEGO
+                };
+
+
+                ViewData["IdEscuadronesJuego"] = EscuadronesListJuego();
 
                 return View(model);
             };
@@ -207,6 +255,28 @@ namespace AirsoftApp.Controllers
                     return user;
                 } 
             }      
+        }
+
+        public List<SelectListItem> EscuadronesListJuego()
+        {
+            PersonaController p = new PersonaController();
+
+            int IdPersona = p.ObtenerPersona(User.Identity.GetUserName()).IDPERSONA;
+            List<SelectListItem> EscuadronesList = new List<SelectListItem>();
+
+            using (airSoftAppEntities db = new airSoftAppEntities())
+            {
+                EscuadronesList = (from e in db.TB_ESCUADRON
+                                   join a in db.TB_INTEGRANTE on e.IDESCUADRON equals a.IDESCUADRON
+                                   where a.CAPINTEGRANTE == true && a.IDPERSONA == IdPersona
+                                   select new SelectListItem
+                                   {
+                                       Value = e.IDESCUADRON.ToString(),
+                                       Text = e.NOMESCUADRON.ToString()
+                                   }).ToList();
+            }
+            return (EscuadronesList);
+
         }
     }
 }
