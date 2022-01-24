@@ -1,43 +1,44 @@
 ﻿@model AirsoftApp.Models.AdministrarViewModels
 @{
-    ViewBag.Title = "Administrar";
+    ViewBag.Title = "Administrar (*) Los campos son obligatorios";
 }
 
 <div class="tablas">
     <h2>@ViewBag.Title</h2>
 
-    @using (Html.BeginForm("Enrolar", "Administrar", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("IndexAdministrar", "Administrar", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
+        @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
-        <div>
+<div>
 
+    @Html.LabelFor(d => d.Run)
+    @Html.TextBoxFor(d => d.Run, "", new { @class = "form-control", id="run" })
+    @Html.ValidationMessageFor(d => d.Run, "", new { @class = "label-danger" })<br />
+    <br />
+    @Html.LabelFor(d => d.IdRol)
+    <br />
+    <label>@Html.RadioButtonFor(d => d.IdRol, "c8c3119d-de32-4e81-884f-fe1045fda393") Enrolar</label>
+    <br />
+    <label>@Html.RadioButtonFor(d => d.IdRol, "d6585171-7f60-4721-9426-f3dd61e9f6fc") Desenrolar</label><br />
+    @Html.ValidationMessageFor(d => d.IdRol, "", new { @class = "label-danger" })<br />
 
+    <br />
+    <input value="Enviar" class="btn btn-primary" type="submit" />
+    <br />
 
-            @Html.LabelFor(d => d.Run)
-            @Html.TextBoxFor(d => d.Run, "", new { @class = "form-control" })
-            @Html.ValidationMessageFor(d => d.Run, "", new { @class = "text-danger" })<br />
-            <br />
-            @Html.LabelFor(d => d.IdRol)
-            <br />
-            <label>@Html.RadioButtonFor(d => d.IdRol, "c8c3119d-de32-4e81-884f-fe1045fda393") Enrolar</label>
-            <br />
-            <label>@Html.RadioButtonFor(d => d.IdRol, "d6585171-7f60-4721-9426-f3dd61e9f6fc") Desenrolar</label><br />
-            @Html.ValidationMessageFor(d => d.IdRol, "", new { @class = "text-danger" })<br />
-
-            <br />
-            <input value="Enviar" class="btn btn-primary" type="submit" />
-            <br />
-
-
-        </div>
+</div>
     }
 
     <h1>Estadísticas</h1>
     <div id="GraficoDiv" class="graficos"><canvas id="Grafico"></canvas></div>
+
     @Html.Partial("_Modal_satisfactorio")
     @Html.Partial("_Modal_error")
 
 </div>
+
+
 <script type="text/javascript" src="~/Scripts/chart.js"></script>
 
 <script>
@@ -100,6 +101,28 @@
             });
     }
 </script>
+
+
+
+@if(ViewBag.Mensaje != null)
+{
+<script>
+    window.onload = function (){
+        if ("@string.Format("{0}",ViewBag.Mensaje)" == "ok") {
+            $('#run').val('');
+        $('#Exito').modal();
+    }
+        if ("@string.Format("{0}",ViewBag.Mensaje)" == "error") {
+     
+                $('#run').val('');
+         
+        $('#Error').modal();
+    }
+    };
+
+</script>
+
+}
 
 
 

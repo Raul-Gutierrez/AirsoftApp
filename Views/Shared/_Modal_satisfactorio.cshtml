@@ -1,15 +1,15 @@
-﻿
-<div id="Exito" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;">
+﻿<div id="Exito" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="alineador">
                 <div class="modal-body">
                     <img src="~/Images/succeed_512x512.png" />
                     <h1>¡Accion satisfactoria!</h1>
+                    <h1>@ViewData["MensajeVal"]</h1>
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="~/Home/Index" type="button" class="btn btn-default">OK</a>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
             </div>
 
         </div><!-- /.modal-content -->

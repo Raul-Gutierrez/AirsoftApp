@@ -13,7 +13,7 @@ using System.Web.Mvc;
 namespace AirsoftApp.Controllers
 {
 
-[Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = "ADMIN")]
     public class AdministrarController : Controller
     {
         airSoftAppEntities db = null;
@@ -24,8 +24,11 @@ namespace AirsoftApp.Controllers
             return View();
         }
 
-        // GET: Administrar/Details/5
-        public ActionResult Enrolar(AdministrarViewModels model)
+
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult IndexAdministrar(AdministrarViewModels model)
         {
             if (!ModelState.IsValid)
             {
@@ -50,29 +53,67 @@ namespace AirsoftApp.Controllers
                     var userManager = new UserManager<ApplicationUser>
                         (new UserStore<ApplicationUser>(db));
 
-                    //Rol Actual 
+                    //Roles Actual es
 
                     var roles = userManager.GetRoles(Usuario);
 
-                    //Remover Rol
-                    for (int i = 0;i < roles.Count; i++ ) 
+                    /*Verificar si esta en el rol */
+                    var usuario = userManager.IsInRole(Usuario, "USER");
+
+                    var administrador = userManager.IsInRole(Usuario, "ADMIN");
+
+
+                    if (usuario == true && Rol == "ADMIN") 
                     {
-                        /*var resultado = */userManager.RemoveFromRole(Usuario, roles[i]);
+                        //Remover Rol
+                        for (int i = 0; i < roles.Count; i++)
+                        {
+                            userManager.RemoveFromRole(Usuario, roles[i]);
+                        }
+                        //Agregar usuario a rol
+                        if (userManager.AddToRole(Usuario, "" + Rol + "").Succeeded)
+                        {
+                            ViewData["MensajeVal"] = "Usuario enrrolado correctamente";
+                            ViewBag.Mensaje = "ok";
+                            return View();
+                        }  
+                    }
+
+                    if (usuario == true && Rol == "USER")
+                    {
+    
+                            ViewData["MensajeError"] = "El usuario no es un administrador";
+                            ViewBag.Mensaje = "error";
+                            return View();
+         
+                    }
+
+
+                    if (administrador == true && Rol == "ADMIN")
+                    {
+
+
+                        ViewData["MensajeError"] = "El usuario ya está en el rol";
+                        ViewBag.Mensaje = "error";
+                        return View();
+                    }
+
+                    if (administrador == true && Rol == "USER")
+                    {
+                        //Remover Rol
+                        for (int i = 0; i < roles.Count; i++)
+                        {
+                            userManager.RemoveFromRole(Usuario, roles[i]);
+                        }
+                        //Agregar usuario a rol
+                        if (userManager.AddToRole(Usuario, "" + Rol + "").Succeeded)
+                        {
+                            ViewData["MensajeVal"] = "Usuario Desenrrolado correctamente";
+                            ViewBag.Mensaje = "ok";
+                            return View();
+                        }
                     }
                     
-
-                    //Agregar usuario a rol
-
-                    if (userManager.AddToRole(Usuario, "" + Rol + "").Succeeded)
-                    {
-                        ViewBag.Mensaje = "Se ingreso correctamente el usuario " + model.Run + "";
-                        return View();
-                    }
-                    else
-                    {
-                        ViewBag.Mensaje = "Hubo un problema con el usuario " + model.Run + ",el usuario no es valido";
-                        return View();
-                    }
                 };
 
             }
@@ -80,71 +121,6 @@ namespace AirsoftApp.Controllers
             return View();
         }
 
-        // GET: Administrar/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: Administrar/Create
-        //[HttpPost]
-        //public ActionResult Create(FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add insert logic here
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        //// GET: Administrar/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
-
-        //// POST: Administrar/Edit/5
-        //[HttpPost]
-        //public ActionResult Edit(int id, FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add update logic here
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        //// GET: Administrar/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
-
-        //// POST: Administrar/Delete/5
-        //[HttpPost]
-        //public ActionResult Delete(int id, FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add delete logic here
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
         public List<SelectListItem> Roles()
         {
             List<SelectListItem> roles = new List<SelectListItem>();

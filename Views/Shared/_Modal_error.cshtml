@@ -4,11 +4,12 @@
             <div class="alineador">
                 <div class="modal-body">
                     <img src="~/Images/error_600x600.png" />
-                    <h1>¡ha ocurrido un problema, intente otra vez!</h1>
+                    <h1>¡ha ocurrido un error al procesar la solicitud!</h1>
+                    <h1>@ViewData["MensajeError"]</h1>
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="~/Home/Index" type="button" class="btn btn-default">OK</a>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
             </div>
 
         </div><!-- /.modal-content -->

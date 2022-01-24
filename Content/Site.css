@@ -154,12 +154,14 @@ div.img {
     display:flex;
     align-items:center;
     justify-content:center;
+    color:black;
 
 }
 
-.modal-body h1 {
-    text-align:center;
 
+
+.modal-body h1 h2{
+    text-align:center;
 }
 
 .perfil {

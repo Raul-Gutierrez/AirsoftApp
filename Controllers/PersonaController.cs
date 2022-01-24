@@ -604,12 +604,15 @@ namespace AirsoftApp.Controllers
 
         public string InfoRango(int experiencia)
         {
-            airSoftAppEntities db = new airSoftAppEntities();
+            db = new airSoftAppEntities();
             {
-                var valRango1 = (from a in db.TB_RANGO
-                                 where a.VALORRANGO >= experiencia
+              var valRango1 = (from a in db.TB_RANGO
+                                 where a.VALORRANGO > experiencia
                                  select a.DESCRANGO
                                  ).FirstOrDefault();
+
+
+
                 if (valRango1 == null)
                 {
                     valRango1 = (from a in db.TB_RANGO
